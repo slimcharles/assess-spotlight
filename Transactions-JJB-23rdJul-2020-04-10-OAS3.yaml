@@ -402,18 +402,13 @@ paths:
       x-codegen-request-body-name: Request Body
     get:
       tags:
-      - Transactions rt
-      summary: Get a list of transactions recently processed, using criteria passed
-        in the query string. Page through the result set to access all records.
+      - Transactions
+      summary: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of transactions recently processed, using criteria passed
         in the query string. Page through the result set to access all records.
       parameters:
-      
       - $ref: 'parameters.yaml#/components/parameters/header_common'
-
       - $ref: 'parameters.yaml#/components/parameters/query_pagination'
-      
-
       - name: id
         in: query
         description: This is the Global Payments transaction id returned for the transaction
