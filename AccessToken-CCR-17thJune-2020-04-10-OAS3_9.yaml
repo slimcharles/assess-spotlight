@@ -35,6 +35,12 @@ paths:
           schema:
             type: string
             default: '2020-04-10'
+        - name: Content-type
+          in: header
+          description: Format of the request
+          schema:
+            type: string
+            default: application/json
         - name: Accept
           in: header
           description: Format of the expected response message.
