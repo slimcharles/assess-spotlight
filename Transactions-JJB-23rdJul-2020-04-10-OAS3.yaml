@@ -402,7 +402,7 @@ paths:
       x-codegen-request-body-name: Request Body
     get:
       tags:
-      - Transactions
+      - Transactions rt
       summary: Get a list of transactions recently processed, using criteria passed
         in the query string. Page through the result set to access all records.
       description: Get a list of transactions recently processed, using criteria passed
