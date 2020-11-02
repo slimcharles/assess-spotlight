@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Access Token
+  title: Traafasfsafsadf
   description: 'Access Tokens are required to execute all API actions, you can use this resource to obtain one. The authority of the bearer token; the actions it can execute, is determined by the associated Merchant ID, Accounts and Permissions of the app used to create it.'
   contact:
     name: API Integrations
