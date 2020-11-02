@@ -408,70 +408,12 @@ paths:
       description: Get a list of transactions recently processed, using criteria passed
         in the query string. Page through the result set to access all records.
       parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
-      - name: X-GP-Version
-        in: header
-        description: Indicates the version of the GP-API for this message.
-        required: true
-        schema:
-          type: string
-          default: "2020-04-10"
-      - name: Accept
-        in: header
-        description: Expected format of the response message.
-        schema:
-          type: string
-          default: application/json
-      - name: Accept-Encoding
-        in: header
-        description: Compression algorithm user can accept in the response to this
-          request.
-        schema:
-          type: string
-          default: gzip
-      - name: page
-        in: query
-        description: Indicates the page sequence to return in the response. The number
-          of records presented on each page is determined by page_size field.
-        schema:
-          maximum: 1000
-          minimum: 1
-          type: number
-          default: 1          
-      - name: page_size
-        in: query
-        description: The total number of objects to return in a single page for that
-          list
-        schema:
-          maximum: 1000
-          minimum: 1
-          type: number
-          default: 5
-      - name: order_by
-        in: query
-        description: 'The value to order the entire list by. '
-        schema:
-          type: string
-          enum:
-          - TIME_CREATED
-          - STATUS
-          - TYPE
-          - DEPOSIT_ID
-      - name: order
-        in: query
-        description: The direction of the ordering of the entire list, ASC or DESC
-        schema:
-          type: string
-          default: ASC
-          enum:
-          - ASC
-          - DESC
+      
+      - $ref: 'parameters.yaml#/components/parameters/header_common'
+
+      - $ref: 'parameters.yaml#/components/parameters/query_pagination'
+      
+
       - name: id
         in: query
         description: This is the Global Payments transaction id returned for the transaction
