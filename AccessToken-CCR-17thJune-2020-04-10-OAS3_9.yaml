@@ -18,7 +18,7 @@ tags:
     externalDocs:
       url: 'https://developer.globalpay.com/authentication'
 security:
-  - bearerAuth: []
+  - {}
 paths:
   /accesstoken:
     post:
