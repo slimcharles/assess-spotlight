@@ -8,10 +8,8 @@ components:
       properties:
         error_code:
           type: string
-          description: This action failed due to something being wrong with the API
-            request.
+          description: This indicates an issue with the API request.
           example: MANDATORY_DATA_MISSING
-          default: MANDATORY_DATA_MISSING
           enum:
           - DUPLICATE_TRANSACTION
           - INVALID_BATCH_ACTION
@@ -204,9 +202,11 @@ components:
         - error_code
         - detailed_error_code
         - detailed_error_description
-
-
-
-
-
-
+      examples:
+      '40001':
+      value:
+      error_code: NOT_AUTHENTICATED
+      detailed_error_code: 40001
+      detailed_error_description: Invalid Access Token
+      
+      
