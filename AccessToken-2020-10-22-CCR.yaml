@@ -26,7 +26,7 @@ paths:
       tags:
         - Create Access Token
       summary: Create a bearer access token.
-      description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has. For more information on API authentication and creating access  tokens, <a href="/authentication">please refer to the API Definitions</a>.'
+      description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has. For more information on API authentication and creating access  tokens'
       parameters:
         - $ref: common.yaml#/components/parameters/header_X-GP-Version
         - $ref: common.yaml#/components/parameters/header_Content-type
@@ -36,6 +36,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/request'
+            examples:
+              example-1:
+                value:
+                  app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+                  nonce: random_string
+                  secret: e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716
+                  grant_type: client_credentials
+                  seconds_to_expire: 604799
+                  interval_to_expire: WEEK
+                  permissions:
+                    - TRN_POST_Authorize
       responses:
         '200':
           description: OK
