@@ -49,7 +49,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/request'
+              - $ref: 'common.yaml#/components/schemas/request'
         required: false
       responses:
         '200':
@@ -98,12 +98,7 @@ components:
       - secret
       type: object
       properties:
-        app_id:
-          type: string
-          description: The id of the app that was used to create the token.
-          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-          minLength: 1
-          maxLength: 50
+
         nonce:
           type: string
           description: A unique random value included while creating the secret.
@@ -224,6 +219,8 @@ components:
           maxLength: 50
         accounts:
           $ref: '#/components/schemas/accounts'
+
+
     accounts:
       type: array
       items:
