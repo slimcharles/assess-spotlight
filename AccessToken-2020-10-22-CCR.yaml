@@ -23,10 +23,6 @@ tags:
     externalDocs:
       url: 'https://developer.globalpay.com/authentication'
 
-security:
-  $ref: common.yaml#/components/securitySchemes/BearerAuth
-
-
 paths:
   /accesstoken:
     post:
@@ -145,6 +141,7 @@ components:
               type: string
               description: The list of the permissions the integrator want the access token to have. This is used to limit the authority a specific access token can have.
               example: TRN_POST_Authorize
+
     response:
       type: object
       properties:
