@@ -25,10 +25,6 @@ paths:
         - Create Access Token
       summary: Create a bearer access token.
       description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has. For more information on API authentication and creating access  tokens'
-      parameters:
-        - schema:
-            type: string
-          in: header
       requestBody:
         content:
           application/json:
@@ -71,6 +67,9 @@ paths:
         '504':
           $ref: errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
+      parameters:
+        - $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-type
+        - $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
 components:
   schemas:
     request:
