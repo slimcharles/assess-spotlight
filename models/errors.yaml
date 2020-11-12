@@ -1,3 +1,17 @@
+openapi: '3.0.0'
+info:
+  title: Common Errors
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
 components:
   responses:
     RequestInvalid_400:
