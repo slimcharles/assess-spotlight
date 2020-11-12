@@ -114,7 +114,14 @@ components:
       enum:
       - DEBIT
       - CREDIT
-    
+
+    from_time_created:
+      description: The start time to search for in a range, using the resource time_created value.
+      type: string
+      format: date
+      example: '2020-11-11'
+   
+      
     #### G
     grant_type:
       type: string
@@ -181,9 +188,35 @@ components:
       example: 3412
         
     pagination.current_page_size:
-      type: number
       description: The total number of records returned on the current page. If current_page_size is less than the page_size using in the querystring then this is the final page for that search.
       example: 3412
+
+    pagination.page:
+      description: Indicates the page sequence to return in the response. The number of records presented on each page is determined by page_size field.
+      maximum: 1000
+      minimum: 1
+      type: number
+      default: 1    
+    
+    pagination.page_size:
+      description: The total number of objects to return in a single page for that list.
+      maximum: 1000
+      minimum: 1
+      type: number
+      default: 5
+    
+    pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - TIME_CREATED
+    
+    pagination.order:
+      description: The direction of the ordering of the entire list, ASC or DESC
+      type: string
+      enum:
+      - ASC
+      - DESC
 
     permissions:
       type: array
@@ -266,6 +299,12 @@ components:
       description: Global Payments time indicating when the object was created in ISO-8601 format.
       example: 2020-05-03T21:23:39.718Z
 
+    to_time_created:
+      description: The end time to search for in a range, using the resource time_created value.
+      type: string
+      format: date
+      example: '2020-11-11'
+
     transaction.amount:
       type: string
       description:  The amount to transfer between Payer and Merchant for a SALE or a REFUND. It is always represented in the lowest denomiation of the related currency.
@@ -291,18 +330,42 @@ components:
       description: The amount that reflects the charge the merchant applied to the transaction for availing of a more convenient purchase.It is always represented in the lowest denomiation of the related currency.
       example: '120'
 
-      
+    total_amount:
+      type: string
+      description: The total sum amount.
+      example: '120'
+
        
+
+
        
 #################################       
-    
-    
-
+    totals:
+      type: object
+      description: Total Number and Amount of an aggregate.
+      properties:
+        count:
+          $ref: '#/components/schemas/count'
+        amount:
+          $ref: '#/components/schemas/total_amount'
       
-
-
+    bank_transfer:
+      type: object
+      properties:
+        masked_account_number_last4:
+          type: string
+          description: The last 4 characters of the local reference for a bank account
+            number.
+        bank:
+          $ref: '#/components/schemas/bank'
+      description: Data relating to a bank transfer directly to or from the Payer's
+        bank account.
     
-    
+    bank:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/bank.code'
     
     filter:
       type: object
@@ -313,13 +376,13 @@ components:
       description: The paging values used to generate this response.
       properties:
         page:
-          $ref: '#/components/parameters/query_pagination_page'
+          $ref: '#/components/schemas/pagination.page'
         page_size:
-          $ref: '#/components/parameters/query_pagination_page_size'
+          $ref: '#/components/schemas/pagination.page_size'
         order_by:
-          $ref: '#/components/parameters/query_pagination_order_by'
+          $ref: '#/components/schemas/pagination.order_by'
         order:
-          $ref: '#/components/parameters/query_pagination_order'
+          $ref: '#/components/schemas/pagination.order'
      
     scope:
       type: object
@@ -380,10 +443,6 @@ components:
           $ref: '#/components/schemas/app_id'
         app_name:
           $ref: '#/components/schemas/app_name'
-
-
-
-
   ## Parameters Section
   parameters:      
     header_Accept:
@@ -443,43 +502,28 @@ components:
       name: page
       description: Indicates the page sequence to return in the response. The number of records presented on each page is determined by page_size field.
       schema:
-        maximum: 1000
-        minimum: 1
-        type: number
-        default: 1    
+        $ref: '#/components/schemas/pagination.page'
     
     query_pagination_page_size:
       in: query
       name: page_size
       description: The total number of objects to return in a single page for that list
       schema:
-        maximum: 1000
-        minimum: 1
-        type: number
-        default: 5
+        $ref: '#/components/schemas/pagination.page_size'
     
     query_pagination_order_by:
       in: query
       name: order_by
       description: 'The value to order the entire list by. '
       schema:
-        type: string
-        enum:
-        - TIME_CREATED
+        $ref: '#/components/schemas/pagination.order_by'
     
     query_pagination_order:
       in: query
       name: order
       description: The direction of the ordering of the entire list, ASC or DESC
       schema:
-        type: string
-        enum:
-        - ASC
-        - DESC
-
-  
-   
-           
+        $ref: '#/components/schemas/pagination.order'
   
 
 ## Security Section
@@ -487,8 +531,3 @@ components:
     BearerAuth:
       type: http
       scheme: bearer
-    
-
-
-
-          
