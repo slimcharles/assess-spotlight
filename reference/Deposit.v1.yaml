@@ -3,10 +3,10 @@ info:
   title: Deposits  
   description: 'Deposits represent the initiation of a Debit or a Credit to a Merchant's Bank Account that relates to Transactions and Disputes processed, or fees charged to the Merchant.'
   contact:
-    name: API Integrations
+    name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
-    email: api.integrations@globalpay.com
-version: 2020 10 22
+    email: 'api.integrations@globalpay.com'
+  version: '2020 10 22'
 servers:
   - url: 'https://apis.sandbox.globalpay.com/ucp'
     description: Sandbox Environment
