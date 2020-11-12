@@ -1,6 +1,8 @@
 
 components:
+## Schema Section
  schemas: ## Schema Section
+     #### A
     account_id:
       type: string
       description: A unique identifier for the merchant account set by Global
@@ -8,6 +10,7 @@ components:
       example: TRA_6716058969854a48b33347043ff8225f
       minLength: 1
       maxLength: 50
+    
     account_name:
       type: string
       description: A meaningful label for the merchant account set by Global
@@ -216,8 +219,7 @@ components:
         schema:
           type: string
           default: '2020-04-10'
-
-  #### QueryParameters Section
+      #### QueryParameters Section
       query_pagination_page:
         in: query
         name: page
@@ -320,13 +322,12 @@ components:
             maxLength: 50
    
            
-  
-
 ## Security Section
     securitySchemes:  ## Security Section
-    BearerAuth:
-      type: http
-      scheme: bearer
+      bearerAuth:
+        type: http
+        scheme: bearer
+        example: 123456
     
 
 
