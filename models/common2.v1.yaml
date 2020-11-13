@@ -184,10 +184,11 @@ components:
     #### P
     pagination.total_record_count:
       type: number
-      description: The total number of records across all pages for the search filter. When search for a collection of resoures this is returned on the first page only and when the date range is a month or less.
+      description: The total number of records across all pages for the search filter. When searching for a collection of resoures, this is returned on the first page only and when the date range is a month or less.
       example: 3412
         
     pagination.current_page_size:
+      type: number
       description: The total number of records returned on the current page. If current_page_size is less than the page_size using in the querystring then this is the final page for that search.
       example: 3412
 
@@ -332,7 +333,7 @@ components:
 
     total_amount:
       type: string
-      description: The total sum amount.
+      description: The total amount across one or more items.
       example: '120'
 
        
@@ -342,7 +343,7 @@ components:
 #################################       
     totals:
       type: object
-      description: Total Number and Amount of an aggregate.
+      description: The total number of records and the total amount across those records.
       properties:
         count:
           $ref: '#/components/schemas/count'
@@ -443,7 +444,9 @@ components:
           $ref: '#/components/schemas/app_id'
         app_name:
           $ref: '#/components/schemas/app_name'
-  ## Parameters Section
+  
+  
+  ################ Parameters Section ################ 
   parameters:      
     header_Accept:
       in: header
@@ -495,6 +498,15 @@ components:
       schema:
         type: string
         default: '2020-04-10'
+
+    header_X-GP-Idempotency:
+      name: X-GP-Idempotency
+      in: header
+      description: Integrator generated value submitted in the request header that is checked to ensure the same value has not been seen in the last 24 hours. It is used to ensure idempotency is maintained with this action.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 50
     
     #### QueryParameters Section
     query_pagination_page:

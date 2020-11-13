@@ -41,7 +41,7 @@ paths:
         required: true
         schema:
           type: string
-          example: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
+          example: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
           minLength: 1
           maxLength: 50
       
@@ -55,6 +55,7 @@ paths:
       - name: account_name
         in: query
         required: true
+        example: 'settlement_reporting'
         schema:
           $ref: ./models/common2.v1.yaml#/components/schemas/account_name
       
@@ -70,14 +71,11 @@ paths:
       
       - name: id
         in: query
-        description: Value that uniquely identifies the Deposit on the Global Payments system.
         schema:
           $ref: ./models/common2.v1.yaml#/components/schemas/id
 
       - name: status
         in: query
-        description: Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,
-          DELAYED, RESERVED, IRREG or RELEASED.
         schema:
           $ref: ./models/common2.v1.yaml#/components/schemas/status
 
@@ -90,7 +88,6 @@ paths:
    
       - name: masked_account_number_last4
         in: query
-        description: The last 4 of the merchants bank account.
         schema:
            $ref: ./models/common2.v1.yaml#/components/schemas/masked_account_number_last4
 
@@ -261,7 +258,7 @@ components:
           $ref: ./models/common2.v1.yaml#/components/schemas/totals
         disputes:
           type: object
-          description: Data relating to the dispute totals across Chargebacks and Chargeback Reversals.
+          description: Data relating to the dispute totals across chargebacks and chargeback reversals.
           properties:
             chargebacks:
               $ref: ./models/common2.v1.yaml#/components/schemas/totals
