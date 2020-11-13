@@ -1,0 +1,126 @@
+openapi: '3.0.0'
+info:
+  title: Common Object Schema
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
+components:
+  schemas: ## Schema Section - Objects
+
+    totals:
+      type: object
+      description: The total number of records and the total amount across those records.
+      properties:
+        count:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/count'
+        amount:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/total_amount'
+      
+    bank_transfer:
+      type: object
+      properties:
+        masked_account_number_last4:
+          type: string
+          description: The last 4 characters of the local reference for a bank account
+            number.
+        bank:
+          $ref: '#/components/schemas/bank'
+      description: Data relating to a bank transfer directly to or from the Payer's
+        bank account.
+    
+    bank:
+      type: object
+      properties:
+        code:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.code'
+    
+    filter:
+      type: object
+      description: Indicates what fields and values used to filter the current list of resource objects in the current response.
+    
+    paging:
+      type: object
+      description: The paging values used to generate this response.
+      properties:
+        page:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.page'
+        page_size:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.page_size'
+        order_by:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.order_by'
+        order:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.order'
+     
+    scope:
+      type: object
+      properties:
+        merchant_id:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/merchant_id'
+        merchant_name:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/merchant_name'
+        accounts:
+          $ref: '#/components/schemas/accounts'
+    
+    accounts:
+      type: array
+      items:
+        type: object
+        properties:
+          account_id:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account_id'
+          account_name:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account_name'
+          permissions:
+            type: array
+            items:
+              $ref: 'data_dictionary.v1.yaml#/components/schemas/permissions'
+    system:
+      type: object
+      description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
+      properties:
+        mid:
+           $ref: 'data_dictionary.v1.yaml#/components/schemas/system.mid'
+        tid:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.tid'
+        hierarchy:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.hierarchy'
+        name:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.name'
+        dba:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.dba'
+
+    action:
+      type: object
+      description: Information about the Action executed.
+      properties:
+        id:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/id'
+        type:
+          type: string
+          description: Indicates the action taken.
+          example: DEPOSIT_LIST
+          enum:
+          - DEPOSIT_LIST
+          - DEPOSIT_SINGLE
+        time_created:
+           $ref: 'data_dictionary.v1.yaml#/components/schemas/time_created'
+        result_code:
+           $ref: 'data_dictionary.v1.yaml#/components/schemas/result_code'
+        app_id:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/app_id'
+        app_name:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/app_name'
+ 
+## Security Section
+  securitySchemes:  ## Security Section
+    BearerAuth:
+      type: http
+      scheme: bearer

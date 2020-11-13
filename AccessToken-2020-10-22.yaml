@@ -26,8 +26,8 @@ paths:
       summary: Create a bearer access token.
       description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has. For more information on API authentication and creating access  tokens'
       parameters:
-        - $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-type
-        - $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
       requestBody:
         content:
           application/json:
@@ -39,9 +39,9 @@ paths:
           description: OK
           headers:
             Content-type:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-type
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
             X-GP-Version:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
           content:
             application/json:
               schema:
@@ -76,44 +76,44 @@ components:
       type: object
       properties:
         app_id:
-          $ref: ./models/common2.v1.yaml#/components/schemas/app_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
         nonce:
-          $ref: ./models/common2.v1.yaml#/components/schemas/nonce
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/nonce
         secret:
-          $ref: ./models/common2.v1.yaml#/components/schemas/secret
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/secret
         grant_type:
-          $ref: ./models/common2.v1.yaml#/components/schemas/grant_type
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/grant_type
         seconds_to_expire:
-          $ref: ./models/common2.v1.yaml#/components/schemas/seconds_to_expire
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/seconds_to_expire
         interval_to_expire:
-          $ref: ./models/common2.v1.yaml#/components/schemas/interval_to_expire
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/interval_to_expire
         permissions:
-          $ref: ./models/common2.v1.yaml#/components/schemas/permissions
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/permissions
 
 
     response:
       type: object
       properties:
         token:
-          $ref: ./models/common2.v1.yaml#/components/schemas/token
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/access_token
         type:
-         $ref: ./models/common2.v1.yaml#/components/schemas/token.type
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/access_token.type
         scope:
-          $ref: ./models/common2.v1.yaml#/components/schemas/scope
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/scope
         app_id:
-          $ref: ./models/common2.v1.yaml#/components/schemas/app_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
         app_name:
-          $ref: ./models/common2.v1.yaml#/components/schemas/app_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
         time_created:
-          $ref: ./models/common2.v1.yaml#/components/schemas/time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
         seconds_to_expire:
-          $ref: ./models/common2.v1.yaml#/components/schemas/seconds_to_expire
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/seconds_to_expire
         interval_to_expire:
-          $ref: ./models/common2.v1.yaml#/components/schemas/interval_to_expire
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/interval_to_expire
         email:
-          $ref: ./models/common2.v1.yaml#/components/schemas/email
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/email
     scope:
-      $ref: ./models/common2.v1.yaml#/components/schemas/scope
+      $ref: ./models/schema_objects.v1.yaml#/components/schemas/scope
     accounts:
-      $ref: ./models/common2.v1.yaml#/components/schemas/accounts
+      $ref: ./models/schema_objects.v1.yaml#/components/schemas/accounts
       

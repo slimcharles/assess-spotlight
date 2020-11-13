@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: Common Schema, Parameters and Security
+  title: Data Dictionary
   contact:
     name: API Integrations
     url: 'https://developer.globalpay.com/?gp-api=true'
@@ -68,18 +68,62 @@ components:
       example: 'demo_app'
       minLength: 1
       maxLength: 50
+
+    authorization_mode:
+      type: string
+      description: Indicates if the merchant would like to authorize for an amount less than the intended amount.
+      example: 'PARTIAL'
+      default: 'WHOLE'
+      enum:
+      - PARTIAL
+      - WHOLE
+      - ESTIMATED
+      - FINAL
+      - PARTIAL_FINAL
     
     #### B
+
     bank.code:
       type: string
       description: The local identifier code for the bank.
-
+      example: 'james.mason@example.com'
+      minLength: 0
+      maxLength: 50
+    
+    batch_id:
+      type: string
+      description: A Global Payments created reference that uniquely identifies the batch.
+      example: 'BAT_234234234'
+      minLength: 0
+      maxLength: 50
 
     #### C
+    channel:
+      type: string
+      description: Describes whether the transaction was processed in a face to
+            face(CP) scenario or a Customer Not Present (CNP) scenario.
+      example: 'CNP'                    
+      enum:
+      - CP
+      - CNP
+    
+    capture_mode:
+      type: string
+      description: Indicates whether the transaction is to be captured automatically,later or later using more than 1 partial capture.
+      example: 'AUTO'
+      default: 'AUTO'
+      enum:
+      - AUTO
+      - LATER
+      - MULTIPLE
+
     country:
       type: string
       description: The country in ISO-3166-1(alpha-2 code) format.
       example: 'US'
+      enum: 
+        - ISO-3166-1(alpha-2 code)
+        - US
     
     count:
       type: number
@@ -91,7 +135,9 @@ components:
       description: The currency of the amount in ISO-4217(alpha-3)
       example: 'USD'
     
-    #### D  
+    #### D 
+    
+
     deposit.amount:
       type: string
       description: The amount of the Deposit that affects the merchant's bank account. It is always represented in the lowest denomiation of the related currency.
@@ -136,7 +182,14 @@ components:
       example: 'ABC_6716058969854a48b33347043ff8225f'
       minLength: 1
       maxLength: 50
-    
+
+    initiator:
+      type: string
+      description: Indicates whether the Merchant or the Payer initiated the creation of a transaction.
+      enum:
+      - PAYER
+      - MERCHANT
+
     interval_to_expire:
       type: string
       description: |
@@ -152,6 +205,26 @@ components:
       - 10_MINUTES
       - 5_MINUTES
 
+    ip_address:
+      type: string
+      description: Indicates the source IP Address of the system used to create the transaction.
+      example: '123.123.123.123'
+      minLength: 0
+      maxLength: 50
+
+    
+    #### L
+    language:
+      type: string
+      description: Indicates the language the transaction was executed in. In
+        the format ISO-639(alpha-2) or ISO-639(alpha-2)-ISO-3166(alpha-2)
+      example: 'fr-CA'
+      enum:
+        - ISO-639(alpha-2)
+        - fr
+        - ISO-639(alpha-2)-ISO-3166(alpha-2)
+        - fr-CA
+      
     #### M
     masked_account_number_last4:
       type: string
@@ -179,6 +252,14 @@ components:
       description: A unique random value included while creating the secret.
       example: 'random_string'
       minLength: 1
+      maxLength: 50
+    
+    #### O
+    order.reference:
+      type: string
+      description: Merchant defined field common to all transactions that are part of the same order.
+      example: 'INV#88547'
+      minLength: 0
       maxLength: 50
 
     #### P
@@ -233,7 +314,12 @@ components:
       enum:
         - SUCCESS
         - DECLINE
-
+    
+    remaining_capture_count:
+      type: integer
+      description: Indicates the expected number of partial captures remaining.
+    
+    
     #### S
     seconds_to_expire:
       type: integer
@@ -254,7 +340,12 @@ components:
       type: string
       description: Indicates where a resource object is in it's lifecylce.
       example: 'FUNDED'
-      
+
+    site_reference:
+      type: string
+      description: A merchant defined reference for the location that created the transaction.
+      minLength: 0
+      maxLength: 50
 
     system.mid:
       type: string
@@ -330,216 +421,75 @@ components:
       type: string
       description: The amount that reflects the charge the merchant applied to the transaction for availing of a more convenient purchase.It is always represented in the lowest denomiation of the related currency.
       example: '120'
+    
+    transaction.description:
+      type: string
+      description: Merchant defined field to describe the transaction.
+      example: 'SKU#BLK-MED-G123-GUC'
+      maxLength: 100
+
+
+    transaction.reference:
+      type: string
+      description: Merchant defined field to reference the transaction.
+      example: 'MY_TRANS_REF_12345'
+      minLength: 8
+      maxLength: 50
+
+    transaction.type:
+      type: string
+      description: Describes whether the transaction is a SALE, that moves funds
+            from Payer to Merchant, or a REFUND where funds move from Merchant to Payer.
+      example: 'SALE'
+      default: 'SALE'
+      enum:
+      - SALE
+      - REFUND
 
     total_amount:
       type: string
       description: The total amount across one or more items.
       example: '120'
 
-       
-
-
-       
-#################################       
-    totals:
-      type: object
-      description: The total number of records and the total amount across those records.
-      properties:
-        count:
-          $ref: '#/components/schemas/count'
-        amount:
-          $ref: '#/components/schemas/total_amount'
-      
-    bank_transfer:
-      type: object
-      properties:
-        masked_account_number_last4:
-          type: string
-          description: The last 4 characters of the local reference for a bank account
-            number.
-        bank:
-          $ref: '#/components/schemas/bank'
-      description: Data relating to a bank transfer directly to or from the Payer's
-        bank account.
-    
-    bank:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/bank.code'
-    
-    filter:
-      type: object
-      description: Indicates what fields and values used to filter the current list of resource objects in the current response.
-    
-    paging:
-      type: object
-      description: The paging values used to generate this response.
-      properties:
-        page:
-          $ref: '#/components/schemas/pagination.page'
-        page_size:
-          $ref: '#/components/schemas/pagination.page_size'
-        order_by:
-          $ref: '#/components/schemas/pagination.order_by'
-        order:
-          $ref: '#/components/schemas/pagination.order'
-     
-    scope:
-      type: object
-      properties:
-        merchant_id:
-          $ref: '#/components/schemas/merchant_id'
-        merchant_name:
-          $ref: '#/components/schemas/merchant_name'
-        accounts:
-          $ref: '#/components/schemas/accounts'
-    
-    accounts:
-      type: array
-      items:
-        type: object
-        properties:
-          account_id:
-            $ref: '#/components/schemas/account_id'
-          account_name:
-            $ref: '#/components/schemas/account_name'
-          permissions:
-            type: array
-            items:
-              $ref: '#/components/schemas/permissions'
-    system:
-      type: object
-      description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
-      properties:
-        mid:
-           $ref: '#/components/schemas/system.mid'
-        tid:
-          $ref: '#/components/schemas/system.tid'
-        hierarchy:
-          $ref: '#/components/schemas/system.hierarchy'
-        name:
-          $ref: '#/components/schemas/system.name'
-        dba:
-          $ref: '#/components/schemas/system.dba'
-
-    action:
-      type: object
-      description: Information about the Action executed.
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        type:
-          type: string
-          description: Indicates the action taken.
-          example: DEPOSIT_LIST
-          enum:
-          - DEPOSIT_LIST
-          - DEPOSIT_SINGLE
-        time_created:
-           $ref: '#/components/schemas/time_created'
-        result_code:
-           $ref: '#/components/schemas/result_code'
-        app_id:
-          $ref: '#/components/schemas/app_id'
-        app_name:
-          $ref: '#/components/schemas/app_name'
-  
-  
-  ################ Parameters Section ################ 
-  parameters:      
-    header_Accept:
-      in: header
-      name: Accept
-      description: Expected format of the response message.
-      schema:
-        type: string
-        default: application/json
-
-    header_Accept-Encoding:
-      name: Accept-Encoding
-      in: header
-      description: Compression algorithm user can accept in the response to this request.
-      schema:
-        type: string
-        default: gzip
-    
-    header_Content-Encoding:
-      name: Accept-Encoding
-      in: header
-      description: Compression algorithm user can accept in the response to this request.
-      schema:
-        type: string
-        default: gzip
-      
-    header_Authorization:
-      in: header
-      name: Authorization
-      description: The Bearer token used when executing this action.
-      required: true
-      schema:
-        type: string
-        default: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
-
-    header_Content-type:
-      in: header
-      name: Content-type
-      description: Format of the message.
-      required: true
-      schema:
-        type: string
-        default: 'application/json'
-    
-    header_X-GP-Version:
-      name: X-GP-Version
-      in: header
+    #### X
+    X-GP-Version:
       description: Indicates the version of the GP-API for this message.
-      required: true
-      schema:
-        type: string
-        default: '2020-04-10'
+      type: string
+      minLength: 1
+      maxLength: 50      
+      example: '2020-04-10'
 
-    header_X-GP-Idempotency:
-      name: X-GP-Idempotency
-      in: header
+    X-GP-Idempotency:
       description: Integrator generated value submitted in the request header that is checked to ensure the same value has not been seen in the last 24 hours. It is used to ensure idempotency is maintained with this action.
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 50
-    
-    #### QueryParameters Section
-    query_pagination_page:
-      in: query
-      name: page
-      description: Indicates the page sequence to return in the response. The number of records presented on each page is determined by page_size field.
-      schema:
-        $ref: '#/components/schemas/pagination.page'
-    
-    query_pagination_page_size:
-      in: query
-      name: page_size
-      description: The total number of objects to return in a single page for that list
-      schema:
-        $ref: '#/components/schemas/pagination.page_size'
-    
-    query_pagination_order_by:
-      in: query
-      name: order_by
-      description: 'The value to order the entire list by. '
-      schema:
-        $ref: '#/components/schemas/pagination.order_by'
-    
-    query_pagination_order:
-      in: query
-      name: order
-      description: The direction of the ordering of the entire list, ASC or DESC
-      schema:
-        $ref: '#/components/schemas/pagination.order'
-  
+      type: string
+      minLength: 1
+      maxLength: 50
 
-## Security Section
-  securitySchemes:  ## Security Section
-    BearerAuth:
-      type: http
-      scheme: bearer
+    X-GP-Signature:
+      description: The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
+      maxLength: 1000
+      minLength: 1
+      type: string
+      example: '6bb6116d85c2326feb32dc34ded531ed80c6f04ac472fa0c7e8228fde0fe7d66195128c5d52f266398471bcdbaa7d09a7d88495ce998e48da34877d6fd530f0b '
+
+##################################
+
+                                                                                
+      
+       
+        
+                                       
+        
+       
+        
+        
+             
+       
+        
+        
+
+
+       
+
+
+       

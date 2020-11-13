@@ -45,11 +45,11 @@ paths:
           minLength: 1
           maxLength: 50
       
-      - $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_page
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_page_size
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_order_by
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
       
       
       - name: account_name
@@ -57,60 +57,60 @@ paths:
         required: true
         example: 'settlement_reporting'
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/account_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
       
       - name: from_time_created
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/from_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
       
       - name: to_time_created
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/to_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
       
       - name: id
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
 
       - name: status
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/status
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
 
       
       - name: amount
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/deposit.amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/deposit.amount
       
    
       - name: masked_account_number_last4
         in: query
         schema:
-           $ref: ./models/common2.v1.yaml#/components/schemas/masked_account_number_last4
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_account_number_last4
 
       - name: system.mid
         in: query
         schema:
-           $ref: ./models/common2.v1.yaml#/components/schemas/system.mid
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
 
       - name: system.hierarchy
         in: query
         schema:
-          $ref: ./models/common2.v1.yaml#/components/schemas/system.hierarchy
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
 
       responses:
         '200':
           description: OK
           headers:
             Content-type:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-type
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
             X-GP-Version:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
             Content-Encoding:
-               $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-Encoding
+               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           
           content:
             application/json:
@@ -154,29 +154,29 @@ paths:
           minLength: 1
           maxLength: 50
       
-      - $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_page
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_page_size
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/common2.v1.yaml#/components/parameters/query_pagination_order_by
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
       
       - name: id
         in: path
         description: This is the deposit id created to uniquely identify it in the Global Payments system. 
         required: true
         schema:
-         $ref: ./models/common2.v1.yaml#/components/schemas/id
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
 
       responses:
          '200':
           description: OK
           headers:
             Content-type:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-type
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
             X-GP-Version:
-              $ref: ./models/common2.v1.yaml#/components/parameters/header_X-GP-Version
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
             Content-Encoding:
-               $ref: ./models/common2.v1.yaml#/components/parameters/header_Content-Encoding
+               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           content:
             application/json:
               schema:
@@ -210,70 +210,70 @@ components:
       type: object
       properties:
         total_record_count:
-          $ref: ./models/common2.v1.yaml#/components/schemas/pagination.total_record_count
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
         current_page_size:
-          $ref: ./models/common2.v1.yaml#/components/schemas/pagination.current_page_size
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
         merchant_id:
-          $ref: ./models/common2.v1.yaml#/components/schemas/merchant_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
-          $ref: ./models/common2.v1.yaml#/components/schemas/merchant_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
         account_id:
-          $ref: ./models/common2.v1.yaml#/components/schemas/account_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
         account_name:
-          $ref: ./models/common2.v1.yaml#/components/schemas/account_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         filter:
-          $ref: ./models/common2.v1.yaml#/components/schemas/filter
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
-          $ref: ./models/common2.v1.yaml#/components/schemas/paging
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
         deposits:
           type: array
           description: A list of Deposit records.
           items:
             $ref: '#/components/schemas/deposits_single'
         action:
-          $ref: ./models/common2.v1.yaml#/components/schemas/action
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     
     deposits_single:
       type: object
       properties:
         id:
-          $ref: ./models/common2.v1.yaml#/components/schemas/id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
         time_created:
-          $ref: ./models/common2.v1.yaml#/components/schemas/time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
         status:
-          $ref: ./models/common2.v1.yaml#/components/schemas/status
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
         funding_type:
-          $ref: ./models/common2.v1.yaml#/components/schemas/funding_type
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/funding_type
         amount:
-          $ref: ./models/common2.v1.yaml#/components/schemas/deposit.amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/deposit.amount
         aggregation_model:
-          $ref: ./models/common2.v1.yaml#/components/schemas/aggregation_model
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/aggregation_model
         bank_transfer:
-          $ref: ./models/common2.v1.yaml#/components/schemas/bank_transfer
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/bank_transfer
         system:
-          $ref: ./models/common2.v1.yaml#/components/schemas/system
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
         sales:
-          $ref: ./models/common2.v1.yaml#/components/schemas/totals
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
         refunds:
-          $ref: ./models/common2.v1.yaml#/components/schemas/totals
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
         disputes:
           type: object
           description: Data relating to the dispute totals across chargebacks and chargeback reversals.
           properties:
             chargebacks:
-              $ref: ./models/common2.v1.yaml#/components/schemas/totals
+              $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
             reversals:
-              $ref: ./models/common2.v1.yaml#/components/schemas/totals
+              $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
           
         discounts:
-          $ref: ./models/common2.v1.yaml#/components/schemas/totals
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
         fees:
           type: object
           description: The total fees amount in the currency of the Deposit.
           properties:
             amount:
-              $ref: ./models/common2.v1.yaml#/components/schemas/total_amount
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/total_amount
           
         action:
-          $ref: ./models/common2.v1.yaml#/components/schemas/action
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     

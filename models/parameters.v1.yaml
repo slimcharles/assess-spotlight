@@ -1,0 +1,108 @@
+openapi: '3.0.0'
+info:
+  title: Common Parameters
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
+components:
+  parameters:      
+    header_Accept:
+      in: header
+      name: Accept
+      description: Expected format of the response message.
+      schema:
+        type: string
+        default: application/json
+
+    header_Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: Compression algorithm user can accept in the response to this request.
+      schema:
+        type: string
+        default: gzip
+    
+    header_Content-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: Compression algorithm user can accept in the response to this request.
+      schema:
+        type: string
+        default: gzip
+      
+    header_Authorization:
+      in: header
+      name: Authorization
+      description: The Bearer token used when executing this action.
+      required: true
+      schema:
+        type: string
+        default: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
+
+    header_Content-type:
+      in: header
+      name: Content-type
+      description: Format of the message.
+      required: true
+      schema:
+        type: string
+        default: 'application/json'
+    
+    header_X-GP-Version:
+      in: header
+      name: X-GP-Version
+      description: Indicates the version of the GP-API for this message.
+      required: true
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/X-GP-Version'
+
+    header_X-GP-Idempotency:
+      in: header
+      name: X-GP-Idempotency
+      description: Integrator generated value submitted in the request header that is checked to ensure the same value has not been seen in the last 24 hours. It is used to ensure idempotency is maintained with this action.
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency'
+    
+    header_X-GP-Signature:
+      in: header
+      name: X-GP-Signature
+      description: The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/X-GP-Signature'
+    
+    #### QueryParameters Section
+    query_pagination_page:
+      in: query
+      name: page
+      description: Indicates the page sequence to return in the response. The number of records presented on each page is determined by page_size field.
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.page'
+    
+    query_pagination_page_size:
+      in: query
+      name: page_size
+      description: The total number of objects to return in a single page for that list
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.page_size'
+    
+    query_pagination_order_by:
+      in: query
+      name: order_by
+      description: 'The value to order the entire list by. '
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.order_by'
+    
+    query_pagination_order:
+      in: query
+      name: order
+      description: The direction of the ordering of the entire list, ASC or DESC
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.order'
