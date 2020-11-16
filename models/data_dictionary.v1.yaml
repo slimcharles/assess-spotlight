@@ -69,7 +69,7 @@ components:
       minLength: 1
       maxLength: 50
 
-    authenitcation.value:
+    authentication.value:
       type: string
       description: A CNP Card transaction's 3D Secure Customer Authentication Verification Value that is used to determine and validate the degree of authentication executed for this transaction.
       example: AAACBUGDZYYYIgGFGYNlAAAAAAA=
@@ -1209,6 +1209,7 @@ the Merchant's configuration account.
 example: Transaction_Processing
 reference:
 type: string
+
 description: Merchant defined field to reference the Transaction.
 example: MY-TRANS-20190924123456
 batch_id:
@@ -1216,6 +1217,7 @@ type: string
 description: Reference that uniquely identifies the batch the transaction
 is in. Only CAPTURED transactions have a valid batch_id.
 example: ""
+
 payment_method:
 $ref: '#/components/schemas/payment_method_not_res'
 action:
@@ -1223,6 +1225,7 @@ $ref: '#/components/schemas/action_transaction'
 payment_method_not_res:
 type: object
 properties:
+
 result:
 type: string
 description: IIn payment_method] Result code from the payment method provider.
@@ -1405,14 +1408,17 @@ description: The international identifier of the bank account.
 bank_identifier_code:
 type: string
 description: The international identifier code for the bank.
+
 bank_name:
 type: string
 description: The name of the bank.
 example: High Street Bank
+
 bank_address:
 type: string
 description: The address of the bank.
 example: Bond St. America
+
 optional_redirect:
 maximum: 1
 type: number
@@ -1422,3 +1428,7 @@ to redirect the customer to a page to display additional information about
 the payment. '
 example: 1.0
 description: Data associated with an APM.
+
+
+three_ds.enrolled_status
+
