@@ -549,886 +549,532 @@ components:
 
 ##################################
 
-
-
-
-
-
-
-
-
-
 mac:
-type: string
-description: A message authentication code submitted to confirm integrity
-of the request.
-example: ''
-minLength: 1
-maxLength: 50
+  type: string
+  description: A message authentication code submitted to confirm integrity
+  of the request.
+  minLength: 1
+  maxLength: 50
+authentication.cavv_result:
+  type: string
+  description: The card brand result for CAVV/authentication value validation.
+  enum:
+  - FAILED
+  - FAILED_AUTHENTICATION
+  - SUCCESS_AUTHENTICATION
+  - SUCCESS_ATTEMPT
+  - FAILED_ATTEMPT
+  - FAILED_NOT_VALIDATED INFO_SUCCESS
+  minLength: 1
+  maxLength: 50  
 
 
-cavv_result:
-type: string
-description: A transaction's card brand result for CAVV validation.
-enum:
-- FAILED
-- FAILED_AUTHENTICATION
-- SUCCESS_AUTHENTICATION
-- SUCCESS_ATTEMPT
-- FAILED_ATTEMPT
-- FAILED_NOT_VALIDATED
-- INFO_SUCCESS
-minLength: 1
-maxLength: 50
 
 encryption.method:
-type: string
-description: The encryption method used when sending encrypted card data
-to Global Payments.
-example: ""
-enum:
-- KTB
-- KSN
-minLength: 1
-maxLength: 50
+  type: string
+  description: The encryption method used when sending encrypted card data
+  to Global Payments.
+  example: ""
+  enum:
+  - KTB
+  - KSN
+  minLength: 1
+  maxLength: 50
 
-version:
-type: string
-description: The version of encryption being used.
-example: ""
-minLength: 1
-maxLength: 50
+encryption.version:
+  type: string
+  description: The version of encryption being used.
+  example: ""
+  minLength: 1
+  maxLength: 50
 
-info:
-type: string
-description: 'The encryption info used when sending encrypted card data to Global Payments.''
-example: ''
-minLength: 1
-maxLength: 2000
+encryption.info:
+  type: string
+  description: The encryption info used when sending encrypted card data to Global Payments.'
+  example: ''
+  minLength: 1
+  maxLength: 2000
 
 card.number:
-type: string
-description: 'The the card account number used to authorize the transaction. '
-example: "4263970000005262"
-minLength: 1
-maxLength: 50
+  type: string
+  description: The the card account number used to authorize the transaction. Also known as PAN
+  example: '4263970000005262'
+  minLength: 1
+  maxLength: 50
 
 card.expiry_month:
-type: string
-description: '2 digit expiry date month. '
-example: "05"
-minLength: 2
-maxLength: 2
+  type: string
+  description: The 2 digit expiry date month of the card.
+  example: '05'
+  minLength: 2
+  maxLength: 2
 
 card.expiry_year:
-type: string
-description: 2 digit expiry date year.
-example: "25"
-minLength: 2
-maxLength: 2
+  type: string
+  description: 'The 2 digit expiry date year of the card.'
+  example: '25'
+  minLength: 2
+  maxLength: 2
 
 card.track:
-type: string
-description: Data taken from the card's magnetic stripe via swipe or via a contactless tap using a terminal device.
-example: ""
-minLength: 1
-maxLength: 500
-
-
+  type: string
+  description: Data from magnetic stripe of a card
+  example: ''
+  minLength: 1
+  maxLength: 500
+  
 card.tag:
-type: string
-description: The full card tag data for an EMV/chip card transaction.
-example: ""
-minLength: 1
-maxLength: 2000
+  type: string
+  description: The full card tag data for an EMV/chip card transaction.
+  example: ''
+  minLength: 1
+  maxLength: 2000
 
 card.chip_condition:
-type: string
-description: Indicates if a fallback mechanism was used to obtain the card
-information when EMV/chip did not work as expected.
-example: ""
-enum:
-- PREV_SUCCESS
-- PREV_FAILED
-minLength: 1
-maxLength: 50
+  type: string
+  description: Indicates if a fallback mechanism was used to obtain the card information when EMV/chip did not work as expected.
+  example: ''
+  enum:
+  - PREV_SUCCESS
+  - PREV_FAILED
+  minLength: 1
+  maxLength: 50
 
 card.pin_block:
-type: string
-description: Contains the pin block info, relating to the pin code the Payer
-entered.
-example: ""
-minLength: 1
-maxLength: 500
+  type: string
+  description: Contains the pin block info, relating to the pin code the Payer entered.
+  example: ''
+  minLength: 1
+  maxLength: 500
 
 
 card.cvv:
-type: string
-description: Card Verification Value numeric value printed on the physical
-card.
-example: "852"
-minLength: 0
-maxLength: 4
-
+  type: string
+  description: The numeric value printed on the physical card.
+  example: '852'
+  minLength: 0
+  maxLength: 4
 
 card.cvv_indicator:
-type: string
-description: Card Verification Value Indicator sent by the Merchant indicating
-the CVV availability.
-example: PRESENT
-minLength: 1
-maxLength: 50
-enum:
-- ILLEGIBLE
-- NOT_PRESENT
-- PRESENT
+  type: string
+  description: Card Verification Value Indicator sent by the Merchant indicating the CVV availability.
+  example: 'PRESENT'
+  minLength: 0
+  maxLength: 50
+  enum:
+  - ILLEGIBLE
+  - NOT_PRESENT
+  - PRESENT
 
 card.avs_address:
-type: string
-description: The AVS address data needed to verify the address that's associated
-with a card.
-example: Flat 123
-minLength: 1
-maxLength: 50
+  type: string
+  description: First line of the address associated with the card.
+  example: 'Apt 123'
+  minLength: 0
+  maxLength: 50
 
 card.avs_postal_code:
 type: string
-description: The AVS postal code data needed to verify the postcode of the
-address that's associated with a card.
-example: "50001"
-minLength: 1
+description: Postal code of the address associated with the card.
+example: 'TGX562'
+minLength: 0
 maxLength: 50
 
 card.funding:
-type: string
-description: Indicates whether the card payment method is a Debit or Credit
-card.
-minLength: 1
-maxLength: 50
-example: ""
-enum:
-- DEBIT
-- CREDIT
+  type: string
+  description: Indicates whether the card is a debit or credit card.
+  enum:
+  - DEBIT
+  - CREDIT
+  default: CREDIT
+  minLength: 0
+  maxLength: 50
 
 card.authcode:
-type: string
-description: Card Authorization code obtained via another means that forces
-the transaction to be captured and bypasses online authorization when
-creating the transaction.
-example: ""
-minLength: 1
-maxLength: 50
+  type: string
+  description: Code generated when the card is successfully authorized.
+  example: 'AA2421'
+  minLength: 0
+  maxLength: 50
 
 card.brand_reference:
-type: string
-description: The reference created by the schemes to uniquely identify the
-transaction on their system.
-example: ""
-minLength: 1
-maxLength: 50
+  type: string
+  description: The unique reference created by the brands/schemes to uniquely identify the transaction.
+  example: ''
+  minLength: 0
+  maxLength: 50
 
 
-masked_number_last4:
-type: string
-description: 'Masked card number with last 4 digits showing. minimum: 12
-maximum: 19'
+card.masked_number_last4:
+  type: string
+  description: 'Masked card number with last 4 digits showing.'
+  minLength: 12
+  maxLength: 50
+
 
 card.tag_response:
-type: string
-description: The card tag response data from the card issuer for a contactless
-or chip card transaction.
-minLength: 1
-maxLength: 50
+  type: string
+  description: The card EMV tag response data from the card issuer for a contactless or chip card transaction.
+  minLength: 0
+  maxLength: 50
 
 card.brand:
-type: string
-description: Indicates the card brand that issued the card.
-enum:
-- VISA
-- MASTERCARD
-- AMEX
-- DINERS
-- DISCOVER
-- JCB
-minLength: 1
-maxLength: 50
+  type: string
+  description: Indicates the card brand that issued the card.
+  enum:
+  - VISA
+  - MASTERCARD
+  - AMEX
+  - DINERS
+  - DISCOVER
+  - JCB
+  - CUP
+  minLength: 0
+  maxLength: 50
 
 
 card.brand_time_reference:
-type: string
-description: The time returned by the card brand.
-minLength: 1
-maxLength: 50
+  type: string
+  description: The time returned by the card brand indicating when the transaction was processed on their system.
+  minLength: 0
+  maxLength: 50
 
 card.cvv_result:
-type: string
-description: The result of the CVV check.
-minLength: 1
-maxLength: 50
-enum:
-- MATCHED
-- NOT_MATCHED
-- NOT_CHECKED
+  type: string
+  description: The result of the CVV check.
+  minLength: 0
+  maxLength: 50
+  enum:
+  - MATCHED
+  - NOT_MATCHED
+  - NOT_CHECKED
 
 card.avs_address_result:
-type: string
-description: The result of the AVS address check.
-minLength: 1
-maxLength: 50
-enum:
-- MATCHED
-- NOT_MATCHED
-- NOT_CHECKED
+  type: string
+  description: The result of the AVS address check.
+  minLength: 0
+  maxLength: 50
+  enum:
+  - MATCHED
+  - NOT_MATCHED
+  - NOT_CHECKED
 
 
 card.avs_postal_code_result:
-type: string
-description: The AVS postal code result indicating the result of the postal
-code check.
-minLength: 1
-maxLength: 50
-enum:
-- MATCHED
-- NOT_MATCHED
-- NOT_CHECKED
+  type: string
+  description: The result of the AVS postal code check.
+  minLength: 0
+  maxLength: 50
+  enum:
+  - MATCHED
+  - NOT_MATCHED
+  - NOT_CHECKED
 
 
 card.avs_action:
-type: string
-description: The recommended AVS action based on the AVS results.
-minLength: 1
-maxLength: 50
-enum:
-- PROMPT
-- DECLINE
-- ACCEPT
+  type: string
+  description: The recommended AVS action to be taken by the agent processing the card transaction.
+  minLength: 0
+  maxLength: 50
+  enum:
+  - PROMPT
+  - DECLINE
+  - ACCEPT
 
 
 digital_wallet.token:
-type: string
-description: A token that represents or is the payment method stored with
-the digital wallet.
-example: ""
-minLength: 1
-maxLength: 50
+  type: string
+  description: A token that represents, or is the payment method, stored with  the digital wallet.  
+  minLength: 1
+  maxLength: 50
 
 digital_wallet.token_format:
-type: string
-description: Indicates if the actual card number or a tokenized card number
-is being used to process the transaction.
-example: ""
-minLength: 1
-maxLength: 50
-enum:
-- CARD_NUMBER
-- CARD_TOKEN
+  type: string
+  description: Indicates if the actual card number or a token is being used to process the transaction.
+  example: ''
+  minLength: 1
+  maxLength: 50
+  enum:
+  - CARD_NUMBER
+  - CARD_TOKEN
 
 digital_wallet.cryptogram:
-type: string
-description: The authentication value use to verify the validity of the
-transaction.
-minLength: 1
-maxLength: 50
-example: ""
+  type: string
+  description: The authentication value use to verify the validity of the digit wallet transaction.
+  minLength: 1
+  maxLength: 50
+
 
 digital_wallet.provider:
-type: string
-description: This identifies who provides the digital wallet for the Payer.
-minLength: 1
-maxLength: 50
-example: ""
-enum:
-- APPLEPAY
-- PAY_BY_GOOGLE
+  type: string
+  description: Identifies who provides the digital wallet for the Payer.
+  minLength: 1
+  maxLength: 50
+  example: ""
+  enum:
+  - APPLEPAY
+  - PAY_BY_GOOGLE
 
 
 
 stored_credential.model:
-type: string
-description: The transaction processing model that requires the stored credentials.
-minLength: 1
-maxLength: 50
-example: ""
-enum:
-- UNSCHEDULED
-- RECURRING
-- SUBSCRIPTION
-- INSTALLMENT
+  type: string
+  description: Indicates the transaction processing model being executed when using stored credentials.
+  minLength: 1
+  maxLength: 50
+  example: ''
+  enum:
+  - UNSCHEDULED
+  - RECURRING
+  - SUBSCRIPTION
+  - INSTALLMENT
 
 stored_credential.reason:
-type: string
-description: The reason for using the stored credentials to create a transaction.
-example: ""
-minLength: 1
-maxLength: 50
-enum:
-- INCREMENTAL
-- RESUBMISSION
-- REAUTHORIZATION
-- DELAYED
-- NO_SHOW
-minLength: 1
-maxLength: 50
+  type: string
+  description: The reason stored credentials are being used to to create a transaction.
+  example: ''
+  enum:
+  - INCREMENTAL
+  - RESUBMISSION
+  - REAUTHORIZATION
+  - DELAYED
+  - NO_SHOW
+  minLength: 1
+  maxLength: 50
 
 stored_credential.sequence:
-type: string
-description: For repeat transaction processing models like, RECURRING, SUBSCRIPTION
-and INSTALLMENT, the position of this transaction in that repeat sequence.
-example: ""
-minLength: 1
-maxLength: 50
-enum:
-- FIRST
-- SUBSEQUENT
-- LAST
-description: Stored data information used to create a transaction.
-
-
-installment_req:
-type: object
-properties:
-program:
-type: string
-description: The installment payment plan program.
-example: ""
-enum:
-- SIP
-- mSIP
-- HSBC
-term:
-$ref: '#/components/schemas/term_req'
-description: Information to create a transaction that relates to an installment
-payment plan.
-term_req:
-type: object
-properties:
-id:
-type: string
-description: 'The unique reference to identify the payment plan term details.       '
-example: ""
-time_unit:
-type: string
-description: The unit of time that represents the frequency of the installment
-payment plan.
-example: ""
-enum:
-- DAY
-- MONTH
-- YEAR
-time_unit_number:
-type: string
-description: The total number of payments to be made over the course of
-the installment payment plan.
-example: ""
-description: information relating to the terms of the installment payment plan.
-installment_res:
-type: object
-properties:
-program:
-type: string
-description: The transaction processing model that requires the stored credentials.
-enum:
-- SIP
-- mSIP
-- HSBC
-term:
-$ref: '#/components/schemas/term_res'
-description: Information returned about an installment payment plan.
-term_res:
-type: object
-properties:
-id:
-type: string
-description: 'The unique reference to identify the payment plan term details.
-maximum: 50'
-time_unit:
-type: string
-description: The unit of time that represents the frequency of the installment
-payment plan.
-enum:
-- DAY
-- MONTH
-- YEAR
-time_unit_number:
-type: string
-description: 'The total number of payments to be made over the course of
-the installment payment plan.   '
-interest_rate:
-type: string
-description: The interest paid on the installment payment plan by the payer.
-first_amount:
-type: string
-description: The amount of the first transaction in the plan.
-subsequent_amount:
-type: string
-description: The amounts of the subsequent transactions in the plan.
-last_amount:
-type: string
-description: The amount of the final transaction in the plan.
-total_amount:
-type: string
-description: The total amount the payer pays over the course of the plan.
-description: Stored data information used to create a transaction.
+  type: string
+  description: Indiciates the order of this transaction in the sequence of a planned repeating transaction processing model.
+  example: ""
+  minLength: 1
+  maxLength: 50
+  enum:
+  - FIRST
+  - SUBSEQUENT
+  - LAST
 
 
 
 
-payment_method_secondary_apm_fields:
-type: object
-properties:
-provider:
-type: string
-description: A string used to identify the payment method being used with
-the transaction.
-example: PAYPAL
 
+
+
+
+installment.program:
+  type: string
+  description: The installment payment plan program.
+  enum:
+  - SIP
+  - mSIP
+  - HSBC
+
+installment.id:
+  type: string
+  description: The unique reference to identify the payment plan term details.
+
+installment.time_unit:
+  type: string
+  description: The unit of time that represents the frequency of the installment payment plan.
+  example: ''
+  enum:
+  - DAY
+  - MONTH
+  - YEAR
+
+installment.time_unit_number:
+  type: string
+  description: The total number of payments to be made over the course of the installment payment plan.
+
+installment.term:
+  description: Information returned about an installment payment plan.
+
+installment.interest_rate:
+  type: string
+  description: The interest paid on the installment payment plan by the payer.
+
+installment.first_amount:
+  type: string
+  description: The amount of the first transaction in the plan.
+
+installment.subsequent_amount:
+  type: string
+  description: The amounts of the subsequent transactions in the plan.
+
+installment.last_amount:
+  type: string
+  description: The amount of the final transaction in the plan.
+
+installment.total_amount:
+  type: string
+  description: The total amount the payer pays over the course of the plan.
+
+
+apm.provider:
+  type: string
+  description: A string used to identify the payment method being used with the transaction.
 enum:
 - PAYPAL
 - SOFORT
 - IDEAL
 - GIROPAY
 - '...'
-provider_payer_reference:
-type: string
-description: The payer reference from the payment method system.
-example: CUST_12345
 
-description: Data associated with an APM.
-confirm_res:
-type: object
-properties:
-payment_method:
-$ref: '#/components/schemas/apm_res_secondary'
-apm_res_secondary:
-type: object
-properties:
-apm:
-$ref: '#/components/schemas/apm_res_secondary_fields'
-apm_res_secondary_fields:
-type: object
-properties:
-provider:
-type: string
-description: A string used to identify the payment method being used with
-the transaction.
-example: PAYPAL
+apm.provider_payer_reference:
+  type: string
+  description: The payer reference from the payment method provider.
+  example: CUST_12345
 
-enum:
-- PAYPAL
-- SOFORT
-- IDEAL
-- GIROPAY
-- '...'
-provider_transaction_reference:
-type: string
-description: The reference the payment method provider created for the transaction.
-example: 49wnfs9w434234
-provider_time_created:
-type: string
-description: The time the payment method provider created the transaction
-at on their system.
-example: 49wnfs9w434234
-provider_payer_name:
-type: string
-description: A name of the payer from the payment method system.
-example: James Mason
+apm.description: Data associated with an APM.
 
-description: Data associated with the response of an APM transaction.
-bank:
-type: object
-properties:
-name:
-type: string
-description: The name of the bank.
-example: High Street Bank
-identifier_code:
-type: string
-description: The international identifier code for the bank.
-iban:
-type: string
-description: The international identifier of the bank account.
-code:
-type: string
-description: The local identifier of the bank.
-account_number:
-type: string
-description: The local identifier of the bank account.
-description: Data relating to a bank.
-bank_account_res:
-type: object
-
-                                          
-properties:
-masked_account_number_last4:
-type: string
-description: The last 4 characters of the local reference for a bank account
-number.
-bank:
-$ref: '#/components/schemas/bank_res'
-description: Data relating to a bank transfer directly to or from the Payer's
-bank account.
-bank_res:
-type: object
-properties:
-code:
-type: string
-description: The local identifier code for the bank.
-description: Data relating to a bank transfer.
-
-- '...'
-parent_resource_id:
-type: string
-description: An identifier generated by Global Payments to uniquely identify
-the parent resource of this resource.
-
-create_action_id:
-type: string
-description: An identifier generated by Global Payments to uniquely identify
-the action that created this resource.
-
-name:
-type: string
-description: The name of the owner of the payment method.
-
-funding:
-type: string
-description: Indicates whether the card payment method is a Debit or Credit
-card.
-enum:
-- DEBIT
-- CREDIT
-
-
-notifications:
-type: object
-properties:
-return_url:
-example: 'https://www.example.com/notifications/return'
-type: string
-description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
-status_url:
-example: 'https://www.example.com/notifications/status'
-type: string
-description: The merchant URL to notify the merchant of the latest status of the transaction.
-description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
-
-notification_post_res:
-type: object
-properties:
-id:
-type: string
-description: A unique identifier generated by Global Payments to identify
-the Transaction.
-example: "TRN_JOGrqvzOvbLy4V2n7cHsusYy8aainM"
-time_created:
-type: string
-description: Global Payments time indicating when the Transaction was first
-created. Value is in ISO-8601 format and in UTC.
-example: "2020-04-20T13:17:21.914Z"
-type:
-type: string
-description: Describes whether the transaction is a SALE, that moves funds
-from Payer to Merchant, or a REFUND where funds move from Merchant to
-Payer.
-example: SALE
-enum:
-- SALE
-- REFUND
-status:
-type: string
-description: Indicates the current state of the transaction.
-enum:
-- DECLINED
-- PREAUTHORIZED
-- CAPTURED
-- BATCHED
-- REVERSED
-example: CAPTURED
-channel:
-type: string
-description: Describes whether the transaction was processed in a face to
-face(CP) scenario or a Customer Not Present (CNP) scenario.
-example: CP
-enum:
-- CP
-- CNP
-minLength: 1
-maxLength: 50
-capture_mode:
-type: string
-description: Indicates whether the transaction is to be captured later or
-captured automatically.
-enum:
-- AUTO
-- LATER
-example: "AUTO"
-amount:
-type: string
-description: The amount the transaction can transfer from Payer to Merchant
-for a SALE or vice versa for a REFUND.
-example: "1999"
-currency:
-type: string
-description: The currency of the amount.
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY- '...'
-country:
-type: string
-description: Indictes whether the Merchant or the Payer initiated the creation
-of a Transaction. In ISO 3166-1(alpha-2 code) format.
-enum:
-- US
-- CA
-- UK
-- '...'
-example: "US"
-merchant_id:
-type: string
-description: A unique identifier generated by Global Payments to identify
-the Merchant.
-example: MER_cf4e1008-c921-4096-bec9-2372cb9476d8
-merchant_name:
-type: string
-description: A meaningful label generated by Global Payments to identify
-the Merchant.
-example: Sandbox_merchant_2
-account_id:
-type: string
-description: A unique identifier generated by Global Payments to identify
-the Merchant's transaction processing configuration.
-example: TRA_cf4e1008-c921-4096-bec9-2372cb9476d8
-account_name:
-type: string
-description: A meaningful label generated by Global Payments to identify
-the Merchant's configuration account.
-example: Transaction_Processing
-reference:
-type: string
-
-description: Merchant defined field to reference the Transaction.
-example: MY-TRANS-20190924123456
-batch_id:
-type: string
-description: Reference that uniquely identifies the batch the transaction
-is in. Only CAPTURED transactions have a valid batch_id.
-example: ""
-
-payment_method:
-$ref: '#/components/schemas/payment_method_not_res'
-action:
-$ref: '#/components/schemas/action_transaction'
-payment_method_not_res:
-type: object
-properties:
-
-result:
-type: string
-description: IIn payment_method] Result code from the payment method provider.
-message:
-type: string
-description: Result message from the payment method provider corresponding
-to the result code.
-entry_mode:
-type: string
-description: 'Indicates how the payment method information was obtained
-by the Merchant for this Transaction. '
-example: SWIPE
-default: SWIPE
-enum:
-- MOTO
-- ECOM
-- IN_APP
-- CHIP
-- SWIPE
-- MANUAL
-- CONTACTLESS_CHIP
-- CONTACTLESS_SWIPE
-apm:
-$ref: '#/components/schemas/apm_not_res'
-
-
-
-
-device:
-type: object
-properties:
-time:
-type: string
-description: The time from the device in ISO8601 format
-sequence_number:
-type: string
-description: The sequence number from the device used to align with processing
-platform.
-description: Data relating to a device used to facilitate the transaction.
-mandate:
-type: object
-properties:
-reference:
-type: string
-description: The reference to identify the mandate.
-example: REF-MAN-341DE
-default: 'REF-MAN-341DE        '
-description: Data of a mandate between a payment method provider and a payer.
-apm_req:
-type: object
-properties:
-provider:
-type: string
-description: A string used to identify the payment method being used with
-the transaction.
-example: ""
-enum:
-- PAYPAL
-- SOFORT
-- IDEAL
-- GIROPAY
-- '...'
-description: Data associated with an APM.
-apm_res:
-type: object
-properties:
-provider:
-type: string
-description: A string used to identify the payment method being used with
-the transaction.
-example: PAYPAL
-
-enum:
-- PAYPAL
-- SOFORT
-- IDEAL
-- GIROPAY
-- '...'
-redirect_url:
-type: string
-description: URL to redirect the payer from the merchant's system to the
-payment method's system.
-session_token:
-type: string
-description: 'A string generated by the payment method to represent the
-session created on the payment method''s platform to facilitate the creation
-of a transaction. '
-example: EC-0SR89134FA420913U
-fund_status:
-type: string
-description: 'A string generated by the payment method that represents to
-what degree the merchant is funded for the transaction. '
-example: RECEIVED
-enum:
-- NOT_EXPECTED
-- RECEIVED
-- WAITING
-- MISSING
-wait_notification:
-maximum: 1
-type: number
-description: 'This field indicates whether it''s appropriate to keep the
-payer waiting for an update at the time the transaction is being executed
-or to indicate to the payer that a update will be given later. '
-example: 0.0
-optional_redirect:
-maximum: 1
-type: number
-description: 'Indicates that a redirect to the payment method is not required.
-Some payment methods (for example, SEPA DirectDebit) provide the option
-to redirect the customer to a page to display additional information about
-the payment. '
-example: 1.0
-provider_transaction_reference:
-type: string
-description: The reference the payment method provider created for the transaction.
-example: 49wnfs9w434234
-provider_time_created:
-type: string
-description: The time the payment method provider created the transaction
-at on their system.
-example: 49wnfs9w434234
-provider_payer_name:
-type: string
-description: A name of the payer from the payment method system.
-example: James Mason
+apm.provider_transaction_reference:
+  type: string
+  description: The reference the payment method provider created for the transaction.
+  example: 49wnfs9w434234
   
-bank:
-$ref: '#/components/schemas/bank'
-mandate:
-$ref: '#/components/schemas/mandate'
-description: Data associated with the response of an APM transaction.
-apm_not_res:
-type: object
-properties:
-provider:
-type: string
-description: A string used to identify the payment method being used with
-the transaction.
-example: PAYPAL
-default: PAYPAL
-enum:
-- PAYPAL
-- SOFORT
-- IDEAL
-- GIROPAY
-- '...'
-wait_notification:
-maximum: 1
-type: number
-description: 'This field indicates whether it''s appropriate to keep the
-payer waiting for an update at the time the transaction is being executed
-or to indicate to the payer that a update will be given later. '
-example: 0.0
-fund_status:
-type: string
-description: 'A string generated by the payment method that represents to
-what degree the merchant is funded for the transaction. '
-example: RECEIVED
-enum:
-- NOT_EXPECTED
-- RECEIVED
-- WAITING
-- MISSING
-payment_description:
-type: string
-description: The reference the payment method provider created for the transaction.
-example: 49wnfs9w434234
-confirmed_accountholder:
-type: string
-description: A name of the payer from the payment method system.
-example: Jimmy Nail
-default: Jimmy Nail
-account_number:
-type: string
-description: The local identifier of the bank account.
-iban:
-type: string
-description: The international identifier of the bank account.
-bank_identifier_code:
-type: string
-description: The international identifier code for the bank.
+apm.provider_time_created:
+  type: string
+  description: The time the payment method provider created the transaction at on their system.
+  example: 49wnfs9w434234
+
+apm.provider_payer_name:
+  type: string
+  description: A name of the payer from the payment method system.
+  example: James Mason
+
+apm.name:
+  type: string
+  description: The name of the owner of the payment method.
+
+apm.mandate.reference:
+  type: string
+  description: The reference to identify the mandate.
+
+apm.redirect_url:
+  type: string
+  description: URL to redirect the payer from the merchant's system to the payment method's system.
+
+apm.session_token:
+  type: string
+  description: 'A string generated by the payment method to represent the session created on the payment method''s platform to facilitate the creation of a transaction.'
+  example: EC-0SR89134FA420913U
+
+apm.fund_status:
+  type: string
+  description: 'A string generated by the payment method that represents to what degree the merchant is funded for the transaction. '
+  example: RECEIVED
+  enum:
+  - NOT_EXPECTED
+  - RECEIVED
+  - WAITING
+  - MISSING
+
+
+apm.wait_notification:
+  minimum: 0
+  maximum: 1
+  type: number
+  description: Indicates to instruct the payer to wait for an update at the time the transaction is being executed or that an update will be given later.
+  example: 0
+  enum:
+    - 0
+    - 1
+
+apm.optional_redirect:
+  minimum: 0
+  maximum: 1
+  type: number
+  description: Indicates that a redirect to the payment method is not required. Some payment methods (for example, SEPA DirectDebit) provide the option to redirect the customer to a page to display additional information about the payment.
+  example: 0
+  enum:
+    - 0
+
+apm.payment_description:
+  type: string
+  description: The reference the payment method provider created for the transaction.
+  example: 49wnfs9w434234
+
+apm.confirmed_accountholder:
+  type: string
+  description: A name of the payer from the payment method system.
+  example: Jimmy Nail
+  default: Jimmy Nail
+
+  
+bank.name:
+  type: string
+  description: The name of the bank.
+  example: High Street Bank
+
+bank.identifier_code:
+  type: string
+  description: The international identifier code for the bank.
+
+bank.iban:
+  type: string
+  description: The international identifier of the bank account.
+
+bank.code:
+  type: string
+  description: The local identifier of the bank.
+
+bank.account_number:
+  type: string
+  description: The local identifier of the bank account.
+
+bank.masked_account_number_last4:
+  type: string
+  description: The last 4 characters of the local reference for a bank account number.
+
+
+actions.parent_resource_id:
+  type: string
+  description: An identifier generated by Global Payments to uniquely identify  the parent resource of this resource.
+
+actions.create_action_id:
+  type: string
+  description: An identifier generated by Global Payments to uniquely identify the action that created this resource.
+  
+  
+
+notifications.return_url:
+  example: 'https://www.example.com/notifications/return'
+  type: string
+  description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
+
+notifications.status_url:
+  example: 'https://www.example.com/notifications/status'
+  type: string
+  description: The merchant URL to notify the merchant of the latest status of the transaction.
+  
+
+payment_method.result:
+  type: string
+  description: Result code from the payment method provider.
+
+payment_method.message:
+  type: string
+  description: Result message from the payment method provider corresponding to the result code.
+
+device.time:
+  type: string
+  description: The time from the device in ISO8601 format
+
+device.sequence_number:
+  type: string
+  description: The sequence number from the device used to align with processing platform.
+
+device.description: Data relating to a device used to facilitate the transaction.
+
+
 
 bank_name:
-type: string
-description: The name of the bank.
-example: High Street Bank
+  type: string
+  description: The name of the bank.
+  example: High Street Bank
 
 bank_address:
-type: string
-description: The address of the bank.
-example: Bond St. America
+  type: string
+  description: The address of the bank.
+  example: Bond St. America
 
-optional_redirect:
-maximum: 1
-type: number
-description: 'Indicates that a redirect to the payment method is not required.
-Some payment methods (for example, SEPA DirectDebit) provide the option
-to redirect the customer to a page to display additional information about
-the payment. '
-example: 1.0
-description: Data associated with an APM.
-
-
-three_ds.enrolled_status
 
