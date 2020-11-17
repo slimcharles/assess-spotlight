@@ -561,10 +561,10 @@ components:
     X-GP-Version:
       description: Indicates the version of the GP-API for this message.
       type: string
-      minLength: 1
-      maxLength: 50      
+      default: '2020-04-10'  
       example: '2020-04-10'
-      default: '2020-04-10'
+      minLength: 1
+      maxLength: 50    
 
     X-GP-Idempotency:
       description: Integrator generated value submitted in the request header that is checked to ensure the same value has not been seen in the last 24 hours. It is used to ensure idempotency is maintained with this action.
