@@ -1,0 +1,379 @@
+openapi: 3.0.1
+
+info:
+  title: Actions  
+  description: Actions represent request and response messages sent to GP API.
+  contact:
+    name: 'API Integrations'
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: 'api.integrations@globalpay.com'
+  version: '2020 10 22'
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+tags:
+  - name: View GP API activity.
+    description: Get a list of actions using criteria passed in the query string. Page through the result set to access all records and view all available information relating to a single action.
+    
+paths:
+  /actions:
+    get:
+      operationId: getActionList
+      tags:
+      - Get a list of Deposit information
+      summary: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          example: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
+          minLength: 1
+          maxLength: 50
+      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+      
+      - name: id
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+
+      - name: type
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.type
+
+      - name: resource
+        in: query
+        example: 'TRANSACTIONS'
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource
+      
+      
+     
+      - name: resource_status
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_status
+      
+      - name: resource_id
+        in: query
+        description: The Id of a specific resource linked to the action.
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_id
+
+      - name: from_time_created
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+      
+      - name: to_time_created
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+
+      - name: merchant_name
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+
+      - name: account_name
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+
+      - name: app_name
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
+        
+      - name: version
+        in: query
+        schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+      
+      - name: response_code
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_code
+      
+      - name: http_code
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.http_response_code
+     
+
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-type:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+            X-GP-Version:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Encoding:
+               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actions_list'
+       
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
+  /actions/{id}:
+    get:
+      operationId: getActionSingle
+      tags:
+      - Get a Single Action
+      summary: Get the details of a single action using its unique id.
+      description: Get the details of a single action using its unique id.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          example: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
+          minLength: 1
+          maxLength: 50
+      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+
+      - name: id
+        in: path
+        required: true
+        schema:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+
+      responses:
+         '200':
+          description: OK
+          headers:
+            Content-type:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+            X-GP-Version:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Encoding:
+               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actions_list'
+       
+          '400':
+            $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+          '401':
+            $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+          '403':
+            $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+          '404':
+            description: Resource Not Found
+            content: {}
+          '500':
+            $ref: ./models/errors.yaml#/components/responses/ServerError_500
+          '501':
+            $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+          '502':
+            $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+          '504':
+            $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+          x-codegen-request-body-name: request
+
+                
+        
+components:
+  schemas:
+    actions_list:
+      type: object
+      properties:
+        total_record_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
+        current_page_size:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        filter:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
+        paging:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        actions:
+          type: array
+          description: A list of action records.
+          items:
+            $ref: '#/components/schemas/actions_list_single'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+     
+    actions_list_single:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.type
+        
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        resource:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource
+
+        resource_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_id
+          
+        resource_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_status
+          
+        
+             
+        
+        version:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          
+        
+        http_response_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.http_response_code
+        
+        response_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_code
+        
+        
+        
+        app_id:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
+        
+        app_name:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
+        
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name 
+
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name 
+        
+       
+       
+    actions_single:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.type
+        
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        resource:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource
+
+        resource_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_id
+          
+        resource_parent_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_parent_id
+          
+        
+        resource_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_status
+          
+        
+        resource_request_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.resource_request_url
+          
+        
+        version:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          
+        
+        http_response_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.http_response_code
+        
+        response_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_code
+        
+        response_detailed_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_detailed_code
+        
+        response_detailed_message:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_detailed_message
+        
+        app_id:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
+        
+        app_name:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
+        
+        email:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/email
+        
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name 
+
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name 
+        
+        source_location:
+            ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.source_location
+        
+        destination_location:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.destination_location
+        
+        message_received:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.message_received
+        message_sent:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.message_sent
+
+        metrics:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.metrics
+        
+        total_time_milliseconds:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.total_time_milliseconds
+        
+        total_time_downstream_milliseconds:
+          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.total_time_downstream_milliseconds
+
+
+
+
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+  
