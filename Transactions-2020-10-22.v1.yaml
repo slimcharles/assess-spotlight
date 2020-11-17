@@ -26,146 +26,59 @@ security:
 paths:
   /transactions:
     post:
+      operationId: createTransaction
+      
       tags:
-      - Create
-      summary: Create a Sale or Refund transaction that attempts to transfer funds
-        between the Payer and the Merchant using a specific Payment Method. The transaction
-        can be flagged for automatic capture or flagged as requiring a separate capture
-        action later.
-      description: Create a Sale or Refund transaction that attempts to transfer funds
-        between the Payer and the Merchant using a specific Payment Method. The transaction
-        can be flagged for automatic capture or flagged as requiring a separate capture
-        action later.
+        - Create a Sale or Refund Transaction.
+      summary: Create a Sale or Refund Transaction.
+      description: 'Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.'
+      
       parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
-      - name: X-GP-Version
-        in: header
-        description: Indicates the version of the GP-API for this message.
-        required: true
-        schema:
-          type: string
-          default: "2020-10-22"
-      - name: Accept
-        in: header
-        description: Expected format of the response message.
-        schema:
-          type: string
-          default: application/json
-      - name: Content-type
-        in: header
-        description: Format of the message.
-        required: true
-        schema:
-          type: string
-          default: application/json
-      - name: X-GP-Idempotency
-        in: header
-        description: Field submitted in the request that is used to ensure idempotency
-          is maintained with this action.
-        schema:
-          type: string
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/request'
-            examples:
-              Ecommerce Sale - Auto Capture:
-                $ref: '#/components/examples/ECOMReq'
-              Mail Order/Telephone Order Sale - Delayed Capture:
-                $ref: '#/components/examples/Moto_Capture_Later'
-              Ecommerce Refund:
-                $ref: '#/components/examples/ecom_refund'
-              Card Present Sale - Chip:
-                $ref: '#/components/examples/EMVReq'
-              Card Present Sale - Swipe:
-                $ref: '#/components/examples/Swipe'
-              Card Present Refund - Chip:
-                $ref: '#/components/examples/cardpresent_refund'
-              Sale with Tokenized Payment Method:
-                $ref: '#/components/examples/Authorization_With_Payment_Token'
-              Sale with Credential On File:
-                $ref: '#/components/examples/Stored_Credential'
-              Sale with Installment:
-                $ref: '#/components/examples/Installments'
-              Ecommerce - Alternative Payment Method:
-                $ref: '#/components/examples/apms'
+              $ref: '#/components/schemas/create_request'
         required: true
+      
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
             Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
             X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/create_res'
-        400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp400'
-        401:
-          description: Not Authenticated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp401'
-        403:
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp403'
-        404:
+                $ref: '#/components/schemas/create_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp500'
-        501:
-          description: Not implemented
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp501'
-        502:
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp502'
-        504:
-          description: Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp504'
-
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+     
+     
+     
       callbacks:
         APM Return:
           '{$request.body#/notifications.return_url}':
