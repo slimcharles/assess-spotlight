@@ -155,10 +155,7 @@ paths:
           maxLength: 50
       
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+      
       
       - name: id
         in: path

@@ -1431,16 +1431,12 @@ components:
       minimum: 1
       maximum: 100000
 
-
-
-
-
-
-
-
-
-
-
-
+    action.type:
+      type: string
+      description: The type of action executed.
+      example: 'PREAUTHORIZE'
+      enum:
+      - AUTHORIZE
+      - PREAUTHORIZE
 
 
