@@ -22,7 +22,9 @@ tags:
     description: Get information about a single amount Global Payments affected to merchant's bank account.
     externalDocs:
       url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'      
-      
+
+security:
+  - bearerAuth: []     
 
 paths:
   /settlement/deposits:

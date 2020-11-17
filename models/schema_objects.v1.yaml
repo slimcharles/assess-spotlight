@@ -121,6 +121,6 @@ components:
  
 ## Security Section
   securitySchemes:  ## Security Section
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer

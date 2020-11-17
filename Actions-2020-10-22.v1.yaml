@@ -16,7 +16,10 @@ servers:
 tags:
   - name: View GP API activity.
     description: Get a list of actions using criteria passed in the query string. Page through the result set to access all records and view all available information relating to a single action.
-    
+
+security:
+  - bearerAuth: [] 
+      
 paths:
   /actions:
     get:
