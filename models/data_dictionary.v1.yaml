@@ -581,914 +581,866 @@ components:
     xid:
       type: string
       description: The unique identifier for the 3D Secure details obtained for this transaction.
-      example: 'vJ9NXpFueXsAqeb4iAbJJbe+66s=''
+      example: 'vJ9NXpFueXsAqeb4iAbJJbe+66s='
       minLength: 0
       maxLength: 50
 
 ##################################
 
-"authentication": {
-        ""three_ds"": {
-            ""message_version"": """",
-            ""eci"": """",
-            ""value"": """",
-            ""server_trans_ref"": ""XID | server ref rejects"",
-            ""ds_trans_ref"": """"
-        }
-    }"
-
-
-mac:
-  type: string
-  description: A message authentication code submitted to confirm integrity
-  of the request.
-  minLength: 1
-  maxLength: 50
-authentication.cavv_result:
-  type: string
-  description: The card brand result for CAVV/authentication value validation.
-  enum:
-  - FAILED
-  - FAILED_AUTHENTICATION
-  - SUCCESS_AUTHENTICATION
-  - SUCCESS_ATTEMPT
-  - FAILED_ATTEMPT
-  - FAILED_NOT_VALIDATED INFO_SUCCESS
-  minLength: 1
-  maxLength: 50  
-
-
-
-encryption.method:
-  type: string
-  description: The encryption method used when sending encrypted card data
-  to Global Payments.
-  example: ""
-  enum:
-  - KTB
-  - KSN
-  minLength: 1
-  maxLength: 50
-
-encryption.version:
-  type: string
-  description: The version of encryption being used.
-  example: ""
-  minLength: 1
-  maxLength: 50
-
-encryption.info:
-  type: string
-  description: The encryption info used when sending encrypted card data to Global Payments.'
-  example: ''
-  minLength: 1
-  maxLength: 2000
-
-card.number:
-  type: string
-  description: The the card account number used to authorize the transaction. Also known as PAN
-  example: '4263970000005262'
-  minLength: 1
-  maxLength: 50
-
-card.expiry_month:
-  type: string
-  description: The 2 digit expiry date month of the card.
-  example: '05'
-  minLength: 2
-  maxLength: 2
-
-card.expiry_year:
-  type: string
-  description: 'The 2 digit expiry date year of the card.'
-  example: '25'
-  minLength: 2
-  maxLength: 2
-
-card.track:
-  type: string
-  description: Data from magnetic stripe of a card
-  example: ''
-  minLength: 1
-  maxLength: 500
-  
-card.tag:
-  type: string
-  description: The full card tag data for an EMV/chip card transaction.
-  example: ''
-  minLength: 1
-  maxLength: 2000
-
-card.chip_condition:
-  type: string
-  description: Indicates if a fallback mechanism was used to obtain the card information when EMV/chip did not work as expected.
-  example: ''
-  enum:
-  - PREV_SUCCESS
-  - PREV_FAILED
-  minLength: 1
-  maxLength: 50
-
-card.pin_block:
-  type: string
-  description: Contains the pin block info, relating to the pin code the Payer entered.
-  example: ''
-  minLength: 1
-  maxLength: 500
-
-
-card.cvv:
-  type: string
-  description: The numeric value printed on the physical card.
-  example: '852'
-  minLength: 0
-  maxLength: 4
-
-card.cvv_indicator:
-  type: string
-  description: Card Verification Value Indicator sent by the Merchant indicating the CVV availability.
-  example: 'PRESENT'
-  minLength: 0
-  maxLength: 50
-  enum:
-  - ILLEGIBLE
-  - NOT_PRESENT
-  - PRESENT
-
-card.avs_address:
-  type: string
-  description: First line of the address associated with the card.
-  example: 'Apt 123'
-  minLength: 0
-  maxLength: 50
-
-card.avs_postal_code:
-type: string
-description: Postal code of the address associated with the card.
-example: 'TGX562'
-minLength: 0
-maxLength: 50
-
-card.funding:
-  type: string
-  description: Indicates whether the card is a debit or credit card.
-  enum:
-  - DEBIT
-  - CREDIT
-  default: CREDIT
-  minLength: 0
-  maxLength: 50
-
-card.authcode:
-  type: string
-  description: Code generated when the card is successfully authorized.
-  example: 'AA2421'
-  minLength: 0
-  maxLength: 50
-
-card.brand_reference:
-  type: string
-  description: The unique reference created by the brands/schemes to uniquely identify the transaction.
-  example: ''
-  minLength: 0
-  maxLength: 50
-
-
-card.masked_number_last4:
-  type: string
-  description: 'Masked card number with last 4 digits showing.'
-  minLength: 12
-  maxLength: 50
-
-
-card.tag_response:
-  type: string
-  description: The card EMV tag response data from the card issuer for a contactless or chip card transaction.
-  minLength: 0
-  maxLength: 50
-
-card.brand:
-  type: string
-  description: Indicates the card brand that issued the card.
-  enum:
-  - VISA
-  - MASTERCARD
-  - AMEX
-  - DINERS
-  - DISCOVER
-  - JCB
-  - CUP
-  minLength: 0
-  maxLength: 50
-
-
-card.brand_time_reference:
-  type: string
-  description: The time returned by the card brand indicating when the transaction was processed on their system.
-  minLength: 0
-  maxLength: 50
-
-card.cvv_result:
-  type: string
-  description: The result of the CVV check.
-  minLength: 0
-  maxLength: 50
-  enum:
-  - MATCHED
-  - NOT_MATCHED
-  - NOT_CHECKED
-
-card.avs_address_result:
-  type: string
-  description: The result of the AVS address check.
-  minLength: 0
-  maxLength: 50
-  enum:
-  - MATCHED
-  - NOT_MATCHED
-  - NOT_CHECKED
-
-
-card.avs_postal_code_result:
-  type: string
-  description: The result of the AVS postal code check.
-  minLength: 0
-  maxLength: 50
-  enum:
-  - MATCHED
-  - NOT_MATCHED
-  - NOT_CHECKED
-
-
-card.avs_action:
-  type: string
-  description: The recommended AVS action to be taken by the agent processing the card transaction.
-  minLength: 0
-  maxLength: 50
-  enum:
-  - PROMPT
-  - DECLINE
-  - ACCEPT
-
-
-digital_wallet.token:
-  type: string
-  description: A token that represents, or is the payment method, stored with  the digital wallet.  
-  minLength: 1
-  maxLength: 50
-
-digital_wallet.token_format:
-  type: string
-  description: Indicates if the actual card number or a token is being used to process the transaction.
-  example: ''
-  minLength: 1
-  maxLength: 50
-  enum:
-  - CARD_NUMBER
-  - CARD_TOKEN
-
-digital_wallet.cryptogram:
-  type: string
-  description: The authentication value use to verify the validity of the digit wallet transaction.
-  minLength: 1
-  maxLength: 50
-
-
-digital_wallet.provider:
-  type: string
-  description: Identifies who provides the digital wallet for the Payer.
-  minLength: 1
-  maxLength: 50
-  example: ""
-  enum:
-  - APPLEPAY
-  - PAY_BY_GOOGLE
-
-
-
-stored_credential.model:
-  type: string
-  description: Indicates the transaction processing model being executed when using stored credentials.
-  minLength: 1
-  maxLength: 50
-  example: ''
-  enum:
-  - UNSCHEDULED
-  - RECURRING
-  - SUBSCRIPTION
-  - INSTALLMENT
-
-stored_credential.reason:
-  type: string
-  description: The reason stored credentials are being used to to create a transaction.
-  example: ''
-  enum:
-  - INCREMENTAL
-  - RESUBMISSION
-  - REAUTHORIZATION
-  - DELAYED
-  - NO_SHOW
-  minLength: 1
-  maxLength: 50
-
-stored_credential.sequence:
-  type: string
-  description: Indiciates the order of this transaction in the sequence of a planned repeating transaction processing model.
-  example: ""
-  minLength: 1
-  maxLength: 50
-  enum:
-  - FIRST
-  - SUBSEQUENT
-  - LAST
-
-installment.program:
-  type: string
-  description: The installment payment plan program.
-  enum:
-  - SIP
-  - mSIP
-  - HSBC
-
-installment.id:
-  type: string
-  description: The unique reference to identify the payment plan term details.
-
-installment.time_unit:
-  type: string
-  description: The unit of time that represents the frequency of the installment payment plan.
-  example: ''
-  enum:
-  - DAY
-  - MONTH
-  - YEAR
-
-installment.time_unit_number:
-  type: string
-  description: The total number of payments to be made over the course of the installment payment plan.
-
-installment.term:
-  description: Information returned about an installment payment plan.
-
-installment.interest_rate:
-  type: string
-  description: The interest paid on the installment payment plan by the payer.
-
-installment.first_amount:
-  type: string
-  description: The amount of the first transaction in the plan.
-
-installment.subsequent_amount:
-  type: string
-  description: The amounts of the subsequent transactions in the plan.
-
-installment.last_amount:
-  type: string
-  description: The amount of the final transaction in the plan.
-
-installment.total_amount:
-  type: string
-  description: The total amount the payer pays over the course of the plan.
-
-
-apm.provider:
-  type: string
-  description: A string used to identify the payment method being used with the transaction.
-enum:
-- PAYPAL
-- SOFORT
-- IDEAL
-- GIROPAY
-- '...'
-
-apm.provider_payer_reference:
-  type: string
-  description: The payer reference from the payment method provider.
-  example: CUST_12345
-
-apm.description: Data associated with an APM.
-
-apm.provider_transaction_reference:
-  type: string
-  description: The reference the payment method provider created for the transaction.
-  example: 49wnfs9w434234
-  
-apm.provider_time_created:
-  type: string
-  description: The time the payment method provider created the transaction at on their system.
-  example: 49wnfs9w434234
-
-apm.provider_payer_name:
-  type: string
-  description: A name of the payer from the payment method system.
-  example: James Mason
-
-apm.name:
-  type: string
-  description: The name of the owner of the payment method.
-
-apm.mandate.reference:
-  type: string
-  description: The reference to identify the mandate.
-
-apm.redirect_url:
-  type: string
-  description: URL to redirect the payer from the merchant's system to the payment method's system.
-
-apm.session_token:
-  type: string
-  description: 'A string generated by the payment method to represent the session created on the payment method''s platform to facilitate the creation of a transaction.'
-  example: EC-0SR89134FA420913U
-
-apm.fund_status:
-  type: string
-  description: 'A string generated by the payment method that represents to what degree the merchant is funded for the transaction. '
-  example: RECEIVED
-  enum:
-  - NOT_EXPECTED
-  - RECEIVED
-  - WAITING
-  - MISSING
-
-
-apm.wait_notification:
-  minimum: 0
-  maximum: 1
-  type: number
-  description: Indicates to instruct the payer to wait for an update at the time the transaction is being executed or that an update will be given later.
-  example: 0
-  enum:
-    - 0
-    - 1
-
-apm.optional_redirect:
-  minimum: 0
-  maximum: 1
-  type: number
-  description: Indicates that a redirect to the payment method is not required. Some payment methods (for example, SEPA DirectDebit) provide the option to redirect the customer to a page to display additional information about the payment.
-  example: 0
-  enum:
-    - 0
-
-apm.payment_description:
-  type: string
-  description: The reference the payment method provider created for the transaction.
-  example: 49wnfs9w434234
-
-apm.confirmed_accountholder:
-  type: string
-  description: A name of the payer from the payment method system.
-  example: Jimmy Nail
-  default: Jimmy Nail
-
-  
-bank.name:
-  type: string
-  description: The name of the bank.
-  example: High Street Bank
-
-bank.identifier_code:
-  type: string
-  description: The international identifier code for the bank.
-
-bank.iban:
-  type: string
-  description: The international identifier of the bank account.
-
-bank.code:
-  type: string
-  description: The local identifier of the bank.
-
-bank.account_number:
-  type: string
-  description: The local identifier of the bank account.
-
-bank.masked_account_number_last4:
-  type: string
-  description: The last 4 characters of the local reference for a bank account number.
-
-
-actions.parent_resource_id:
-  type: string
-  description: An identifier generated by Global Payments to uniquely identify  the parent resource of this resource.
-
-actions.create_action_id:
-  type: string
-  description: An identifier generated by Global Payments to uniquely identify the action that created this resource.
-  
+    mac:
+      type: string
+      description: A message authentication code submitted to confirm integrity of the request.
+      minLength: 1
+      maxLength: 50
+
+    authentication.cavv_result:
+      type: string
+      description: The card brand result for CAVV/authentication value validation.
+      enum:
+      - FAILED
+      - FAILED_AUTHENTICATION
+      - SUCCESS_AUTHENTICATION
+      - SUCCESS_ATTEMPT
+      - FAILED_ATTEMPT
+      - FAILED_NOT_VALIDATED INFO_SUCCESS
+      minLength: 1
+      maxLength: 50  
+
+
+
+    encryption.method:
+      type: string
+      description: The encryption method used when sending encrypted card data to Global Payments.
+      enum:
+      - KTB
+      - KSN
+      minLength: 1
+      maxLength: 50
+
+    encryption.version:
+      type: string
+      description: The version of encryption being used.
+      minLength: 1
+      maxLength: 50
+
+
+    card.expiry_year:
+      type: string
+      description: The 2 digit expiry date year of the card.
+      minLength: 2
+      maxLength: 2
+
+    encryption.info:
+      type: string
+      description: The encryption info used when sending encrypted card data to Global Payments.
+      minLength: 1
+      maxLength: 2000
+
+    card.number:
+      type: string
+      description: The the card account number used to authorize the transaction. Also known as PAN.
+      example: '4263970000005262'
+      minLength: 1
+      maxLength: 50
+
+    card.expiry_month:
+      type: string
+      description: The 2 digit expiry date month of the card.
+      example: '05'
+      minLength: 2
+      maxLength: 2
+
+    card.track:
+      type: string
+      description: Data from magnetic stripe of a card
+      minLength: 1
+      maxLength: 500
+      
+    card.tag:
+      type: string
+      description: The full card tag data for an EMV/chip card transaction.
+      minLength: 1
+      maxLength: 2000
+
+    card.chip_condition:
+      type: string
+      description: Indicates if a fallback mechanism was used to obtain the card information when EMV/chip did not work as expected.
+      enum:
+      - PREV_SUCCESS
+      - PREV_FAILED
+      minLength: 1
+      maxLength: 50
+
+    card.pin_block:
+      type: string
+      description: Contains the pin block info, relating to the pin code the Payer entered.
+      minLength: 1
+      maxLength: 500
+
+
+    card.cvv:
+      type: string
+      description: The numeric value printed on the physical card.
+      example: '852'
+      minLength: 0
+      maxLength: 4
+
+    card.cvv_indicator:
+      type: string
+      description: Card Verification Value Indicator sent by the Merchant indicating the CVV availability.
+      example: PRESENT
+      minLength: 0
+      maxLength: 50
+      enum:
+      - ILLEGIBLE
+      - NOT_PRESENT
+      - PRESENT
+
+    card.avs_address:
+      type: string
+      description: First line of the address associated with the card.
+      example: Apt 123
+      minLength: 0
+      maxLength: 50
+
+    card.avs_postal_code:
+      type: string
+      description: Postal code of the address associated with the card.
+      example: TGX562
+      minLength: 0
+      maxLength: 50
+
+    card.funding:
+      type: string
+      description: Indicates whether the card is a debit or credit card.
+      enum:
+      - DEBIT
+      - CREDIT
+      default: CREDIT
+      minLength: 0
+      maxLength: 50
+
+    card.authcode:
+      type: string
+      description: Code generated when the card is successfully authorized.
+      example: AA2421
+      minLength: 0
+      maxLength: 50
+
+    card.brand_reference:
+      type: string
+      description: The unique reference created by the brands/schemes to uniquely identify the transaction.
+      minLength: 0
+      maxLength: 50
+
+
+    card.masked_number_last4:
+      type: string
+      description: 'Masked card number with last 4 digits showing.'
+      minLength: 12
+      maxLength: 50
+
+
+    card.tag_response:
+      type: string
+      description: The card EMV tag response data from the card issuer for a contactless or chip card transaction.
+      minLength: 0
+      maxLength: 50
+
+    card.brand:
+      type: string
+      description: Indicates the card brand that issued the card.
+      enum:
+      - VISA
+      - MASTERCARD
+      - AMEX
+      - DINERS
+      - DISCOVER
+      - JCB
+      - CUP
+      minLength: 0
+      maxLength: 50
+
+
+    card.brand_time_reference:
+      type: string
+      description: The time returned by the card brand indicating when the transaction was processed on their system.
+      minLength: 0
+      maxLength: 50
+
+    card.cvv_result:
+      type: string
+      description: The result of the CVV check.
+      minLength: 0
+      maxLength: 50
+      enum:
+      - MATCHED
+      - NOT_MATCHED
+      - NOT_CHECKED
+
+    card.avs_address_result:
+      type: string
+      description: The result of the AVS address check.
+      minLength: 0
+      maxLength: 50
+      enum:
+      - MATCHED
+      - NOT_MATCHED
+      - NOT_CHECKED
+
+
+    card.avs_postal_code_result:
+      type: string
+      description: The result of the AVS postal code check.
+      minLength: 0
+      maxLength: 50
+      enum:
+      - MATCHED
+      - NOT_MATCHED
+      - NOT_CHECKED
+
+
+    card.avs_action:
+      type: string
+      description: The recommended AVS action to be taken by the agent processing the card transaction.
+      minLength: 0
+      maxLength: 50
+      enum:
+      - PROMPT
+      - DECLINE
+      - ACCEPT
+
+
+    digital_wallet.token:
+      type: string
+      description: A token that represents, or is the payment method, stored with  the digital wallet.  
+      minLength: 1
+      maxLength: 50
+
+    digital_wallet.token_format:
+      type: string
+      description: Indicates if the actual card number or a token is being used to process the transaction.
+      minLength: 1
+      maxLength: 50
+      enum:
+      - CARD_NUMBER
+      - CARD_TOKEN
+
+    digital_wallet.cryptogram:
+      type: string
+      description: The authentication value use to verify the validity of the digit wallet transaction.
+      minLength: 1
+      maxLength: 50
+
+
+    digital_wallet.provider:
+      type: string
+      description: Identifies who provides the digital wallet for the Payer.
+      minLength: 1
+      maxLength: 50
+      example: ""
+      enum:
+      - APPLEPAY
+      - PAY_BY_GOOGLE
+
+
+
+    stored_credential.model:
+      type: string
+      description: Indicates the transaction processing model being executed when using stored credentials.
+      minLength: 1
+      maxLength: 50
+      enum:
+      - UNSCHEDULED
+      - RECURRING
+      - SUBSCRIPTION
+      - INSTALLMENT
+
+    stored_credential.reason:
+      type: string
+      description: The reason stored credentials are being used to to create a transaction.
+      enum:
+      - INCREMENTAL
+      - RESUBMISSION
+      - REAUTHORIZATION
+      - DELAYED
+      - NO_SHOW
+      minLength: 1
+      maxLength: 50
+
+    stored_credential.sequence:
+      type: string
+      description: Indiciates the order of this transaction in the sequence of a planned repeating transaction processing model.
+      example: ""
+      minLength: 1
+      maxLength: 50
+      enum:
+      - FIRST
+      - SUBSEQUENT
+      - LAST
+
+    installment.program:
+      type: string
+      description: The installment payment plan program.
+      enum:
+      - SIP
+      - mSIP
+      - HSBC
+
+    installment.id:
+      type: string
+      description: The unique reference to identify the payment plan term details.
+
+    installment.time_unit:
+      type: string
+      description: The unit of time that represents the frequency of the installment payment plan.
+      enum:
+      - DAY
+      - MONTH
+      - YEAR
+
+    installment.time_unit_number:
+      type: string
+      description: The total number of payments to be made over the course of the installment payment plan.
+
+    installment.term:
+      description: Information returned about an installment payment plan.
+
+    installment.interest_rate:
+      type: string
+      description: The interest paid on the installment payment plan by the payer.
+
+    installment.first_amount:
+      type: string
+      description: The amount of the first transaction in the plan.
+
+    installment.subsequent_amount:
+      type: string
+      description: The amounts of the subsequent transactions in the plan.
+
+    installment.last_amount:
+      type: string
+      description: The amount of the final transaction in the plan.
+
+    installment.total_amount:
+      type: string
+      description: The total amount the payer pays over the course of the plan.
+
+
+    apm.provider:
+      type: string
+      description: A string used to identify the payment method being used with the transaction.
+      enum:
+      - PAYPAL
+      - SOFORT
+      - IDEAL
+      - GIROPAY
   
 
-notifications.return_url:
-  example: 'https://www.example.com/notifications/return'
-  type: string
-  description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
+    apm.provider_payer_reference:
+      type: string
+      description: The payer reference from the payment method provider.
+      example: CUST_12345
 
-notifications.status_url:
-  example: 'https://www.example.com/notifications/status'
-  type: string
-  description: The merchant URL to notify the merchant of the latest status of the transaction.
-  
+    apm.description: 
+      description: Data associated with an APM.
+      type: string
 
-payment_method.result:
-  type: string
-  description: Result code from the payment method provider.
+    apm.provider_transaction_reference:
+      type: string
+      description: The reference the payment method provider created for the transaction.
+      example: 49wnfs9w434234
+      
+    apm.provider_time_created:
+      type: string
+      description: The time the payment method provider created the transaction at on their system.
+      example: 49wnfs9w434234
 
-payment_method.message:
-  type: string
-  description: Result message from the payment method provider corresponding to the result code.
+    apm.provider_payer_name:
+      type: string
+      description: A name of the payer from the payment method system.
+      example: James Mason
 
-device.time:
-  type: string
-  description: The time from the device in ISO8601 format
+    apm.name:
+      type: string
+      description: The name of the owner of the payment method.
 
-device.sequence_number:
-  type: string
-  description: The sequence number from the device used to align with processing platform.
+    apm.mandate.reference:
+      type: string
+      description: The reference to identify the mandate.
 
-device.description: Data relating to a device used to facilitate the transaction.
+    apm.redirect_url:
+      type: string
+      description: URL to redirect the payer from the merchant's system to the payment method's system.
 
-bank_name:
-  type: string
-  description: The name of the bank.
-  example: High Street Bank
+    apm.session_token:
+      type: string
+      description: A string generated by the payment method to represent the session created on the payment method's platform to facilitate the creation of a transaction.
+      example: EC-0SR89134FA420913U
 
-bank_address:
-  type: string
-  description: The address of the bank.
-  example: Bond St. America
-dispute.id:
-type: string
-description: Unique identifier for the Dispute on the Global Payments system.
-example: DIS_lskdnfosdfjsdfsdf23dasd
+    apm.fund_status:
+      type: string
+      description: 'A string generated by the payment method that represents to what degree the merchant is funded for the transaction. '
+      example: RECEIVED
+      enum:
+      - NOT_EXPECTED
+      - RECEIVED
+      - WAITING
+      - MISSING
 
 
-dispute.status:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: WITH_MERCHANT
-enum:
-- UNDER_REVIEW
-- WITH_MERCHANT
-- CLOSED
-dispute.status_time_created:
-type: string
-description: Time the current Dispute status was created.
-example: 2020-02-22T10:24:43.999Z
+    apm.wait_notification:
+      minimum: 0
+      maximum: 1
+      type: number
+      description: Indicates to instruct the payer to wait for an update at the time the transaction is being executed or that an update will be given later.
+      example: 0
+      enum:
+        - 0
+        - 1
 
-dispute.stage:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: SECOND_CHARGEBACK
-enum:
-- RETRIEVAL
-- CHARGEBACK
-- REVERSAL
-- SECOND_CHARGEBACK
-- PRE_ARBITRATION
-- ARBITRATION
-- PRE_COMPLIANCE
-- COMPLIANCE
-- GOODFAITH
-dispute.stage_time_created:
-type: string
-description: Time the current Dispute stage was created.
-example: 2020-02-22T10:24:43.999Z
-dispute.amount:
-type: string
-description: The amount the merchant is currently liable for the dispute.
-example: "1999"
-currency:
-type: string
-description: The currency of the amount. This is in the currency the merchant
-is affected in.
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY ...
-dispute.payer_amount:
-type: string
-description: The amount the Payer is challenging for in Payer's currency.
-example: "1999"
-dispute.payer_currency:
-type: string
-description: The currency of the Payer.
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY
-- etc.
-dispute.merchant_amount:
-type: string
-description: The amount the Payer is challenging for in the merchant's currency.
-example: "1999"
-dispute.merchant_currency:
-type: string
-description: The currency of the merchant.
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY
-- etc.
-dispute.reason_code:
-type: string
-description: A code indicating the reason for the dispute.
-example: NON_DELIVERY
-enum:
-- FRAUD
-- NON_DELIVERY
-- GOODS_BROKEN...
-dispute.reason_description:
-type: string
-description: 'Text further explaining the reason for the dispute. '
-example: Payer never got the goods
-dispute.time_to_respond_by:
-type: string
-description: Time the Merchant has to respond to the Dispute.
-example: 2020-02-22T10:24:43.761Z
-dispute.result:
-type: string
-description: 'Indicates the result of the Dispute. '
-enum:
-- PENDING
-- FULFILLED
-- WON
-- LOST
-- ACCEPTED
-dispute.investigator_comment:
-type: string
-description: Last comment submitted for this Dispute.
-example: Accept the dispute.
-dispute.last_adjustment_amount:
-type: string
-description: The total amount the Merchant has been financially impacted
-by this Dispute.
-example: "1999"
-dispute.last_adjustment_currency:
-type: string
-description: 'The currency of the financial impact amount. '
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY
-- etc.
-dispute.last_adjustment_funding:
-type: string
-description: 'Indicates if the last financial adjustment is a Debit or Credit
-to Merchant''s bank account. '
-example: DEBIT
-enum:
-- DEBIT
-- CREDIT
-dispute.last_adjustment_time_created:
-type: string
-description: Time the last adjustment was created.
-example: 2020-02-22T10:24:43.761Z
-dispute.net_financial_amount:
-type: string
-description: The total amount the Merchant has been financially impacted
-by this Dispute.
-example: "1999"
-dispute.net_financial_currency:
-type: string
-description: 'The currency of the financial impact amount. '
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY
-- etc.
-dispute.net_financial_funding:
-type: string
-description: Indicates if the total amount impacted is a Debit or Credit
-to Merchant's bank account.
-example: DEBIT
-enum:
-- DEBIT
-- CREDIT
-- NONE
+    apm.optional_redirect:
+      minimum: 0
+      maximum: 1
+      type: number
+      description: Indicates that a redirect to the payment method is not required. Some payment methods (for example, SEPA DirectDebit) provide the option to redirect the customer to a page to display additional information about the payment.
+      example: 0
+      enum:
+        - 0
 
-dispute.payment_method_provider.comment:
-type: string
-description: A comment in relation to the dispute from the payment
-method provider.
-example: Payer never got the goods
-dispute.payment_method_provider.reference:
-type: string
-description: The payment method provider's reference for the dispute.
-example: CASE_NO_23423863
-dispute.reference:
-type: string
-description: Merchant defined field to reference the Transaction.
-example: MY-TRANS-20190924123456
-dispute.remarks:
-type: string
-description: Merchant field to document remarks about the original Transaction.
-example: MY-TRANS-REMARKS
-dipsute.status:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: WITH_MERCHANT
-enum:
-- UNDER_REVIEW
-- WITH_MERCHANT
-- CLOSED
+    apm.payment_description:
+      type: string
+      description: The reference the payment method provider created for the transaction.
+      example: 49wnfs9w434234
 
-dispute.stage:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: SECOND_CHARGEBACK
-enum:
-- RETRIEVAL
-- CHARGEBACK
-- REVERSAL
-- SECOND_CHARGEBACK
-- PRE_ARBITRATION
-- ARBITRATION
-- PRE_COMPLIANCE
-- COMPLIANCE
-- GOODFAITH
-dipsute.result:
-type: string
-description: Indicates the result of the Dispute.
-enum:
-- PENDING
-- FULFILLED
-- WON
-- LOST
-- ACCEPTED
+    apm.confirmed_accountholder:
+      type: string
+      description: A name of the payer from the payment method system.
+      example: Jimmy Nail
+      default: Jimmy Nail
 
-dispute.id:
-type: string
-description: Uniquely identifier for the Dispute on the Global Payments
-system
-example: DIS_lskdnfosdfjsdfsdf23dasd
-dispute.status:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: WITH_MERCHANT
-enum:
-- UNDER_REVIEW
-- WITH_MERCHANT
-- CLOSED
-dispute.stage:
-type: string
-description: 'Describes where the Dispute is in its'' lifecycle. '
-example: SECOND_CHARGEBACK
-enum:
-- RETRIEVAL
-- CHARGEBACK
-- REVERSAL
-- SECOND_CHARGEBACK
-- PRE_ARBITRATION
-- ARBITRATION
-- PRE_COMPLIANCE
-- COMPLIANCE
-- GOODFAITH
-dispute.stage_time_created:
-type: string
-description: Time the Dispute moved to the current stage.
-example: 2020-02-22T10:24:43.999Z
-dispute.amount:
-type: string
-description: The amount the merchant is currently liable for the dispute.
-example: "1999"
-dispute.stage:
-type: string
-description: Describes where the Dispute is in its' lifecycle.
-example: SECOND_CHARGEBACK
-enum:
-- RETRIEVAL
-- CHARGEBACK
-- REVERSAL
-- SECOND_CHARGEBACK
-- PRE_ARBITRATION
-- ARBITRATION
-- PRE_COMPLIANCE
-- COMPLIANCE
-- GOODFAITH
-dipsute.stage_time_created:
-type: string
-description: Time the Dispute moved to the current stage.
-example: 2020-02-22T10:24:43.999Z
+      
+    bank.name:
+      type: string
+      description: The name of the bank.
+      example: High Street Bank
 
-deposit.funding_type:
-type: string
-description: Indicates if the Deposit was a Debit or Credit to the Merchants
-bank account.
-example: CREDIT
-enum:
-- DEBIT
-- CREDIT
+    bank.identifier_code:
+      type: string
+      description: The international identifier code for the bank.
 
-dispute.reason_code:
-type: string
-description: A code indicating the reason for the dispute.
-example: NON_DELIVERY
-enum:
-- FRAUD
-- NON_DELIVERY
-- GOODS_BROKEN etc.
+    bank.iban:
+      type: string
+      description: The international identifier of the bank account.
 
-dispute.reason_description:
-type: string
-description: Text further explaining the reason for the dispute.
-example: Payer never got the goods
+    bank.masked_account_number_last4:
+      type: string
+      description: The last 4 characters of the local reference for a bank account number.
 
-dispute.time_to_respond_by:
-type: string
-description: Time the Merchant has to respond to the Dispute.
-example: 2020-02-22T10:24:43.761Z
 
-dispute.result:
-type: string
-description: Indicates the result of the Dispute.
-enum:
-- PENDING
-- WON
-- LOST
-- ACCEPTED
+    actions.parent_resource_id:
+      type: string
+      description: An identifier generated by Global Payments to uniquely identify  the parent resource of this resource.
 
-dispute.last_adjustment_amount:
-type: string
-description: The total amount the Merchant has been financially impacted
-by this Dispute.
-example: "1999"
+    actions.create_action_id:
+      type: string
+      description: An identifier generated by Global Payments to uniquely identify the action that created this resource.
+      
+      
 
-dispute.last_adjustment_currency:
-type: string
-description: 'The currency of the financial impact amount. '
-example: USD
-enum:
-- USD
-- CAD
-- SBD
-- EUR
-- JPY
-- etc.
+    notifications.return_url:
+      example: 'https://www.example.com/notifications/return'
+      type: string
+      description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
 
-dispute.last_adjustment_funding:
-type: string
-description: Indicates if the total amount impacted is a Debit or Credit
-to Merchant's bank account.
-example: DEBIT
-enum:
-- DEBIT
-- CREDIT
-- NONE
+    notifications.status_url:
+      example: 'https://www.example.com/notifications/status'
+      type: string
+      description: The merchant URL to notify the merchant of the latest status of the transaction.
+      
 
-last_adjustment_time_created:
-type: string
-description: Time the last adjustment was created.
-example: 2020-02-22T10:24:43.761Z
+    payment_method.result:
+      type: string
+      description: Result code from the payment method provider.
 
-time_created:
-type: string
-description: Global Payments time indicating when the Transaction was
-first created. Value is in ISO-8601 format and in UTC.
-merchant_time_created:
-type: string
-description: The time the merchant set when the transaction was processed
-when the Transaction was first created.
+    payment_method.message:
+      type: string
+      description: Result message from the payment method provider corresponding to the result code.
+
+    device.time:
+      type: string
+      description: The time from the device in ISO8601 format
+
+    device.sequence_number:
+      type: string
+      description: The sequence number from the device used to align with processing platform.
+
+    device.description:
+      type: string
+      description: Data relating to a device used to facilitate the transaction.
+
+    bank_name:
+      type: string
+      description: The name of the bank.
+      example: High Street Bank
+
+    bank_address:
+      type: string
+      description: The address of the bank.
+      example: Bond St. America
+
+    dispute.id:
+      type: string
+      description: Unique identifier for the Dispute on the Global Payments system.
+      example: 'DIS_lskdnfosdfjsdfsdf23dasd'
+      minLength: 1
+      maxLength: 50
+
+    dispute.status:
+      type: string
+      description: Indicated where the dispute is in the lifecycle.
+      example: WITH_MERCHANT
+      enum:
+      - UNDER_REVIEW
+      - WITH_MERCHANT
+      - CLOSED
+      minLength: 1
+      maxLength: 50
+
+
+    dispute.status_time_created:
+      type: string
+      format: date-time
+      description: Time the current Dispute status was created.
+      example: 2020-02-22T10:24:43.999Z
+
+    dispute.stage:
+      type: string
+      description: Describes where the Dispute is in its' lifecycle.
+      example: SECOND_CHARGEBACK
+      enum:
+      - RETRIEVAL
+      - CHARGEBACK
+      - REVERSAL
+      - SECOND_CHARGEBACK
+      - PRE_ARBITRATION
+      - ARBITRATION
+      - PRE_COMPLIANCE
+      - COMPLIANCE
+      - GOODFAITH
+      minLength: 1
+      maxLength: 50
+
+
+    dispute.stage_time_created:
+      type: string
+      format: date-time
+      description: Time the current Dispute stage was created.
+      example: 2020-02-22T10:24:43.999Z
+
+    dispute.amount:
+      type: string
+      description: The current amount the merchant is liable for the dispute.
+      example: '1999'
+
+    dispute.payer_amount:
+      type: string
+      description: The amount the payer is disputing in the payer's currency.
+      example: '1999'
+
+    dispute.payer_currency:
+      type: string
+
+    dispute.merchant_amount:
+      type: string
+      description: The amount the payer is disputing in the merchant's currency.
+      example: "1999"
+      
+    dispute.merchant_currency:
+      type: string
+
+
+    dispute.reason_code:
+      type: string
+      description: A code indicating the reason for the dispute.
+      example: NON_DELIVERY
+      enum:
+      - FRAUD
+      - NON_DELIVERY
+      - GOODS_BROKEN...
+      minLength: 1
+      maxLength: 50
+
+    dispute.reason_description:
+      type: string
+      description: 'Textual explanation of the reason for the dispute.'
+      minLength: 1
+      maxLength: 500
 
 
 
-masked_number_first6last4:
-type: string
-description: The masked card account number, showing the first
-6 and the last 4 digits.
-arn:
-type: string
-description: Global Payments reference sent to payment method
-provider for a Transaction.
+    dispute.time_to_respond_by:
+      type: string
+      format: date-time
+      description: The time the merchant needs to respond to the dispute by.
+      example: 2020-02-22T10:24:43.761Z
+
+    dispute.result:
+      type: string
+      description: 'Indicates the result of the dispute.'
+      enum:
+      - PENDING
+      - FULFILLED
+      - WON
+      - LOST
+      - ACCEPTED
+      minLength: 1
+      maxLength: 50
 
 
-document.id:
-type: string
-description: Unique identifier for the document on the Global Payments system
-example: DOC_lskdnfosdfjsdfsdf23dasd
-minLength: 1
-maxLength: 50
+
+    dispute.investigator_comment:
+      type: string
+      description: Last comment submitted for this dispute.
 
 
-document.b64_content:
-type: string
-description: The document represented as a base64 encoded string.
-example: R0lGODlhigPCAXAAACwAAAAAigPCAYf///8AQnv
-minLength: 1
-maxLength: 100000
+
+
+    dispute.last_adjustment_amount:
+      type: string
+      description: The last amount the merchant has been financially impacted by this Dispute.
+      example: "1999"
+
+    dispute.last_adjustment_currency:
+      type: string
+
+    dispute.last_adjustment_time_created:
+      type: string
+      description: Time the last adjustment was created.
+      example: 2020-02-22T10:24:43.761Z
+
+
+    dispute.net_financial_amount:
+      type: string
+      description: The total amount the Merchant has been financially impacted by this Dispute.
+      example: "1999"
+
+
+    dispute.net_financial_currency:
+      type: string
+
+
+    dispute.net_financial_funding:
+      type: string
+      description: Indicates if the total amount impacted is a Debit or Credit to Merchant's bank account.
+      example: DEBIT
+      enum:
+      - DEBIT
+      - CREDIT
+      - NONE
+
+    dispute.payment_method_provider.comment:
+      type: string
+      description: A comment in relation to the dispute from the payment method provider.
+      example: Payer never got the goods
+
+
+    dispute.payment_method_provider.reference:
+      type: string
+      description: The payment method provider's reference for the dispute.
+      example: CASE_NO_23423863
+
+    dispute.reference:
+      type: string
+      description: Merchant defined field to reference the Transaction.
+      example: MY-TRANS-20190924123456
+
+    dispute.remarks:
+      type: string
+      description: Merchant field to document remarks about the original Transaction.
+      example: MY-TRANS-REMARKS
+
+
+    deposit.funding_type:
+      type: string
+      description: Indicates if the Deposit was a debit or credit to the merchant's bank account.
+      example: CREDIT
+      enum:
+      - DEBIT
+      - CREDIT
+
+    dispute.last_adjustment_funding:
+      type: string
+      description: Indicates if the total amount impacted is a Debit or Credit to merchant's bank account.
+      example: DEBIT
+      enum:
+      - DEBIT
+      - CREDIT
+      - NONE
+      minLength: 1
+      maxLength: 50
+
+    merchant_time_created:
+      type: string
+      description: The time the merchant set when the transaction was processed   when the Transaction was first created.
+
+    masked_number_first6last4:
+      type: string
+      description: The masked card account number, showing the first 6 and the last 4 digits.
+
+    transaction.arn:
+      type: string
+      description: ARN ot Acquirer Reference Number is a Global Payments created reference sent to the card brands to identify transactions.
+      minLength: 1
+      maxLength: 50
+
+
+    document.id:
+      type: string
+      description: Unique identifier for the document on the Global Payments system
+      example: DOC_lskdnfosdfjsdfsdf23dasd
+      minLength: 1
+      maxLength: 50
+
+
+    document.b64_content:
+      type: string
+      description: The document represented as a base64 encoded string.
+      example: R0lGODlhigPCAXAAACwAAAAAigPCAYf///8AQnv
+      minLength: 1
+      maxLength: 100000
+
+
+    action.resource:
+      type: string
+      description: The type of resource the action relates to.
+      minLength: 1
+      maxLength: 50
+
+
+    action.resource_id:
+      type: string
+      description: A unique identifier generated by Global Payments to identify  the resource related to this action.
+      example: TRN_cf4e1008-c921-4096-bec9-2372cb9476d8
+      minLength: 1
+      maxLength: 50
+
+
+    action.resource_parent_id:
+      type: string
+      description: A unique identifier used to identify the parent resource that the action relates to.
+      example: TRN_sdfklj43sf-c921-4096-bec9-2372cb949324a
+      minLength: 1
+      maxLength: 50
+
+
+    action.resource_status:
+      type: string
+      description: The status of the resource after the action was executed.
+      example: REVERSED
+      minLength: 1
+      maxLength: 50
+
+
+    action.resource_request_url:
+      type: string
+      description: The URL used to execute this action.
+      example: /transactions?from_time_created=2019-01-01&from_deposit_time_created=2019-01-01&page_size=1000&page=1&order=DESC
+      minLength: 1
+      maxLength: 1000
+
+
+    action.version:
+      type: string
+      description: The version of the API the action executed against.
+      minLength: 1
+      maxLength: 50
+
+
+    action.http_response_code:
+      type: string
+      description: The HTTP result of the action
+      minLength: 1
+      maxLength: 50
+
+
+    action.response_code:
+      type: string
+      description: The result of the action
+      minLength: 1
+      maxLength: 50
+
+    action.response_detailed_code:
+      type: string
+      description: The detailed result code of the action
+      minLength: 1
+      maxLength: 50
+
+
+
+    action.response_detailed_message:
+      type: string
+      description: The description of the detailed result code returned
+      minLength: 1
+      maxLength: 50
+
+
+
+    action.source_location:
+      type: string
+      description: Identifies where the action request came from
+      minLength: 1
+      maxLength: 50
+
+
+
+    action.destination_location:
+      type: string
+      description: Identifies where the action response is sent to
+      minLength: 1
+      maxLength: 50
+
+
+
+    action.message_received:
+      type: string
+      description: The sanitized HTTP,Header and body of the action request.
+      minLength: 1
+
+    action.message_sent:
+      type: string
+      description: The sanitized HTTP,Header and body of the action response.
+      minLength: 1
+    action.metrics:
+      type: string
+      description: A name value pair array of data points to assist with measuring the products usage.
+      minLength: 1
+      maxLength: 1000
+
+    action.total_time_milliseconds:
+      type: number
+      description: The time it took from the millisecond the action request hit
+        this system to the response was sent back to the integrator.
+      minLength: 1
+      maxLength: 50
+
+    action.total_time_downstream_milliseconds:
+      type: number
+      description: The time it took from the millisecond the system passed the
+        request onto a third party to the time that system responded.
+      minimum: 1
+      maximum: 100000
+
+
+
+
+
+
+
+
+
+
+
+
 
 
