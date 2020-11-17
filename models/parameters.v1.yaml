@@ -22,6 +22,14 @@ components:
         type: string
         default: application/json
 
+    header_Authorization:
+      name: Authorization
+      in: header
+      required: true
+      description: Bearer access token value used to access the API.
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/Authorization'
+    
     header_Accept-Encoding:
       name: Accept-Encoding
       in: header
@@ -38,14 +46,7 @@ components:
         type: string
         default: gzip
       
-    header_Authorization:
-      in: header
-      name: Authorization
-      description: The Bearer token used when executing this action.
-      required: true
-      schema:
-        type: string
-        default: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
+   
 
     header_Content-type:
       in: header

@@ -29,17 +29,11 @@ paths:
       summary: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          example: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
-          minLength: 1
-          maxLength: 50
+
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
       
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
@@ -158,15 +152,7 @@ paths:
       summary: Get the details of a single action using its unique id.
       description: Get the details of a single action using its unique id.
       parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          example: Bearer MECaTYne0ch1VX2byAPZiJHhq6bc
-          minLength: 1
-          maxLength: 50
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
       
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
 

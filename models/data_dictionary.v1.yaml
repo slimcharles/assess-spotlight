@@ -576,7 +576,13 @@ components:
       maxLength: 1000
       minLength: 1
       type: string
-      example: '6bb6116d85c2326feb32dc34ded531ed80c6f04ac472fa0c7e8228fde0fe7d66195128c5d52f266398471bcdbaa7d09a7d88495ce998e48da34877d6fd530f0b '
+      example: '6bb6116d85c2326feb32dc34ded531ed80c6f04ac472fa0c7e8228fde0fe7d66195128c5d52f266398471bcdbaa7d09a7d88495ce998e48da34877d6fd530f0b'
+
+    Authorization:
+      description: Bearer access token value used to access the API.
+      type: string
+      default: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
+      example: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
 
     xid:
       type: string

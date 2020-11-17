@@ -43,6 +43,7 @@ paths:
         required: true
         schema:
           type: string
+          default: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
           example: 'Bearer MECaTYne0ch1VX2byAPZiJHhq6bc'
           minLength: 1
           maxLength: 50
