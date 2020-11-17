@@ -59,7 +59,6 @@ components:
     header_X-GP-Version:
       in: header
       name: X-GP-Version
-      description: Indicates the version of the GP-API for this message.
       required: true
       schema:
         $ref: 'data_dictionary.v1.yaml#/components/schemas/X-GP-Version'

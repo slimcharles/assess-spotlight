@@ -564,6 +564,7 @@ components:
       minLength: 1
       maxLength: 50      
       example: '2020-04-10'
+      default: '2020-04-10'
 
     X-GP-Idempotency:
       description: Integrator generated value submitted in the request header that is checked to ensure the same value has not been seen in the last 24 hours. It is used to ensure idempotency is maintained with this action.
