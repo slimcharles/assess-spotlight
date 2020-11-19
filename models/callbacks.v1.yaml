@@ -1,193 +1,154 @@
+openapi: '3.0.0'
+info:
+  title: Common CallBacks
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+
+paths: {}
+
 components:
   callbacks:
-        APM Return:
-          '{$request.body#/notifications.return_url}':
-            get:
-              parameters:
-              - name: X-GP-Signature
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
+    APM Return:
+      '{$request.body#/notifications.return_url}':
+        get:
+          parameters:
+          - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+          
+          - name: id
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/id
+      
+          - name: status
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/transaction.status
+    
+          - name: reference
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/transaction.reference
+          - name: payment_method_result
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.result
+          - name: payment_method_message
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.message
+            
+          - name: provider
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider
+               
+          - name: apm_wait_notification
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+       
+          - name: apm_optional_redirect
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
+
+          - name: apm_fund_status
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+          
+          - name: apm_payment_description
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.payment_description
+          
+          - name: apm_confirmed_accountholder
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/apm.confirmed_accountholder
+            
+          - name: apm_account_number
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/bank.account_number
+           
+            
+          - name: apm_bank_iban
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/bank.iban
+          
+          - name: apm_bank_identifier_code
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/bank.identifier_code
+          
+          - name: apm_bank_name
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/bank.name
+            
+          - name: apm_bank_code
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/bank.code
+            
+          - name: action_id
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/action.id
+            
+            
+          - name: action_type
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/action.type
+            
+          - name: action_time_created
+            in: query
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+
+          description: The endpoint to which the customer should be redirected after a payment has been attempted or successfully completed on the payment method's site. The data sent contains the current status of the transaction.
+          responses:
+            '200':
+              description: OK
+
+    APM Status:
+      '{$request.body#/notifications.status_url}':
+        post:
+          parameters:
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Signature
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+          
+                              
+          requestBody:
+            content:
+              application/json:
                 schema:
-                  type: string
-                example: 6bb6116d85c2326feb32dc34ded531ed80c6f04ac472fa0c7e8228fde0fe7d66195128c5d52f266398471bcdbaa7d09a7d88495ce998e48da34877d6fd530f0b
-              - name: id
-                in: query
-                description: >-
-                 A unique identifier generated by Global Payments to identify the Transaction.
-                required: true
-                schema:
-                  type: string
-                example: "TRN_JOGrqvzOvbLy4V2n7cHsusYy8aainM"
-              - name: status
-                in: query
-                description: >-
-                 Indicates the current state of the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                  - DECLINED
-                  - PREAUTHORIZED
-                  - CAPTURED
-                  - BATCHED
-                  - REVERSED
-                example: "PENDING"
-              - name: reference
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "APM-20200417"
-              - name: payment_method_result
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "01"
-              - name: payment_method_message
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "PENDING"
-              - name: provider
-                in: query
-                description: >-
-                 A string used to identify the payment method being used with the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                    - PAYPAL
-                    - SOFORT
-                    - IDEAL
-                    - GIROPAY
-                    - '...'
-                example: "testpay"
-              - name: apm_wait_notification
-                in: query
-                description: >-
-                 This field indicates whether it's appropriate to keep the payer waiting for an update at the time the transaction is being executed or to indicate to the payer that a update will be given later.
-                required: true
-                schema:
-                  type: number
-                example: "0"
-              - name: apm_optional_redirect
-                in: query
-                description: >-
-                    Indicates that a redirect to the payment method is not required. Some payment methods (for example, SEPA DirectDebit) provide the option to redirect the customer to a page to display additional information about the payment.
-                required: true
-                schema:
-                  type: number
-                example: "0"
-              - name: apm_fund_Status
-                in: query
-                description: >-
-                 A string generated by the payment method that represents to what degree the merchant is funded for the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                    - NOT_EXPECTED
-                    - RECEIVED
-                    - WAITING
-                    - MISSING
-                example: "NOT_EXPECTED"
-              - name: apm_payment_description
-                in: query
-                description: >-
-                 The reference the payment method provider created for the transaction.
-                required: true
-                schema:
-                  type: string
-                example: "2NFQYHC"
-              - name: apm_confirmed_accountholder
-                in: query
-                description: >-
-                  A name of the payer from the payment method system.
-                required: true
-                schema:
-                  type: string
-                example: "James Mason"
-              - name: apm_account_number
-                in: query
-                schema:
-                  type: string
-                example: "93722"
-                description: >-
-                  The local identifier of the bank account.
-              - name: apm_bank_iban
-                in: query
-                schema:
-                  type: string
-                example: ''
-                description: >-
-                  The international identifier of the bank account.
-              - name: apm_bank_identifier_code
-                in: query
-                schema:
-                  type: string
-                example: ''
-                description: >-
-                  The international identifier code for the bank.
-              - name: apm_bank_name
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The name of the bank.
-                example: High Street Bank
-              - name: apm_bank_code
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The address of the bank.
-                example: Bond St. America
-              - name: action_id
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  A unique identifier generated by Global Payments to uniquely identify an particular action on a transaction.
-                example: "ACT_x0xHTCKj7gLDjJ0Om7r8lJ8lMo7nwy"
-              - name: action_type
-                in: query
-                schema:
-                  type: string
-                  enum:
-                  - CAPTURE
-                  - AUTHORIZE
-                  - PREAUTHORIZE
-                  - REVERSE
-                  - ADJUST
-                  - REFUND
-                  - FORCE
-                  - REAUTHORIZE
-                  - MULTIPLE_CAPTURE
-                  - INITIATE
-                  - CONFIRM
-                  - TRANSACTION_SINGLE
-                  - TRANSACTION_LIST
-                description: >-
-                  Type of the action associated with this notification.
-                example: RETURN_NOTIFICATION
-              - name: action_time_created
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The time the action object was created on the Global Payments system
-                example: "2019-02-25T11:54:59.886Z"
-              description: The endpoint to which the customer should be redirected after a payment has been attempted or successfully completed on the payment method's site. The data sent contains the current status of the transaction.
-              responses:
-                '200':
-                  description: OK
+                  $ref: schema_objects.v1.yaml#/components/schemas/notification_post_response
+          description: The endpoint which will receive payment-status messages. This will include the result of the transaction or any updates to the transaction status. The Status URL will receive the final status of the transaction.
+          responses:
+            '200':
+              description: OK

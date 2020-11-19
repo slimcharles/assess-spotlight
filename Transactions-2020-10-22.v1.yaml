@@ -410,7 +410,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/existing_transaction_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -499,7 +499,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/existing_transaction_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -588,7 +588,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/existing_transaction_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -675,7 +675,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/existing_transaction_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -760,7 +760,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/existing_transaction_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -847,7 +847,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/confirm_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -1494,85 +1494,7 @@ components:
    
 
 
-    notifications:
-      type: object
-      properties:
-        return_url:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/notifications.return_url
-        status_url:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/notifications.status_url
-      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
-    notification_post_response:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-        channel:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-        capture_mode:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
-        amount:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-        currency:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-        country:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                                                    
-        batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-       
-        payment_method:
-          $ref: '#/components/schemas/payment_method_response'
-       
-        action:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-       
-       
-    payment_method_not_response:
-      type: object
-      properties:
-        result:
-          type: string
-          description: IIn payment_method] Result code from the payment method provider.
-        message:
-          type: string
-          description: Result message from the payment method provider corresponding
-            to the result code.
-        entry_mode:
-          type: string
-          description: 'Indicates how the payment method information was obtained
-            by the Merchant for this Transaction. '
-          example: SWIPE
-          default: SWIPE
-          enum:
-          - MOTO
-          - ECOM
-          - IN_APP
-          - CHIP
-          - SWIPE
-          - MANUAL
-          - CONTACTLESS_CHIP
-          - CONTACTLESS_SWIPE
-        apm:
-          $ref: '#/components/schemas/apm_not_response'
- 
+   
     device:
       type: object
       properties:
@@ -1581,18 +1503,9 @@ components:
           description: The time from the device in ISO8601 format
         sequence_number:
           type: string
-          description: The sequence number from the device used to align with processing
-            platform.
+          description: The sequence number from the device used to align with processing platform.
       description: Data relating to a device used to facilitate the transaction.
-    mandate:
-      type: object
-      properties:
-        reference:
-          type: string
-          description: The reference to identify the mandate.
-          example: REF-MAN-341DE
-          default: 'REF-MAN-341DE        '
-      description: Data of a mandate between a payment method provider and a payer.
+   
     apm_request:
       type: object
       properties:
@@ -1630,45 +1543,7 @@ components:
       description: Data associated with the response of an APM transaction.
    
    
-    apm_not_response:
-      type: object
-      properties:
-        provider:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-        redirect_url:
-          provider:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
-        session_token:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.session_token
-        fund_status:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.fund_status
-        wait_notification:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
-        optional_redirect:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
-        provider_transaction_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
-        provider_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_time_created
-        provider_payer_name:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
-       
-        payment_description:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.payment_description
-        confirmed_accountholder:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.confirmed_accountholder
-        account_number:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank.account_number
-        iban:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank.iban
-        bank_identifier_code:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank.identifier_code
-        bank_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank.name
-        bank_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_address
-       
-      description: Data associated with an APM.           
+          
        
    
     installment_request:
@@ -2063,5 +1938,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
 
       description: Data relating to the card payment method returned in a list response.
-   
+
+
+
+
+
+
    

@@ -206,7 +206,112 @@ components:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/app_id'
         app_name:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/app_name'
- 
+
+    notifications:
+      type: object
+      properties:
+        return_url:
+         $ref: data_dictionary.v1.yaml#/components/schemas/notifications.return_url
+        status_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.status_url
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+    notification_post_response:
+      type: object
+      properties:
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/id
+        time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+        type:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.type
+        status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.status
+        channel:
+           $ref: data_dictionary.v1.yaml#/components/schemas/transaction.channel
+        capture_mode:
+           $ref: data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
+        amount:
+           $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        currency:
+           $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        country:
+           $ref: data_dictionary.v1.yaml#/components/schemas/country
+        merchant_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_name
+        
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.reference
+                                                                    
+        batch_id:
+           $ref: data_dictionary.v1.yaml#/components/schemas/batch_id
+       
+        payment_method:
+          $ref: '../Transactions-2020-10-22.v1.yaml#/components/schemas/payment_method_response'
+       
+        action:
+          $ref: schema_objects.v1.yaml#/components/schemas/action
+    payment_method_not_response:
+      type: object
+      properties:
+        result:
+          $ref: data_dictionary.v1.yaml#/components/schemas/result
+        
+        message:
+          $ref: data_dictionary.v1.yaml#/components/schemas/message
+
+        entry_mode:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+
+        apm:
+          $ref: '#/components/schemas/apm_not_response'
+    apm_not_response:
+      type: object
+      properties:
+        provider:
+         $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider
+        redirect_url:
+          provider:
+            $ref: data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
+        session_token:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.session_token
+        fund_status:
+           $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+        wait_notification:
+           $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+        optional_redirect:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
+        provider_transaction_reference:
+           $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
+        provider_time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_time_created
+        provider_payer_name:
+           $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
+       
+        payment_description:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.payment_description
+        confirmed_accountholder:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.confirmed_accountholder
+        account_number:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.account_number
+        iban:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.iban
+        bank_identifier_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.identifier_code
+        bank_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.name
+        bank_address:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank_address
+       
+      description: Data associated with an APM.     
+
+
+
 ## Security Section
   securitySchemes:  ## Security Section
     bearerAuth:

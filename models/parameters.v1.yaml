@@ -67,7 +67,7 @@ components:
         $ref: 'data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency'
     
     header_X-GP-Signature:
-      in: header
+      in: query
       name: X-GP-Signature
       description: The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
       schema:

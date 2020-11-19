@@ -25,7 +25,7 @@ paths:
     get:
       operationId: getActionList
       tags:
-      - Get a list of Deposit information
+      - Get a list of Actions
       summary: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
