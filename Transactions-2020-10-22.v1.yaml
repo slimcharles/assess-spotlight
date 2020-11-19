@@ -13,19 +13,45 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Get a list of Deposit information
-    description:  Get information about the amounts Global Payments affected to merchant's bank account(s).
-    externalDocs:
-      url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'    
-  - name: Get a Single Deposit
-    description: Get information about a single amount Global Payments affected to merchant's bank account.
-    externalDocs:
-      url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'      
+  - name: Create
+    description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
+
+  - name: List Transactions
+    description: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
+
+  - name: Get a Transaction
+    description: Get a single view of a transaction using the Global Payments transaction id.    
+  
+  - name: Refund a Sale
+    description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
+
+  - name: Reverse a Sale
+    description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
 
 
+  - name: Capture a Preauth 
+    description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
+
+  - name: Adjust a Sale
+    description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
+
+  - name: ReAuth a Reverse Sale
+    description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
+
+  - name: Confirm a Transaction
+    description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
+
+  - name: List Settled Transactions
+    description: Get a list of settled or funded transactions  Page through the result set to access all records.
+
+
+  
+  
+  
 paths:
   /transactions:
     post:
+      operationId: createSaleOrRefundTransaction
       tags:
       - Create
       summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
@@ -43,7 +69,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_request'
+            examples:
+              Ecommerce Sale - Auto Capture:
+                $ref: ./models/examples.v1.yaml#/components/examples/ECOMReq
+              Mail Order/Telephone Order Sale - Delayed Capture:
+                $ref: ./models/examples.v1.yaml#/components/examples/Moto_Capture_Later
+              Ecommerce Refund:
+                $ref: ./models/examples.v1.yaml#/components/examples/ecom_refund
+              Card Present Sale - Chip:
+                $ref: ./models/examples.v1.yaml#/components/examples/EMVReq
+              Card Present Sale - Swipe:
+                $ref: ./models/examples.v1.yaml#/components/examples/Swipe
+              Card Present Refund - Chip:
+                $ref: ./models/examples.v1.yaml#/components/examples/cardpresent_refund
+              Sale with Tokenized Payment Method:
+                $ref: ./models/examples.v1.yaml#/components/examples/Authorization_With_Payment_Token
+              Sale with Credential On File:
+                $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
+              Sale with Installment:
+                $ref: ./models/examples.v1.yaml#/components/examples/Installments
+              Ecommerce - Alternative Payment Method:
+                $ref: ./models/examples.v1.yaml#/components/examples/apms
         required: true
+        
       
       responses:
         '200':
@@ -89,11 +137,14 @@ paths:
 
         x-codegen-request-body-name: request
     
+      
+      
       callbacks: {}
         
     get:
+      operationId: getSaleAndRefundTransactions
       tags:
-      - Transactions
+      - List Transactions
       summary: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.
       
@@ -251,8 +302,9 @@ paths:
     
   /transactions/{id}:
     get:
+      operationId: getSingleSaleOrRefundTransaction
       tags:
-      - Transaction
+      - Get a Transaction
       summary: Get a single view of a transaction using the Global Payments transaction id.
       description: Get a single view of a transaction using the Global Payments transaction id.
       parameters:
@@ -300,12 +352,11 @@ paths:
 
   /transactions/{id}/refund:
     post:
+      operationId: createRefundTransactionFromSale
       tags:
-      - Refund
-      summary: Create a Refund transaction from a previous Sale. The payment method
-        associated with the original Sale is used to refund the Payer.
-      description: Create a Refund transaction from a previous Sale. The payment method
-        associated with the original Sale is used to refund the Payer.
+      - Refund a Sale
+      summary: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
+      description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
       parameters:
       - name: Authorization
         in: header
@@ -342,7 +393,7 @@ paths:
           type: string
       requestBody:
         content:
-          '*/*':
+          application/json:
             schema:
               $ref: '#/components/schemas/change_amount_request'
         required: false
@@ -381,20 +432,12 @@ paths:
 
   /transactions/{id}/reversal:
     post:
+      operationId: reverseExistingTransaction
       tags:
-      - Reverse
-      summary: Cancel a transaction before it has been sent for funding. transactions
-        can be reversed in full or partially reversed. An attempt to restore Payer's
-        spending limit is always made. If no amount is included in the request body,
-        the full value of the transaction will be reversed.  In timeout scenarios,
-        the reference field can be used in place of the id in the URL to execute a
-        reversal also.
-      description: Cancel a transaction before it has been sent for funding. transactions
-        can be reversed in full or partially reversed. An attempt to restore Payer's
-        spending limit is always made. If no amount is included in the request body,
-        the full value of the transaction will be reversed. In timeout scenarios,
-        the reference field can be used in place of the id in the URL to execute a
-        reversal also.
+      - Reverse a Sale
+  
+      summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
+      description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
       parameters:
       - name: Authorization
         in: header
@@ -478,12 +521,12 @@ paths:
 
   /transactions/{id}/capture:
     post:
+      operationId: captureSaleTransaction
       tags:
-      - Capture
-      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive
-        funds for that transaction.
-      description: Capture a Sale transaction that has a status of PREAUTHORIZED to
-        receive funds for that transaction.
+      - Capture a Preauth 
+  
+      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
+      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
       parameters:
       - name: Authorization
         in: header
@@ -569,8 +612,9 @@ paths:
  
   /transactions/{id}/adjustment:
     post:
+      operationId: adjustSaleTransaction
       tags:
-      - Adjust
+       - Adjust a Sale
       summary: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
       description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
       parameters:
@@ -653,8 +697,9 @@ paths:
 
   /transactions/{id}/reauthorization:
     post:
+      operationId: reauthSaleTransaction
       tags:
-      - ReAuth
+      - ReAuth a Reverse Sale
       summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       parameters:
@@ -738,8 +783,10 @@ paths:
 
   /transactions/{id}/confirmation:
     post:
+      operationId: confirmTransaction
       tags:
-      - Confirm
+      - Confirm a Transaction
+   
       summary: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
       description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
       parameters:
@@ -822,8 +869,9 @@ paths:
 
   /settlement/transactions:
     get:
+      operationId: getSettledTransactions
       tags:
-      - Transactions
+      - List Settled Transactions
       summary: Get a list of funded transactions using filter criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of transactions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
@@ -1038,7 +1086,6 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
 
 
 
@@ -1980,8 +2027,7 @@ components:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         card:
           $ref: '#/components/schemas/card_list_real_time_response'
-    
-    
+      
     
     card_list_single_response:
       type: object

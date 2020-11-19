@@ -1,26 +1,42 @@
+openapi: '3.0.0'
+info:
+  title: Common Examples
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
 
-            examples:
-              Ecommerce Sale - Auto Capture:
-                $ref: '#/components/examples/ECOMReq'
-              Mail Order/Telephone Order Sale - Delayed Capture:
-                $ref: '#/components/examples/Moto_Capture_Later'
-              Ecommerce Refund:
-                $ref: '#/components/examples/ecom_refund'
-              Card Present Sale - Chip:
-                $ref: '#/components/examples/EMVReq'
-              Card Present Sale - Swipe:
-                $ref: '#/components/examples/Swipe'
-              Card Present Refund - Chip:
-                $ref: '#/components/examples/cardpresent_refund'
-              Sale with Tokenized Payment Method:
-                $ref: '#/components/examples/Authorization_With_Payment_Token'
-              Sale with Credential On File:
-                $ref: '#/components/examples/Stored_Credential'
-              Sale with Installment:
-                $ref: '#/components/examples/Installments'
-              Ecommerce - Alternative Payment Method:
-                $ref: '#/components/examples/apms'
 examples:
+  Ecommerce Sale - Auto Capture:
+    $ref: ./models/examples.v1.yaml#/components/examples/ECOMReq'
+  Mail Order/Telephone Order Sale - Delayed Capture:
+    $ref: ./models/examples.v1.yaml#/components/examples/Moto_Capture_Later
+  Ecommerce Refund:
+    ./models/examples.v1.yaml#/components/examples/com_refund
+  Card Present Sale - Chip:
+    $ref: ./models/examples.v1.yaml#/components/examples/EMVReq
+  Card Present Sale - Swipe:
+    $ref: ./models/examples.v1.yaml#/components/examples/Swipe
+  Card Present Refund - Chip:
+    $ref: ./models/examples.v1.yaml##/components/examples/cardpresent_refund
+  Sale with Tokenized Payment Method:
+    $ref: ./models/examples.v1.yaml##/components/examples/Authorization_With_Payment_Token
+  Sale with Credential On File:
+    $ref: ./models/examples.v1.yaml##/components/examples/Stored_Credential
+  Sale with Installment:
+    $ref: ./models/examples.v1.yaml##/components/examples/Installments
+  Ecommerce - Alternative Payment Method:
+    $ref: ./models/examples.v1.yaml##/components/examples/apms
+
+components:  
+  examples:
     ECOMReq:
       value:
         account_name: Transaction_Processing
