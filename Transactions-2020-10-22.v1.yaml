@@ -28,7 +28,6 @@ tags:
   - name: Reverse a Sale
     description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
 
-
   - name: Capture a Preauth 
     description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
 
@@ -43,10 +42,6 @@ tags:
 
   - name: List Settled Transactions
     description: Get a list of settled or funded transactions  Page through the result set to access all records.
-
-
-  
-  
   
 paths:
   /transactions:
@@ -153,7 +148,6 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
@@ -1243,7 +1237,9 @@ components:
     
     payment_method_request:
       type: object
-      properties:                
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
         first_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
         last_name:
@@ -1268,6 +1264,8 @@ components:
     payment_method_response:
       type: object
       properties:
+        id:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
         result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
         message:
