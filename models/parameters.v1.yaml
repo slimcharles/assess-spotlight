@@ -19,8 +19,7 @@ components:
       name: Accept
       description: Expected format of the response message.
       schema:
-        type: string
-        default: application/json
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/Accept'
 
     header_Authorization:
       name: Authorization
@@ -35,27 +34,23 @@ components:
       in: header
       description: Compression algorithm user can accept in the response to this request.
       schema:
-        type: string
-        default: gzip
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/Accept-Encoding'
     
     header_Content-Encoding:
       name: Accept-Encoding
       in: header
-      description: Compression algorithm user can accept in the response to this request.
+      description: Compression algorithm used in the response.
       schema:
-        type: string
-        default: gzip
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/Content-Encoding'
       
    
-
-    header_Content-type:
+    header_Content-Type:
       in: header
       name: Content-type
       description: Format of the message.
       required: true
       schema:
-        type: string
-        default: 'application/json'
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/Content-Type'
     
     header_X-GP-Version:
       in: header

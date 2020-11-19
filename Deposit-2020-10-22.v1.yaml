@@ -99,8 +99,8 @@ paths:
         '200':
           description: OK
           headers:
-            Content-type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+            Content-Type:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
             X-GP-Version:
               $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
             Content-Encoding:
@@ -154,8 +154,8 @@ paths:
          '200':
           description: OK
           headers:
-            Content-type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+            Content-Type:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
             X-GP-Version:
               $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
             Content-Encoding:

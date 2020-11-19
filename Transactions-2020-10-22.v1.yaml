@@ -36,7 +36,7 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
       
       requestBody:
         content:
@@ -49,10 +49,14 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
@@ -94,6 +98,7 @@ paths:
       description: Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.
       
       parameters:
+        
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
@@ -216,7 +221,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -265,7 +270,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -346,7 +351,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -411,7 +416,7 @@ paths:
         schema:
           type: string
           default: application/json
-      - name: Content-type
+      - name: Content-Type
         in: header
         description: Format of the message.
         required: true
@@ -443,7 +448,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -500,7 +505,7 @@ paths:
         schema:
           type: string
           default: application/json
-      - name: Content-type
+      - name: Content-Type
         in: header
         description: Format of the message.
         required: true
@@ -532,7 +537,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -589,7 +594,7 @@ paths:
         schema:
           type: string
           default: application/json
-      - name: Content-type
+      - name: Content-Type
         in: header
         description: Format of the message.
         required: true
@@ -618,7 +623,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -673,7 +678,7 @@ paths:
         schema:
           type: string
           default: application/json
-      - name: Content-type
+      - name: Content-Type
         in: header
         description: Format of the message.
         required: true
@@ -702,7 +707,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -758,7 +763,7 @@ paths:
         schema:
           type: string
           default: application/json
-      - name: Content-type
+      - name: Content-Type
         in: header
         description: Format of the message.
         required: true
@@ -787,7 +792,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -1006,7 +1011,7 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version

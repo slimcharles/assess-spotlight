@@ -26,7 +26,7 @@ paths:
       summary: Create a bearer access token.
       description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has. For more information on API authentication and creating access  tokens'
       parameters:
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
       requestBody:
         content:
@@ -38,8 +38,8 @@ paths:
         '200':
           description: OK
           headers:
-            Content-type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+            Content-Type:
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
             X-GP-Version:
               $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
           content:
