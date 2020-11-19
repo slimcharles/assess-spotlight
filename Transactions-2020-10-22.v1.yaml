@@ -339,7 +339,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/refund_request'
+              $ref: '#/components/schemas/change_amount_request'
         required: false
       
       responses:
@@ -437,7 +437,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reversal_partial_request'
+              $ref: '#/components/schemas/change_amount_request'
         required: false
         responses:
         '200':
@@ -526,7 +526,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/capture_request'
+              $ref: '#/components/schemas/change_amt_tag_request'
         required: false
       responses:
         '200':
@@ -612,7 +612,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/adjust_request'
+              $ref: '#/components/schemas/change_amt_tag_request'
         required: false
       responses:
         '200':
@@ -696,7 +696,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reauth_amount_request'
+              $ref: '#/components/schemas/change_amount_request'
         required: false
         responses:
         '200':
@@ -1118,7 +1118,7 @@ components:
         initiator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator          
         stored_credential:
-          $ref: './models/schema_objects.v1.yaml#/components/schemas/stored_credential'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
 
 
         payment_method:
@@ -1395,7 +1395,7 @@ components:
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
    
-     confirm_request:
+    confirm_request:
       type: object
       properties:
         payment_method:
@@ -1716,9 +1716,9 @@ components:
           example: James Mason
                                               
         bank:
-          $ref: '#/components/schemas/bank'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/bank_account
         mandate:
-          $ref: '#/components/schemas/mandate'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/mandate
       description: Data associated with the response of an APM transaction.
     apm_not_response:
       type: object

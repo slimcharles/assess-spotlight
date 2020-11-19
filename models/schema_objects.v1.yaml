@@ -124,6 +124,12 @@ components:
           type: string
           description: The local identifier of the bank account.
    
+    mandate:
+      type: object
+      properties:
+        code:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/apm.mandate.reference'
+    
     filter:
       type: object
       description: Indicates what fields and values used to filter the current list of resource objects in the current response.
