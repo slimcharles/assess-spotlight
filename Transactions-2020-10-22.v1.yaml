@@ -1,8 +1,7 @@
 openapi: 3.0.1
-
 info:
-  title: Transactions  
-  description: Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a refund from Merchant to Payer.
+  title: Transactions
+  description: Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a Refund from Merchant to Payer.
   contact:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
@@ -14,30 +13,31 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Process and Manage the Transactions across all  sales channels, payment methods, currencies and conuntries.
-    description: Process and Manage the Transactions across all  sales channels, payment methods, currencies and conuntries.
+  - name: Get a list of Deposit information
+    description:  Get information about the amounts Global Payments affected to merchant's bank account(s).
     externalDocs:
-      url: ''    
-  
-security:
-  - bearerAuth: []     
+      url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'    
+  - name: Get a Single Deposit
+    description: Get information about a single amount Global Payments affected to merchant's bank account.
+    externalDocs:
+      url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'      
 
 
 paths:
   /transactions:
     post:
-      operationId: createTransaction
-      
       tags:
-        - Create a Sale or Refund Transaction.
-      summary: Create a Sale or Refund Transaction.
-      description: 'Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.'
-      
-      parameters:
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+      - Create
+      summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
+      description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
 
+      parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
+      
       requestBody:
         content:
           application/json:
@@ -49,15 +49,182 @@ paths:
         '200':
           description: OK
           headers:
-            Content-type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type
-            X-GP-Version:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+          
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/create_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+
+        '404':
+          description: Resource Not Found
+          content: {}
+
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+
+        x-codegen-request-body-name: request
+    
+      callbacks: {}
+        
+    get:
+      tags:
+      - Transactions
+      summary: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.
+      
+      parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+      
+      
+      - name: id
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      
+      
+      - name: type
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+      
+      - name: channel
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+      
+      - name: amount
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+      
+      - name: currency
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+      
+      - name: number_first6
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
+      
+      - name: number_last4
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
+      
+      - name: token_first6
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_first6
+      
+      - name: token_last4
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_last4
+      
+      - name: account_name
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+      
+      - name: brand
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+      
+      - name: brand_reference
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+      
+      - name: authcode
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+      
+      - name: reference
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+      
+      - name: status
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
+      
+      - name: from_time_created
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+      
+      - name: to_time_created
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+      
+      - name: country
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+      
+      - name: batch_id
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
+      
+      - name: entry_mode
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+     
+      
+      - name: name
+        in: query
+        schema:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+     
+     
+      responses:
+        '200':
+          description: OK
+          headers:
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactions_list'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -76,615 +243,56 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-     
-     
-     
-      callbacks:
-        APM Return:
-          '{$request.body#/notifications.return_url}':
-            get:
-              parameters:
-              - name: X-GP-Signature
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: 6bb6116d85c2326feb32dc34ded531ed80c6f04ac472fa0c7e8228fde0fe7d66195128c5d52f266398471bcdbaa7d09a7d88495ce998e48da34877d6fd530f0b
-              - name: id
-                in: query
-                description: >-
-                 A unique identifier generated by Global Payments to identify the Transaction.
-                required: true
-                schema:
-                  type: string
-                example: "TRN_JOGrqvzOvbLy4V2n7cHsusYy8aainM"
-              - name: status
-                in: query
-                description: >-
-                 Indicates the current state of the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                  - DECLINED
-                  - PREAUTHORIZED
-                  - CAPTURED
-                  - BATCHED
-                  - REVERSED
-                example: "PENDING"
-              - name: reference
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "APM-20200417"
-              - name: payment_method_result
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "01"
-              - name: payment_method_message
-                in: query
-                description: >-
-                 The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "PENDING"
-              - name: provider
-                in: query
-                description: >-
-                 A string used to identify the payment method being used with the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                    - PAYPAL
-                    - SOFORT
-                    - IDEAL
-                    - GIROPAY
-                    - '...'
-                example: "testpay"
-              - name: apm_wait_notification
-                in: query
-                description: >-
-                 This field indicates whether it's appropriate to keep the payer waiting for an update at the time the transaction is being executed or to indicate to the payer that a update will be given later.
-                required: true
-                schema:
-                  type: number
-                example: "0"
-              - name: apm_optional_redirect
-                in: query
-                description: >-
-                    Indicates that a redirect to the payment method is not required. Some payment methods (for example, SEPA DirectDebit) provide the option to redirect the customer to a page to display additional information about the payment.
-                required: true
-                schema:
-                  type: number
-                example: "0"
-              - name: apm_fund_Status
-                in: query
-                description: >-
-                 A string generated by the payment method that represents to what degree the merchant is funded for the transaction.
-                required: true
-                schema:
-                  type: string
-                  enum:
-                    - NOT_EXPECTED
-                    - RECEIVED
-                    - WAITING
-                    - MISSING
-                example: "NOT_EXPECTED"
-              - name: apm_payment_description
-                in: query
-                description: >-
-                 The reference the payment method provider created for the transaction.
-                required: true
-                schema:
-                  type: string
-                example: "2NFQYHC"
-              - name: apm_confirmed_accountholder
-                in: query
-                description: >-
-                  A name of the payer from the payment method system.
-                required: true
-                schema:
-                  type: string
-                example: "James Mason"
-              - name: apm_account_number
-                in: query
-                schema:
-                  type: string
-                example: "93722"
-                description: >-
-                  The local identifier of the bank account.
-              - name: apm_bank_iban
-                in: query
-                schema:
-                  type: string
-                example: ''
-                description: >-
-                  The international identifier of the bank account.
-              - name: apm_bank_identifier_code
-                in: query
-                schema:
-                  type: string
-                example: ''
-                description: >-
-                  The international identifier code for the bank.
-              - name: apm_bank_name
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The name of the bank.
-                example: High Street Bank
-              - name: apm_bank_code
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The address of the bank.
-                example: Bond St. America
-              - name: action_id
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  A unique identifier generated by Global Payments to uniquely identify an particular action on a transaction.
-                example: "ACT_x0xHTCKj7gLDjJ0Om7r8lJ8lMo7nwy"
-              - name: action_type
-                in: query
-                schema:
-                  type: string
-                  enum:
-                  - CAPTURE
-                  - AUTHORIZE
-                  - PREAUTHORIZE
-                  - REVERSE
-                  - ADJUST
-                  - REFUND
-                  - FORCE
-                  - REAUTHORIZE
-                  - MULTIPLE_CAPTURE
-                  - INITIATE
-                  - CONFIRM
-                  - TRANSACTION_SINGLE
-                  - TRANSACTION_LIST
-                description: >-
-                  Type of the action associated with this notification.
-                example: RETURN_NOTIFICATION
-              - name: action_time_created
-                in: query
-                schema:
-                  type: string
-                description: >-
-                  The time the action object was created on the Global Payments system
-                example: "2019-02-25T11:54:59.886Z"
-              description: The endpoint to which the customer should be redirected after a payment has been attempted or successfully completed on the payment method's site. The data sent contains the current status of the transaction.
-              responses:
-                '200':
-                  description: OK
-
-        APM Status:
-          '{$request.body#/notifications.status_url}':
-            post:
-              parameters:
-              - name: X-GP-Signature
-                in: header
-                description: The signature of the notification message to the merchant's URL endpoint. Use this value to validate that the notification came from Global Payments.
-                required: true
-                schema:
-                  type: string
-                example: "2020-10-22"
-              - name: Accept
-                in: header
-                description: Expected format of the response message.
-                schema:
-                  type: string
-                default: application/json
-              - name: Content-type
-                in: header
-                description: Format of the message.
-                required: true
-                schema:
-                  type: string
-                default: application/json
-              - name: X-GP-Idempotency
-                in: header
-                description: Field submitted in the request that is used to ensure idempotency
-                  is maintained with this action.
-                schema:
-                  type: string
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/notification_post_res'
-              description: The endpoint which will receive payment-status messages. This will include the result of the transaction or any updates to the transaction status. The Status URL will receive the final status of the transaction.
-              responses:
-                '200':
-                  description: OK
-      x-codegen-request-body-name: Request Body
-    get:
-      tags:
-      - Transactions
-      summary: Get a list of transactions recently processed, using criteria passed
-        in the query string. Page through the result set to access all records.
-      description: Get a list of transactions recently processed, using criteria passed
-        in the query string. Page through the result set to access all records.
-      parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
-      - name: X-GP-Version
-        in: header
-        description: Indicates the version of the GP-API for this message.
-        required: true
-        schema:
-          type: string
-          default: "2020-10-22"
-      - name: Accept
-        in: header
-        description: Expected format of the response message.
-        schema:
-          type: string
-          default: application/json
-
-      - name: page
-        in: query
-        description: Indicates the page sequence to return in the response. The number
-          of records presented on each page is determined by page_size field.
-        schema:
-          maximum: 1000
-          minimum: 1
-          type: number
-          default: 1
-      - name: page_size
-        in: query
-        description: The total number of objects to return in a single page for that
-          list
-        schema:
-          maximum: 1000
-          minimum: 1
-          type: number
-          default: 5
-      - name: order_by
-        in: query
-        description: 'The value to order the entire list by. '
-        schema:
-          type: string
-          enum:
-          - TIME_CREATED
-          - STATUS
-          - TYPE
-          - DEPOSIT_ID
-      - name: order
-        in: query
-        description: The direction of the ordering of the entire list, ASC or DESC
-        schema:
-          type: string
-          default: ASC
-          enum:
-          - ASC
-          - DESC
-      - name: id
-        in: query
-        description: This is the Global Payments transaction id returned for the transaction
-          when it was first created.
-        schema:
-          type: string
-      - name: type
-        in: query
-        description: Describes whether the transaction is a SALE, that moves funds
-          from Payer to Merchant, or a REFUND where funds move from Merchant to Payer.
-        schema:
-          type: string
-          enum:
-          - SALE
-          - REFUND
-      - name: channel
-        in: query
-        description: Describes whether the transaction was processed in a face to
-          face(CP) scenario or a Customer Not Present (CNP) scenario.
-        schema:
-          type: string
-          enum:
-          - CP
-          - CNP
-      - name: amount
-        in: query
-        description: The amount the transaction can transfer from Payer to Merchant
-          for a SALE or vice versa for a REFUND.
-        schema:
-          type: string
-      - name: currency
-        in: query
-        description: The currency of the amount.
-        schema:
-          type: string
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY
-      - name: number_first6
-        in: query
-        description: The first 6 of a card number
-        schema:
-          type: string
-      - name: number_last4
-        in: query
-        description: 'The last 4 of a card number    '
-        schema:
-          type: string
-      - name: token_first6
-        in: query
-        description: The first 6 of a digital wallet token.
-        schema:
-          type: string
-      - name: token_last4
-        in: query
-        description: 'The last 4 of a digital wallet token.    '
-        schema:
-          type: string
-      - name: account_name
-        in: query
-        description: A unique identifier that identifies the account you executing
-          the search against.
-        required: true
-        schema:
-          type: string
-          default: Transaction_Processing
-      - name: brand
-        in: query
-        description: Indicates the card brand that issued the card.
-        schema:
-          type: string
-          enum:
-          - VISA
-          - MASTERCARD
-          - AMEX
-          - DINERS
-          - DISCOVER
-          - JCB
-      - name: brand_reference
-        in: query
-        description: Search by the brand reference returned at the time of the transaction
-        schema:
-          type: string
-      - name: authcode
-        in: query
-        description: Search by the authcode
-        schema:
-          type: string
-      - name: reference
-        in: query
-        description: wildcard search by the reference the merchant submitted with
-          the transaction.
-        schema:
-          type: string
-      - name: status
-        in: query
-        description: Search for transactions that have a status of FUNDED, REJECTED.
-        schema:
-          type: string
-          enum:
-          - INITIATED
-          - AUTHENTICATED
-          - PENDING
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-          - FUNDED
-          - REJECTED
-      - name: from_time_created
-        in: query
-        description: The time to search from in a range, using the transaction time
-          created value.
-        required: true
-        schema:
-          type: string
-          default: "2020-05-01"
-      - name: to_time_created
-        in: query
-        description: The time to search to in a range, using the transaction time
-          created value.
-        schema:
-          type: string
-          default: "2020-05-07"
-      - name: country
-        in: query
-        description: Indicates whether the Merchant or the Payer initiated the creation
-          of a transaction. In ISO 3166-1(alpha-2 code) format.
-        schema:
-          type: string
-          enum:
-          - US
-          - CA
-          - UK
-          - '...'
-      - name: batch_id
-        in: query
-        description: Reference that uniquely identifies the batch the transaction
-          is in. Only CAPTURED transactions have a valid batch_id.
-        schema:
-          type: string
-      - name: entry_mode
-        in: query
-        description: 'Indicates how the payment method information was obtained by
-          the Merchant for this transaction. '
-        schema:
-          type: string
-          enum:
-          - MOTO
-          - ECOM
-          - IN_APP
-          - CHIP
-          - SWIPE
-          - MANUAL
-          - CONTACTLESS_CHIP
-          - CONTACTLESS_SWIPE
-      - name: name
-        in: query
-        description: The name of the owner of the payment method.
-        schema:
-          type: string
-      responses:
-        200:
-          description: Success
-          headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/transactions_list_real_time'
-        400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp400'
-        401:
-          description: Not Authenticated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp401'
-        403:
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp403'
-        404:
-          description: Resource Not Found
-          content: {}
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp500'
-        501:
-          description: Not implemented
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp501'
-        502:
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp502'
-        504:
-          description: Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp504'
-
+    
   /transactions/{id}:
     get:
       tags:
       - Transaction
-      summary: Get a single view of a transaction using the Global Payments transaction
-        id.
-      description: Get a single view of a transaction using the Global Payments transaction
-        id.
+      summary: Get a single view of a transaction using the Global Payments transaction id.
+      description: Get a single view of a transaction using the Global Payments transaction id.
       parameters:
-      - name: Authorization
-        in: header
-        description: The Bearer token used when executing this action.
-        required: true
-        schema:
-          type: string
-          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
-      - name: X-GP-Version
-        in: header
-        description: Indicates the version of the GP-API for this message.
-        required: true
-        schema:
-          type: string
-          default: "2020-10-22"
-      - name: Accept
-        in: header
-        description: Expected format of the response message.
-        schema:
-          type: string
-          default: application/json
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+      
       - name: id
         in: path
-        description: This is the Global Payments transaction id returned for the transaction
-          when it was first created. It is used to uniquely identify the transaction.
         required: true
         schema:
-          type: string
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_single_real_time'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server Error
-          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
   /transactions/{id}/refund:
     post:
       tags:
@@ -731,47 +339,41 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/refund_req'
+              $ref: '#/components/schemas/refund_request'
         required: false
+      
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/refund_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server Error
-          content: {}
-      x-codegen-request-body-name: request
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
   /transactions/{id}/reversal:
     post:
       tags:
@@ -835,47 +437,40 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reversal_partial_req'
+              $ref: '#/components/schemas/reversal_partial_request'
         required: false
-      responses:
-        200:
-          description: Success
+        responses:
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/reversal_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server
-          content: {}
-      x-codegen-request-body-name: request
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
   /transactions/{id}/capture:
     post:
       tags:
@@ -912,7 +507,7 @@ paths:
         schema:
           type: string
           default: application/json
-
+ 
       - name: X-GP-Idempotency
         in: header
         description: Field submitted in the request that is used to ensure idempotency
@@ -926,61 +521,53 @@ paths:
         required: true
         schema:
           type: string
+      
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/capture_req'
+              $ref: '#/components/schemas/capture_request'
         required: false
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/capture_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server Error
-          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
       x-codegen-request-body-name: request
+ 
   /transactions/{id}/adjustment:
     post:
       tags:
       - Adjust
-      summary: Adjust an existing transaction. Use this action to change data about
-        a transaction before it is batched. This action does not change the status
-        of a transaction, only the data it contains.
-      description: Adjust an existing transaction. Use this action to change data
-        about a transaction before it is batched. This action does not change the
-        status of a transaction, only the data it contains.
+      summary: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
+      description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
       parameters:
       - name: Authorization
         in: header
@@ -1009,17 +596,15 @@ paths:
         schema:
           type: string
           default: application/json
-
+ 
       - name: X-GP-Idempotency
         in: header
-        description: Field submitted in the request that is used to ensure idempotency
-          is maintained with this action.
+        description: Field submitted in the request that is used to ensure idempotency is maintained with this action.
         schema:
           type: string
       - name: id
         in: path
-        description: This is the Global Payments transaction id returned for the transaction
-          when it was first created.  It is used to identify the transaction to adjust.
+        description: This is the Global Payments transaction id returned for the transaction when it was first created.  It is used to identify the transaction to adjust.
         required: true
         schema:
           type: string
@@ -1027,57 +612,46 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/adjust_req'
+              $ref: '#/components/schemas/adjust_request'
         required: false
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/adjust_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server Error
-          content: {}
-      x-codegen-request-body-name: request
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
   /transactions/{id}/reauthorization:
     post:
       tags:
       - ReAuth
-      summary: This action be to used to refresh the authorization associated with
-        a transaction to get a more recent authcode or reauthorize a transaction reversed
-        in error.
-      description: This action be to used to refresh the authorization associated
-        with a transaction to get a more recent authcode or reauthorize a transaction
-        reversed in error.
+      summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
+      description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       parameters:
       - name: Authorization
         in: header
@@ -1106,19 +680,15 @@ paths:
         schema:
           type: string
           default: application/json
-
+ 
       - name: X-GP-Idempotency
         in: header
-        description: Field submitted in the request that is used to ensure idempotency
-          is maintained with this action.
+        description: Field submitted in the request that is used to ensure idempotency is maintained with this action.
         schema:
           type: string
       - name: id
         in: path
-        description: This is the Global Payments transaction id returned for the transaction
-          when it was first created.  It can also be the reference field submitted
-          in the request by the user. This is to cater for timeout scenarios when
-          the transaction id was never received.
+        description: This is the Global Payments transaction id returned for the transaction when it was first created.  It can also be the reference field submitted in the request by the user. This is to cater for timeout scenarios when the transaction id was never received.
         required: true
         schema:
           type: string
@@ -1126,57 +696,47 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reauth_amount_req'
+              $ref: '#/components/schemas/reauth_amount_request'
         required: false
-      responses:
-        200:
-          description: Success
+        responses:
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/create_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server
-          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+          
       x-codegen-request-body-name: request
+
   /transactions/{id}/confirmation:
     post:
       tags:
       - Confirm
-      summary: For certain transactions created using non-card based payment methods
-        (for example, PayPal), merchants are required to confirm that the transaction
-        has completed  in order for funds to be funds to be transferred.
-      description: For certain transactions created using non-card based payment methods
-        (for example, PayPal), merchants are required to confirm that the transaction
-        has completed  in order for funds to be funds to be transferred.
+      summary: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
+      description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
       parameters:
       - name: Authorization
         in: header
@@ -1208,14 +768,12 @@ paths:
 
       - name: X-GP-Idempotency
         in: header
-        description: Field submitted in the request that is used to ensure idempotency
-          is maintained with this action.
+        description: Field submitted in the request that is used to ensure idempotency is maintained with this action.
         schema:
           type: string
       - name: id
         in: path
-        description: This is the Global Payments transaction id returned for the transaction
-          when it was first created.  It is used to identify the transaction to capture.
+        description: This is the Global Payments transaction id returned for the transaction when it was first created.  It is used to identify the transaction to capture.
         required: true
         schema:
           type: string
@@ -1223,55 +781,46 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/confirm_req'
+              $ref: '#/components/schemas/confirm_request'
         required: false
       responses:
-        200:
-          description: Success
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/confirm_res'
-        400:
-          description: Bad Request
-          content: {}
-        401:
-          description: UnAuthorized
-          content: {}
-        403:
-          description: Forbidden
-          content: {}
-        404:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Server Error
-          content: {}
-      x-codegen-request-body-name: request
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
   /settlement/transactions:
     get:
       tags:
       - Transactions
-      summary: Get a list of funded transactions using filter criteria passed in the
-        query string. Page through the result set to access all records.
-      description: Get a list of transactions using criteria passed in the query string.
-        Page through the result set to access all records.
+      summary: Get a list of funded transactions using filter criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of transactions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
       - name: Authorization
         in: header
@@ -1293,25 +842,23 @@ paths:
         schema:
           type: string
           default: application/json
-
+ 
       - name: page
         in: query
-        description: Indicates the page sequence to return in the response. The number
-          of records presented on each page is determined by page_size field.
+        description: Indicates the page sequence to return in the response. The number of records presented on each page is determined by page_size field.
         schema:
           maximum: 1000
           minimum: 1
           type: number
-          default: 1.0
+          default: 1
       - name: page_size
         in: query
-        description: The total number of objects to return in a single page for that
-          list
+        description: The total number of objects to return in a single page for that list
         schema:
           maximum: 1000
           minimum: 1
           type: number
-          default: 5.0
+          default: 5
       - name: order_by
         in: query
         description: 'The value to order the entire list by. '
@@ -1343,8 +890,7 @@ paths:
           type: string
       - name: deposit_status
         in: query
-        description: "Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,\
-          \ DELAYED, RESERVED, IRREG or RELEASED.\n                 "
+        description: 'Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,DELAYED, RESERVED, IRREG or RELEASED.'
         schema:
           type: string
           enum:
@@ -1356,8 +902,7 @@ paths:
           - RELEASED
       - name: account_name
         in: query
-        description: A unique identifier that identifies the account the search is
-          being executed against.
+        description: A unique identifier that identifies the account the search is being executed against.
         required: true
         schema:
           type: string
@@ -1391,8 +936,7 @@ paths:
           type: string
       - name: reference
         in: query
-        description: wildcard search by the reference the merchant submitted with
-          the transaction.
+        description: wildcard search by the reference the merchant submitted with the transaction.
         schema:
           type: string
       - name: status
@@ -1413,46 +957,39 @@ paths:
           - REJECTED
       - name: from_time_created
         in: query
-        description: The time to search from in a range, using the transaction time
-          created value.
+        description: The time to search from in a range, using the transaction time created value.
         required: true
         schema:
           type: string
           default: "2020-05-01"
       - name: to_time_created
         in: query
-        description: The time to search to in a range, using the transaction time
-          created value.
+        description: The time to search to in a range, using the transaction time created value.
         schema:
           type: string
       - name: deposit_id
         in: query
-        description: 'Identifier that uniquely identifies the Deposit on the Global
-          Payments system. '
+        description: 'Identifier that uniquely identifies the Deposit on the Global Payments system. '
         schema:
           type: string
       - name: from_deposit_time_created
         in: query
-        description: "The time to search from in a range, using the time the deposit\
-          \ was created that contains this transaction.\n                   "
+        description: 'The time to search from in a range, using the time the deposit was created that contains this transaction.'
         schema:
           type: string
       - name: to_deposit_time_created
         in: query
-        description: The time to search to in a range, using the time the deposit
-          was created that contains this transaction.
+        description: The time to search to in a range, using the time the deposit was created that contains this transaction.
         schema:
           type: string
       - name: from_batch_time_created
         in: query
-        description: The time to search from in a range, using the time the batch
-          was created that contains this transaction.
+        description: The time to search from in a range, using the time the batch was created that contains this transaction.
         schema:
           type: string
       - name: to_batch_time_created
         in: query
-        description: The time to search to in a range, using the time the batch was
-          created that contains this transaction.
+        description: The time to search to in a range, using the time the batch was created that contains this transaction.
         schema:
           type: string
       - name: system.mid
@@ -1465,81 +1002,49 @@ paths:
         description: The system merchant hierarchy
         schema:
           type: string
-      responses:
-        200:
-          description: Success
+        responses:
+        '200':
+          description: OK
           headers:
-            Content-type:
-              description: Format of the message.
-              schema:
-                type: string
-                default: application/json
-            Content-Encoding:
-              description: Compression algorithm used in the response.
-              schema:
-                type: string
-                default: gzip
-            X-GP-Version:
-              description: Indicates the version of the GP-API for this message.
-              schema:
-                type: string
-                default: "2020-10-22"
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/transactions_list'
-        400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp400'
-        401:
-          description: Not Authenticated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp401'
-        403:
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp403'
-        404:
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
           description: Resource Not Found
           content: {}
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp500'
-        501:
-          description: Not implemented
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp501'
-        502:
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp502'
-        504:
-          description: Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/errorhttp504'
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
+
+
+
+
+
 components:
-  securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
+ 
+ 
   schemas:
-    request:
+
+    create_request:
       required:
       - account_name
       - amount
@@ -1548,186 +1053,471 @@ components:
       - currency
       - payment_method
       - reference
+
       type: object
       properties:
         account_name:
-          type: string
-          description: A meaningful label for the merchant account set by Global Payments.
-          example: Transaction_Processing
-
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+                                                                               
         type:
-          type: string
-          description: Describes whether the transaction is a SALE, that moves funds
-            from Payer to Merchant, or a REFUND where funds move from Merchant to
-            Payer.
-          example: SALE
-
-          enum:
-          - SALE
-          - REFUND
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+          
         channel:
-          type: string
-          description: Describes whether the transaction was processed in a face to
-            face(CP) scenario or a Customer Not Present (CNP) scenario.
-          example: CNP
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
 
-          enum:
-          - CP
-          - CNP
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+
         capture_mode:
-          type: string
-          description: Indicates whether the transaction is to be captured automatically,
-            later or later using more than 1 partial capture.
-          example: AUTO
-          enum:
-          - AUTO
-          - LATER
-          - MULTIPLE
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
+
         remaining_capture_count:
-          type: number
-          description: Indicates the expected number of partial captures remaining.
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
+
         authorization_mode:
-          type: string
-          description: Indicates if the merchant would like to authorize for an amount
-            less than the intended amount.
-          example: ""
-          enum:
-          - PARTIAL
-          - WHOLE
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
+
         amount:
-          type: string
-          description: The amount the transaction can transfer from Payer to Merchant
-            for a SALE or vice versa for a REFUND.
-          example: "1999"
-
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
         currency:
-          type: string
-          description: The currency of the amount.
-          example: USD
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        gratuity_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
 
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY
+        cashback_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.cashback_amount
+
+        surcharge_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.surcharge_amount
+
+        convenience_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.convenience_amount
+
         reference:
-          type: string
-          description: Merchant defined field to reference the transaction.
-          example: 93459c78-f3f9-427c-84df-ca0584bb55bf
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
 
         description:
-          type: string
-          description: Merchant defined field to describe the transaction.
-          example: SKU#BLK-MED-G123-GUC
-        order_reference:
-          type: string
-          description: Merchant defined field common to all transactions that are
-            part of the same order.
-          example: INV#88547
-        initiator:
-          type: string
-          description: Indicates whether the Merchant or the Payer initiated the creation
-            of a transaction.
-          example: ""
-          enum:
-          - PAYER
-          - MERCHANT
-        gratuity_amount:
-          type: string
-          description: The amount that reflects the portion of the transaction amount
-            that was a gratuity.
-          example: "599"
-        cashback_amount:
-          type: string
-          description: The amount that reflects the portion of the transaction amount
-            that was given to the Payer as cash.
-          example: ""
-        surcharge_amount:
-          type: string
-          description: The amount that reflects the charge the merchant applied to
-            the transaction for using a specific payment method.
-          example: ""
-        convenience_amount:
-          type: string
-          description: The amount that reflects the charge the merchant applied to
-            the transaction for availing of a more convenient purchase.
-          example: ""
-        country:
-          type: string
-          description: Indicates the country associated with the transaction.
-          example: US
-          enum:
-          - US
-          - CA
-          - UK
-          - '...'
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
+        
         language:
-          type: string
-          description: Indicates the language the transaction was executed in. In
-            the format ISO-639(alpha-2) or ISO-639(alpha-2)-ISO-3166(alpha-2)
-          example: ""
-          enum:
-          - en
-          - en-US
-          - fr
-          - fr-CA
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/language
+
+
         ip_address:
-          type: string
-          description: 'Indicates the source IP Address of the system used to create
-            the transaction. '
-          example: 123.123.123.123
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/ip_address
+  
         site_reference:
-          type: string
-          description: 'A merchant defined reference for the location (for example,
-            store) that created the transaction. '
-          example: ""
-        payment_method:
-          $ref: '#/components/schemas/payment_method_req'
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
+
+      
+        order_reference:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
+
+        initiator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator          
         stored_credential:
-          $ref: '#/components/schemas/stored_credential'
+          $ref: './models/schema_objects.v1.yaml#/components/schemas/stored_credential'
+
+
+        payment_method:
+          $ref: '#/components/schemas/payment_method_request'
+        
+       
+
+
+
         installment:
-          $ref: '#/components/schemas/installment_req'
+          $ref: '#/components/schemas/installment_request'
+               
+    create_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
+
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+        
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
+          
+        channel:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+
+        capture_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
+
+        ##REVISIT##
+        authorization_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
+
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+    
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        
+        reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+                                                                    
+        batch_id:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
+       
+        payment_method:
+          $ref: '#/components/schemas/payment_method_response'
+       
+        installment:
+          $ref: '#/components/schemas/installment_response'
+       
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    
+    payment_method_request:
+      type: object
+      properties:                
+        first_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
+        last_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+
+        
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
+        encryption:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
+        authentication:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication
+        digital_wallet:
+          $ref: '#/components/schemas/digital_wallet'
+        apm:
+          $ref: '#/components/schemas/apm_request'
+        card:
+          $ref: '#/components/schemas/card_request'
+          
+    payment_method_response:
+      type: object
+      properties:
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
+        message:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+
+        authentication:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication_response
+        digital_wallet:
+          $ref: '#/components/schemas/digital_wallet'
+        apm:
+          $ref: '#/components/schemas/apm_response'
+        card:
+          $ref: '#/components/schemas/card_response'
+    
+    card_request:
+      type: object
+      properties:
+        number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+        track:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.track
+        tag:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
+        chip_condition:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.chip_condition
+        pin_block:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.pin_block
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+        funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
+        authcode:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        brand_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+  
+    card_response:
+      type: object
+      properties:
+        masked_number_last4:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
+       
+        tag_response:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag_response
+        authcode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        
+        brand:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+
+        brand_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+
+        brand_time_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_time_reference
+        
+        cvv_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
+
+        avs_address_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
+
+        avs_postal_code_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
+
+        avs_action:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
+         
+    digital_wallet:
+      type: object
+      properties:
+        token:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
+        token_format:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_format
+          
+        cryptogram:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.cryptogram
+        provider:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.provider
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+        eci:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/eci
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+
+    ### just amount in the request
+    change_amount_request:
+      type: object
+      properties:
+        amount: ##REVISIT - include reference##
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+    change_amt_tag_request:
+      type: object
+      properties:
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        gratuity_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
+        payment_method:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
 
 
+    existing_transaction_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
+
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+        
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
+          
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+    
+        reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+                                                                    
+        batch_id:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
+       
+        payment_method:
+          $ref: '#/components/schemas/existing_transaction_payment_method_response'
+       
+       
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    existing_transaction_payment_method_response:
+      type: object
+      properties:
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
+                           
+        message:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
+                  
+        card:
+          $ref: '#/components/schemas/existing_transaction_card_response'
+    existing_transaction_card_response:
+      type: object
+      properties:
+        authcode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        brand_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+   
+     confirm_request:
+      type: object
+      properties:
+        payment_method:
+          $ref: '#/components/schemas/payment_method_secondary_apm'
+    
+    payment_method_secondary_apm:
+      type: object
+      properties:
+        apm:
+          $ref: '#/components/schemas/payment_method_secondary_apm_fields'
+    payment_method_secondary_apm_fields:
+      type: object
+      properties:
+        provider:
+          type: string
+          description: A string used to identify the payment method being used with
+            the transaction.
+          example: PAYPAL
+                 
+          enum:
+          - PAYPAL
+          - SOFORT
+          - IDEAL
+          - GIROPAY
+          - '...'
+        provider_payer_reference:
+          type: string
+          description: The payer reference from the payment method system.
+          example: CUST_12345
+      description: Data associated with an APM.
+ 
+    confirm_response:
+      type: object
+      properties:
+        payment_method:
+          $ref: '#/components/schemas/apm_response_secondary'
+    apm_response_secondary:
+      type: object
+      properties:
+        apm:
+          $ref: '#/components/schemas/apm_response_secondary_fields'
+    apm_response_secondary_fields:
+      type: object
+      properties:
+        provider:
+          type: string
+          description: A string used to identify the payment method being used with
+            the transaction.
+          example: PAYPAL
+                 
+          enum:
+          - PAYPAL
+          - SOFORT
+          - IDEAL
+          - GIROPAY
+          - '...'
+        provider_transaction_reference:
+          type: string
+          description: The reference the payment method provider created for the transaction.
+          example: 49wnfs9w434234
+        provider_time_created:
+          type: string
+          description: The time the payment method provider created the transaction
+            at on their system.
+          example: 49wnfs9w434234
+        provider_payer_name:
+          type: string
+          description: A name of the payer from the payment method system.
+          example: James Mason
+      description: Data associated with the response of an APM transaction.
+   
 
 
-    create_res:
+    notifications:
+      type: object
+      properties:
+        return_url:
+          example: 'https://www.example.com/notifications/return'
+          type: string
+          description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
+        status_url:
+          example: 'https://www.example.com/notifications/status'
+          type: string
+          description: The merchant URL to notify the merchant of the latest status of the transaction.
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+    notification_post_response:
       type: object
       properties:
         id:
           type: string
           description: A unique identifier generated by Global Payments to identify
-            the transaction.
+            the Transaction.
+          example: "TRN_JOGrqvzOvbLy4V2n7cHsusYy8aainM"
         time_created:
           type: string
-          description: Global Payments time indicating when the transaction was first
+          description: Global Payments time indicating when the Transaction was first
             created. Value is in ISO-8601 format and in UTC.
+          example: "2020-04-20T13:17:21.914Z"
         type:
           type: string
           description: Describes whether the transaction is a SALE, that moves funds
             from Payer to Merchant, or a REFUND where funds move from Merchant to
             Payer.
           example: SALE
-
           enum:
           - SALE
           - REFUND
         status:
           type: string
-          description: Indicates the current state the transaction is in in its life-cycle.
+          description: Indicates the current state of the transaction.
           enum:
           - DECLINED
           - PREAUTHORIZED
           - CAPTURED
           - BATCHED
           - REVERSED
+          example: CAPTURED
         channel:
           type: string
           description: Describes whether the transaction was processed in a face to
             face(CP) scenario or a Customer Not Present (CNP) scenario.
           example: CP
-
           enum:
           - CP
           - CNP
@@ -1735,32 +1525,40 @@ components:
           type: string
           description: Indicates whether the transaction is to be captured later or
             captured automatically.
-          example: LATER
           enum:
           - AUTO
           - LATER
+          example: "AUTO"
         amount:
           type: string
           description: The amount the transaction can transfer from Payer to Merchant
             for a SALE or vice versa for a REFUND.
           example: "1999"
-          default: "1999"
         currency:
           type: string
           description: The currency of the amount.
           example: USD
-          default: USD
           enum:
           - USD
           - CAD
           - SBD
           - EUR
-          - JPY
+          - JPY- '...'
+        country:
+          type: string
+          description: Indictes whether the Merchant or the Payer initiated the creation
+            of a Transaction. In ISO 3166-1(alpha-2 code) format.
+          enum:
+          - US
+          - CA
+          - UK
+          - '...'
+          example: "US"
         merchant_id:
           type: string
           description: A unique identifier generated by Global Payments to identify
             the Merchant.
-          example: MER_c4c0df11039c48a9b63701adeaa296c3
+          example: MER_cf4e1008-c921-4096-bec9-2372cb9476d8
         merchant_name:
           type: string
           description: A meaningful label generated by Global Payments to identify
@@ -1770,7 +1568,7 @@ components:
           type: string
           description: A unique identifier generated by Global Payments to identify
             the Merchant's transaction processing configuration.
-          example: TRA_6716058969854a48b33347043ff8225f
+          example: TRA_cf4e1008-c921-4096-bec9-2372cb9476d8
         account_name:
           type: string
           description: A meaningful label generated by Global Payments to identify
@@ -1778,66 +1576,23 @@ components:
           example: Transaction_Processing
         reference:
           type: string
-          description: Merchant defined field to reference the transaction.
+          description: Merchant defined field to reference the Transaction.
           example: MY-TRANS-20190924123456
-
         batch_id:
           type: string
           description: Reference that uniquely identifies the batch the transaction
             is in. Only CAPTURED transactions have a valid batch_id.
+          example: ""
         payment_method:
-          $ref: '#/components/schemas/payment_method_res'
-        installment:
-          $ref: '#/components/schemas/installment_res'
+          $ref: '#/components/schemas/payment_method_not_response'
         action:
-          $ref: '#/components/schemas/action_transaction'
-    payment_method_req:
-      type: object
-      properties:
-        first_name:
-          type: string
-          description: Specify the first name of the owner of the payment method.
-          example: James
-        last_name:
-          type: string
-          description: Specify the surname of the owner of the payment method.
-          example: Mason
-        entry_mode:
-          type: string
-          description: Indicates how the payment method information was obtained by
-            the Merchant for this transaction.
-          example: ECOM
-
-          enum:
-          - MOTO
-          - ECOM
-          - IN_APP
-          - CHIP
-          - SWIPE
-          - MANUAL
-          - CONTACTLESS_CHIP
-          - CONTACTLESS_SWIPE
-        id:
-          type: string
-          description: Unique reference of a stored payment method to use to create
-            a Sale or Refund transaction, instead of the actual payment method details.
-          example: PMT_31087d9c-e68c-4389-9f13-39378e166ea5
-        encryption:
-          $ref: '#/components/schemas/encryption'
-        authentication:
-          $ref: '#/components/schemas/authentication_req'
-        digital_wallet:
-          $ref: '#/components/schemas/digital_wallet'
-        apm:
-          $ref: '#/components/schemas/apm_req'
-        card:
-          $ref: '#/components/schemas/card_req'
-    payment_method_res:
+           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    payment_method_not_response:
       type: object
       properties:
         result:
           type: string
-          description: Result code from the payment method provider.
+          description: IIn payment_method] Result code from the payment method provider.
         message:
           type: string
           description: Result message from the payment method provider corresponding
@@ -1845,7 +1600,7 @@ components:
         entry_mode:
           type: string
           description: 'Indicates how the payment method information was obtained
-            by the Merchant for this transaction. '
+            by the Merchant for this Transaction. '
           example: SWIPE
           default: SWIPE
           enum:
@@ -1857,951 +1612,184 @@ components:
           - MANUAL
           - CONTACTLESS_CHIP
           - CONTACTLESS_SWIPE
-        authentication:
-          $ref: '#/components/schemas/authentication_res'
-        digital_wallet:
-          $ref: '#/components/schemas/digital_wallet'
         apm:
-          $ref: '#/components/schemas/apm_res'
-        card:
-          $ref: '#/components/schemas/card_res'
-    authentication_req:
+          $ref: '#/components/schemas/apm_not_response'
+ 
+    device:
       type: object
       properties:
-        xid:
+        time:
           type: string
-          description: The unique identifier for the 3D Secure details obtained for
-            this transaction.
-          example: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-        cavv:
+          description: The time from the device in ISO8601 format
+        sequence_number:
           type: string
-          description: A CNP Card transaction's 3D Secure Customer Authentication
-            Verification Value that is used to determine and validate the degree of
-            authentication executed for this transaction.
-          example: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-        eci:
-          type: string
-          description: An indication of the degree of the authentication and liability
-            shift obtained for this transaction.
-          example: "5"
-          enum:
-          - "0"
-          - "1"
-          - "2"
-          - "3"
-          - "4"
-          - "5"
-          - "6"
-          - "7"
-        mac:
-          type: string
-          description: A message authentication code submitted to confirm integrity
-            of the request.
-          example: ""
-    authentication_res:
+          description: The sequence number from the device used to align with processing
+            platform.
+      description: Data relating to a device used to facilitate the transaction.
+    mandate:
       type: object
       properties:
-        cavv_result:
+        reference:
           type: string
-          description: A transaction's card brand result for CAVV validation.
-          enum:
-          - FAILED
-          - FAILED_AUTHENTICATION
-          - SUCCESS_AUTHENTICATION
-          - SUCCESS_ATTEMPT
-          - FAILED_ATTEMPT
-          - FAILED_NOT_VALIDATED
-          - INFO_SUCCESS
-    encryption:
+          description: The reference to identify the mandate.
+          example: REF-MAN-341DE
+          default: 'REF-MAN-341DE        '
+      description: Data of a mandate between a payment method provider and a payer.
+    apm_request:
       type: object
       properties:
-        method:
-          type: string
-          description: The encryption method used when sending encrypted card data
-            to Global Payments.
-          example: ""
-          enum:
-          - KTB
-          - KSN
-        version:
-          type: string
-          description: The version of encryption being used.
-          example: ""
-        info:
-          type: string
-          description: 'The encryption info used when sending encrypted card data
-            to Global Payments. '
-          example: ""
-    card_req:
-      type: object
-      properties:
-        number:
-          type: string
-          description: 'The the card account number used to authorize the transaction. '
-          example: "4263970000005262"
-        expiry_month:
-          type: string
-          description: '2 digit expiry date month. '
-          example: "05"
-        expiry_year:
-          type: string
-          description: 2 digit expiry date year.
-          example: "25"
-        track:
-          type: string
-          description: Data taken from the card's magnetic stripe via swipe or via
-            a contactless tap using a terminal device.
-          example: ""
-        tag:
-          type: string
-          description: The full card tag data for an EMV/chip card transaction.
-          example: ""
-        chip_condition:
-          type: string
-          description: Indicates if a fallback mechanism was used to obtain the card
-            information when EMV/chip did not work as expected.
-          example: ""
-          enum:
-          - PREV_SUCCESS
-          - PREV_FAILED
-        pin_block:
-          type: string
-          description: Contains the pin block info, relating to the pin code the Payer
-            entered.
-          example: ""
-        cvv:
-          type: string
-          description: Card Verification Value numeric value printed on the physical
-            card.
-          example: "852"
-        cvv_indicator:
-          type: string
-          description: Card Verification Value Indicator sent by the Merchant indicating
-            the CVV availability.
-          example: PRESENT
-          enum:
-          - ILLEGIBLE
-          - NOT_PRESENT
-          - PRESENT
-        avs_address:
-          type: string
-          description: The AVS address data needed to verify the address that's associated
-            with a card.
-          example: Flat 123
-        avs_postal_code:
-          type: string
-          description: The AVS postal code data needed to verify the postcode of the
-            address that's associated with a card.
-          example: "50001"
-        funding:
-          type: string
-          description: Indicates whether the card payment method is a Debit or Credit
-            card.
-          example: ""
-          enum:
-          - DEBIT
-          - CREDIT
-        authcode:
-          type: string
-          description: Card Authorization code obtained via another means that forces
-            the transaction to be captured and bypasses online authorization when
-            creating the transaction.
-          example: ""
-        brand_reference:
-          type: string
-          description: The reference created by the schemes to uniquely identify the
-            transaction on their system.
-          example: ""
-      description: Data relating to the card payment method.
-    card_res:
-      type: object
-      properties:
-        masked_number_last4:
-          type: string
-          description: 'Masked card number with last 4 digits showing. minimum: 12
-            maximum: 19'
-        tag_response:
-          type: string
-          description: The card tag response data from the card issuer for a contactless
-            or chip card transaction.
-        authcode:
-          type: string
-          description: Card Authorization code for successfully authorized transactions.
-        brand:
-          type: string
-          description: Indicates the card brand that issued the card.
-          enum:
-          - VISA
-          - MASTERCARD
-          - AMEX
-          - DINERS
-          - DISCOVER
-          - JCB
-        brand_reference:
-          type: string
-          description: Card brand reference for this transaction.
-        brand_time_reference:
-          type: string
-          description: The time returned by the card brand.
-        cvv_result:
-          type: string
-          description: The result of the CVV check.
-          enum:
-          - MATCHED
-          - NOT_MATCHED
-          - NOT_CHECKED
-        avs_address_result:
-          type: string
-          description: The result of the AVS address check.
-          enum:
-          - MATCHED
-          - NOT_MATCHED
-          - NOT_CHECKED
-        avs_postal_code_result:
-          type: string
-          description: The AVS postal code result indicating the result of the postal
-            code check.
-          enum:
-          - MATCHED
-          - NOT_MATCHED
-          - NOT_CHECKED
-        avs_action:
-          type: string
-          description: The recommended AVS action based on the AVS results.
-          enum:
-          - PROMPT
-          - DECLINE
-          - ACCEPT
-      description: Data relating to the card payment method.
-    digital_wallet:
-      type: object
-      properties:
-        token:
-          type: string
-          description: A token that represents or is the payment method stored with
-            the digital wallet.
-          example: ""
-        token_format:
-          type: string
-          description: Indicates if the actual card number or a tokenized card number
-            is being used to process the transaction.
-          example: ""
-          enum:
-          - CARD_NUMBER
-          - CARD_TOKEN
-        cryptogram:
-          type: string
-          description: The authentication value use to verify the validity of the
-            transaction.
-          example: ""
         provider:
           type: string
-          description: This identifies who provides the digital wallet for the Payer.
-          example: ""
-          enum:
-          - APPLEPAY
-          - PAY_BY_GOOGLE
-        expiry_month:
-          type: string
-          description: 2 digit expiry date month.
-          example: ""
-        expiry_year:
-          type: string
-          description: 2 digit expiry date year.
-          example: ""
-        eci:
-          type: string
-          description: An indication of the degree of the authentication and liability
-            shift obtained for this transaction.
-          example: ""
-          enum:
-          - "0"
-          - "1"
-          - "2"
-          - "3"
-          - "4"
-          - "5"
-          - "6"
-          - "7"
-        cvv:
-          type: string
-          description: Card Verification Value numeric value printed on the physical
-            card.
-          example: ""
-        cvv_indicator:
-          type: string
-          description: Card Verification Value Indicator sent by the Merchant indicating
-            the CVV availability.
-          example: ""
-          enum:
-          - ILLEGIBLE
-          - NOT_PRESENT
-          - PRESENT
-        avs_address:
-          type: string
-          description: The AVS address data needed to verify the address that's associated
-            with a card.
-          example: ""
-        avs_postal_code:
-          type: string
-          description: The AVS postal code data needed to verify the postcode of the
-            address that's associated  with a card.
-          example: ""
-      description: Presence indicates a digital wallet payment method for this transaction.
-    refund_req:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The amount of the original transaction to refund. If no amount
-            submitted, a refund for the full amount is created.
-          example: "599"
-
-    refund_res:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
+          description: A string used to identify the payment method being used with
             the transaction.
-        time_created:
-          type: string
-          description: Global Payments time indicating when the transaction was first
-            created. Value is in ISO-8601 format and in UTC.
-        type:
-          type: string
-          description: Describes whether the transaction is a SALE, that moves funds
-            from Payer to Merchant, or a REFUND where funds move from Merchant to
-            Payer.
-          enum:
-          - SALE
-          - REFUND
-        status:
-          type: string
-          description: Indicates the current state the transaction is in in its life-cycle.
-          enum:
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-        capture_mode:
-          type: string
-          description: Indicates whether the transaction is to be captured later or
-            captured automatically.
-          enum:
-          - AUTO
-          - LATER
-        amount:
-          type: string
-          description: The amount the transaction can transfer from Payer to Merchant
-            for a SALE or vice versa for a REFUND.
-        currency:
-          type: string
-          description: The currency of the amount.
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY.
-        merchant_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant.
-          example: MER_c4c0df11039c48a9b63701adeaa296c3
-        merchant_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant.
-          example: Sandbox_merchant_2
-        account_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant's transaction processing configuration.
-          example: TRA_6716058969854a48b33347043ff8225f
-        account_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant's configuration account.
-          example: Transaction_Processing
-        reference:
-          type: string
-          description: Merchant defined field to reference the transaction.
-        batch_id:
-          type: string
-          description: Reference that uniquely identifies the batch the transaction
-            is in. Only CAPTURED transactions have a valid batch_id.
-        payment_method:
-          $ref: '#/components/schemas/payment_method_secondary_more'
-        action:
-          $ref: '#/components/schemas/action_transaction'
-    reversal_partial_req:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The amount to reverse from the original transaction. If no
-            amount submitted, a full reversal is executed for the full amount of the
-            transaction.
-          example: "599"
-
-    reauth_amount_req:
-      type: object
-      properties:
-        amount:
-          type: string
-
-          description: The amount to reauthorize. If no amount is submitted, an authorization
-            is executed for the full amount of the original Sale transaction.
-          example: "1999"
-
-    reversal_res:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments that uniquely
-            identifies the transaction being reversed.
-          example: TRN_twcCIUOaLcXbs6uwE3tIHNTIdQzq4W
-
-        time_created:
-          type: string
-          description: The time the transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        type:
-          type: string
-          description: Indicates the specific type of transaction, either SALE or
-            REFUND.
-          default: SALE
-          enum:
-          - SALE
-          - REFUND
-        status:
-          type: string
-          description: Indicates the state of the transaction in its lifecycle.
-          default: REVERSED
-          enum:
-          - REVERSED
-          - PREAUTHORIZED
-          - CAPTURED
-        amount:
-          type: string
-          description: If the status of the transaction is REVERSED, this amount represents
-            the amount that has been reversed of the original transaction value.  If
-            the status of the transaction is not REVERSED, this amount represents
-            the remaining amount available to transfer between Payer and Merchant.
-          example: "599"
-
-        currency:
-          type: string
-          description: The currency of the amount the transaction can currently be
-            transferred from Payer to Merchant for a SALE, or vice versa for a REFUND.
-          example: USD
-
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY
-          - etc.
-        reference:
-          type: string
-          description: Merchant populated field enabling Merchant to identify this
-            transaction using a unique reference meaningful to them.
-          example: TRANS-2018121212385
-
-        paymentmethod:
-          $ref: '#/components/schemas/reversal_res_payment_method'
-        batch_id:
-          type: string
-          description: Global Payments generated id to uniquely identify an instance
-            of a Batch Resource associated with this transaction. This identifies
-            the group of transactions aggregated together have a period of transaction
-            processing, usually daily.
-          example: BAT_499417_124
-        action:
-          $ref: '#/components/schemas/reversal_res_action'
-    reversal_res_payment_method:
-      type: object
-      properties:
-        result:
-          type: string
-          description: Result code from the issuer.
-          example: "00"
-
-        message:
-          type: string
-          description: Result message from payment method provider
-          example: APPROVAL
-
-        card:
-          $ref: '#/components/schemas/reversal_res_card'
-    reversal_res_card:
-      type: object
-      properties:
-        authcode:
-          type: string
-          description: Authcode generated by the issuer
-          example: ""
-        brand_reference:
-          type: string
-          description: The reference created by the schemes to uniquely identify the
-            transaction on their system.
-          example: ""
-    reversal_res_action:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to uniquely
-            identify an particular action on a transaction.
-          example: ACT_5blBTHnIs4aOCIvGwG7KizYUpsGI0g
-
-        type:
-          type: string
-          description: type of the action performed on transaction
-          example: REVERSE
-
-          enum:
-          - CAPTURE
-          - AUTHORIZE
-          - PREAUTHORIZE
-          - REVERSE
-
-          - ADJUST
-          - REFUND
-          - FORCE
-          - REAUTHORIZE
-          - MULTIPLE_CAPTURE
-          - INITIATE
-          - CONFIRM
-          - TRANSACTION_SINGLE
-          - TRANSACTION_LIST
-        time:
-          type: string
-          description: The time transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        result_code:
-          type: string
-          description: result of the transaction action.
-          example: SUCCESS
-
-          enum:
-          - SUCCESS
-          - DECLINE
-        app_id:
-          type: string
-          description: The App id used to create the token for this request.
-          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        app_name:
-          type: string
-          description: The App Name used to create the token for this request.
-          example: demo_app
-    adjust_req:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The amount to adjust the original transaction for.
-          example: "599"
-
-        gratuity_amount:
-          type: string
-          description: The amount that reflects the portion of the transaction amount
-            that was a gratuity.
-          example: ""
-        payment_method:
-          $ref: '#/components/schemas/payment_method_secondary_card_tag'
-    adjust_res:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to uniquely
-            identify an instance of a primary sale transaction Resource
-
-          example: TRN_sfsdfsdf30590378208111
-
-        time_created:
-          type: string
-          description: The time transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        type:
-          type: string
-          description: Indicates the specific type of transaction, either SALE or
-            REFUND.
-          example: SALE
-
-          enum:
-          - SALE
-          - REFUND
-        status:
-          type: string
-          description: Indicates the state of the transaction in its lifecycle.
-          example: REVERSED
-
-          enum:
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-        amount:
-          type: string
-          description: The amount that the user wants to reverse back from a sale
-            amount.
-          example: "5000"
-
-        currency:
-          type: string
-          description: The currency of the amount the transaction can currently be
-            transferred from Payer to Merchant for a SALE or vice versa for a REFUND.
-          example: USD
-
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY
-          - etc.
-        reference:
-          type: string
-          description: Merchant populated field enabling Merchant to identify this
-            transaction using a unique reference meaningful to them.
-          example: TRANS-2018121212385
-
-        batch_id:
-          type: string
-          description: Global Payments generated id to uniquely identify an instance
-            of a Batch Resource associated with this transaction. This identifies
-            the group of transactions aggregated together have a period of transaction
-            processing, usually daily.
-          example: BAT_499417_124
-
-        action:
-          $ref: '#/components/schemas/adjust_res_action'
-    adjust_res_action:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to uniquely
-            identify an particular action on a transaction
-          example: ACT_5blBTHnIs4aOCIvGwG7KizYUpsGI0g
-
-        type:
-          type: string
-          description: type of the action performed on transaction
-          example: REVERSE
-          enum:
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-
-        time:
-          type: string
-          description: The time transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        result_code:
-          type: string
-          description: result of the transaction
-          example: SUCCESS
-
-          enum:
-          - SUCCESS
-          - DECLINE
-        app_id:
-          type: string
-          description: The App id used to create the token for this request.
-          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        app_name:
-          type: string
-          description: The App Name used to create the token for this request.
-          example: demo_app
-    capture_req:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The amount to capture from the original transaction. If no
-            amount is submitted, a capture for the full amount is executed. The transaction
-            can be captured for a lower or higher amount.
-          example: "599"
-
-        gratuity_amount:
-          type: string
-          description: The amount that reflects the portion of the transaction amount
-            that was a gratuity.
-          example: ""
-        payment_method:
-          $ref: '#/components/schemas/payment_method_secondary_card_tag'
-    capture_res:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to uniquely
-            identify an instance of a primary sale transaction Resource
-
-          example: TRN_rrt-3656503062268533360-b-gce-30590-37820811-1
-
-        time_created:
-          type: string
-          description: The time transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        type:
-          type: string
-          description: Indicates the specific type of transaction, either SALE , REFUND
-            or REVERSE.
-          example: SALE
-          enum:
-          - SALE
-          - REFUND
-        status:
-          type: string
-          description: Indicates the state of the transaction in its lifecycle.
-          example: CAPTURED
-          enum:
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-        amount:
-          type: string
-          description: The amount that the user wants to capture from a pre-authorized
-            amount.
-          example: "5000"
-
-        currency:
-          type: string
-          description: The currency of the amount the transaction can currently be
-            transferred from Payer to Merchant for a SALE or vice versa for a REFUND.
-          example: USD
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY
-        reference:
-          type: string
-          description: Merchant populated field enabling Merchant to identify this
-            transaction using a unique reference meaningful to them.
-          example: TRANS-2018121212385
-
-        paymentmethod:
-          $ref: '#/components/schemas/capture_res_payment_method'
-        batch_id:
-          type: string
-          description: Global Payments generated id to uniquely identify an instance
-            of a Batch Resource associated with this transaction. This identifies
-            the group of transactions aggregated together have a period of transaction
-            processing, usually daily.
-          example: BAT_353219-33
-
-        action:
-          $ref: '#/components/schemas/capture_res_action'
-    capture_res_payment_method:
-      type: object
-      properties:
-        result:
-          type: string
-          description: Result code from the issuer
-          example: "00"
-
-        message:
-          type: string
-          description: Result message from payment method provider
-          example: APPROVAL
-        card:
-          $ref: '#/components/schemas/capture_res_card'
-    capture_res_card:
-      type: object
-      properties:
-        authcode:
-          type: string
-          description: Authcode generated by the issuer
-          example: VI0000
-
-        brand_reference:
-          type: string
-          description: The reference created by the schemes to uniquely identify the
-            transaction on their system
-          example: "019056200003826"
-
-    capture_res_action:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to uniquely
-            identify an particular action on a transaction
-          example: ACT_5blBTHnIs4aOCIvGwG7KizYUpsGI0g
-
-        type:
-          type: string
-          description: type of the action performed on transaction
-          example: CAPTURE
-
-          enum:
-          - CAPTURE
-          - AUTHORIZE
-          - PREAUTHORIZE
-          - REVERSE
-          - ADJUST
-          - REFUND
-          - FORCE
-          - REAUTHORIZE
-          - MULTIPLE_CAPTURE
-          - INITIATE
-          - CONFIRM
-          - TRANSACTION_SINGLE
-          - TRANSACTION_LIST
-        time:
-          type: string
-          description: The time transaction object was created on the Global Payments
-            system
-          example: "2019-02-25T11:54:59.886Z"
-
-        result_code:
-          type: string
-          description: result of the transaction
-          example: SUCCESS
-
-          enum:
-          - SUCCESS
-          - DECLINE
-        app_id:
-          type: string
-          description: The App id used to create the token for this request.
-          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        app_name:
-          type: string
-          description: The App Name used to create the token for this request.
-          example: demo_app
-    payment_method_secondary:
-      type: object
-      properties:
-        result:
-          type: string
-          description: Result code from the payment method provider.
-        message:
-          type: string
-          description: Result message from the payment method provider corresponding
-            to the result code.
-        card:
-          $ref: '#/components/schemas/card_secondary'
-      description: Data relating to the payment method.
-    card_secondary:
-      type: object
-      properties:
-        authcode:
-          type: string
-          description: Card Authorization code for successfully authorized transactions.
-        brand_reference:
-          type: string
-          description: Card brand reference for this transaction.
-      description: Data relating to a card payment method.
-    payment_method_secondary_card_tag:
-      type: object
-      properties:
-        card:
-          $ref: '#/components/schemas/card_secondary_tag'
-      description: Data relating to the payment method.
-    card_secondary_tag:
-      type: object
-      properties:
-        tag:
-          type: string
-          description: The full card tag data sent to Global Payments for a Card Present
-            transaction and returned in the response.
-          example: ""
-      description: Data relating to a card payment method.
-    payment_method_secondary_more:
-      type: object
-      properties:
-        result:
-          type: string
-          description: Result code from the payment method provider.
-        message:
-          type: string
-          description: Result message from the payment method provider corresponding
-            to the result code.
-        card:
-          $ref: '#/components/schemas/card_secondary_more'
-      description: Data relating to the payment method.
-    card_secondary_more:
-      type: object
-      properties:
-        brand:
-          type: string
-          description: Indicates the card brand that issued the card.
-          enum:
-          - VISA
-          - MASTERCARD
-          - AMEX
-          - DINERS
-          - DISCOVER
-          - JCB
-        brand_reference:
-          type: string
-          description: Card brand reference for this transaction.
-        masked_number_last4:
-          type: string
-          description: Masked card number with last 4 digits showing.
-        authcode:
-          type: string
-          description: Card Authorization code for successfully authorized transactions.
-      description: Data relating to a card payment method.
-    stored_credential:
-      type: object
-      properties:
-        model:
-          type: string
-          description: The transaction processing model that requires the stored credentials.
           example: ""
           enum:
-          - UNSCHEDULED
-          - RECURRING
-          - SUBSCRIPTION
-          - INSTALLMENT
-        reason:
+          - PAYPAL
+          - SOFORT
+          - IDEAL
+          - GIROPAY
+          - '...'
+      description: Data associated with an APM.
+  
+    apm_response:
+      type: object
+      properties:
+        provider:
           type: string
-          description: The reason for using the stored credentials to create a transaction.
-          example: ""
+          description: A string used to identify the payment method being used with
+            the transaction.
+          example: PAYPAL
+                 
           enum:
-          - INCREMENTAL
-          - RESUBMISSION
-          - REAUTHORIZATION
-          - DELAYED
-          - NO_SHOW
-        sequence:
+          - PAYPAL
+          - SOFORT
+          - IDEAL
+          - GIROPAY
+          - '...'
+        redirect_url:
           type: string
-          description: For repeat transaction processing models like, RECURRING, SUBSCRIPTION
-            and INSTALLMENT, the position of this transaction in that repeat sequence.
-          example: ""
+          description: URL to redirect the payer from the merchant's system to the
+            payment method's system.
+        session_token:
+          type: string
+          description: 'A string generated by the payment method to represent the
+            session created on the payment method''s platform to facilitate the creation
+            of a transaction. '
+          example: EC-0SR89134FA420913U
+        fund_status:
+          type: string
+          description: 'A string generated by the payment method that represents to
+            what degree the merchant is funded for the transaction. '
+          example: RECEIVED
           enum:
-          - FIRST
-          - SUBSEQUENT
-          - LAST
-      description: Stored data information used to create a transaction.
-    installment_req:
+          - NOT_EXPECTED
+          - RECEIVED
+          - WAITING
+          - MISSING
+        wait_notification:
+          maximum: 1
+          type: number
+          description: 'This field indicates whether it''s appropriate to keep the
+            payer waiting for an update at the time the transaction is being executed
+            or to indicate to the payer that a update will be given later. '
+          example: 0
+        optional_redirect:
+          maximum: 1
+          type: number
+          description: 'Indicates that a redirect to the payment method is not required.
+            Some payment methods (for example, SEPA DirectDebit) provide the option
+            to redirect the customer to a page to display additional information about
+            the payment. '
+          example: 1
+        provider_transaction_reference:
+          type: string
+          description: The reference the payment method provider created for the transaction.
+          example: 49wnfs9w434234
+        provider_time_created:
+          type: string
+          description: The time the payment method provider created the transaction
+            at on their system.
+          example: 49wnfs9w434234
+        provider_payer_name:
+          type: string
+          description: A name of the payer from the payment method system.
+          example: James Mason
+                                              
+        bank:
+          $ref: '#/components/schemas/bank'
+        mandate:
+          $ref: '#/components/schemas/mandate'
+      description: Data associated with the response of an APM transaction.
+    apm_not_response:
+      type: object
+      properties:
+        provider:
+          type: string
+          description: A string used to identify the payment method being used with
+            the transaction.
+          example: PAYPAL
+          default: PAYPAL
+          enum:
+          - PAYPAL
+          - SOFORT
+          - IDEAL
+          - GIROPAY
+          - '...'
+        wait_notification:
+          maximum: 1
+          type: number
+          description: 'This field indicates whether it''s appropriate to keep the
+            payer waiting for an update at the time the transaction is being executed
+            or to indicate to the payer that a update will be given later. '
+          example: 0
+        fund_status:
+          type: string
+          description: 'A string generated by the payment method that represents to
+            what degree the merchant is funded for the transaction. '
+          example: RECEIVED
+          enum:
+          - NOT_EXPECTED
+          - RECEIVED
+          - WAITING
+          - MISSING
+        payment_description:
+          type: string
+          description: The reference the payment method provider created for the transaction.
+          example: 49wnfs9w434234
+        confirmed_accountholder:
+          type: string
+          description: A name of the payer from the payment method system.
+          example: Jimmy Nail
+          default: Jimmy Nail
+        account_number:
+          type: string
+          description: The local identifier of the bank account.
+        iban:
+          type: string
+          description: The international identifier of the bank account.
+        bank_identifier_code:
+          type: string
+          description: The international identifier code for the bank.
+        bank_name:
+          type: string
+          description: The name of the bank.
+          example: High Street Bank
+        bank_address:
+          type: string
+          description: The address of the bank.
+          example: Bond St. America
+        optional_redirect:
+          maximum: 1
+          type: number
+          description: 'Indicates that a redirect to the payment method is not required.
+            Some payment methods (for example, SEPA DirectDebit) provide the option
+            to redirect the customer to a page to display additional information about
+            the payment. '
+          example: 1
+      description: Data associated with an APM.           
+       
+   
+    installment_request:
       type: object
       properties:
         program:
@@ -2813,10 +1801,10 @@ components:
           - mSIP
           - HSBC
         term:
-          $ref: '#/components/schemas/term_req'
+          $ref: '#/components/schemas/term_request'
       description: Information to create a transaction that relates to an installment
         payment plan.
-    term_req:
+    term_request:
       type: object
       properties:
         id:
@@ -2838,7 +1826,7 @@ components:
             the installment payment plan.
           example: ""
       description: information relating to the terms of the installment payment plan.
-    installment_res:
+    installment_response:
       type: object
       properties:
         program:
@@ -2849,9 +1837,9 @@ components:
           - mSIP
           - HSBC
         term:
-          $ref: '#/components/schemas/term_res'
+          $ref: '#/components/schemas/term_response'
       description: Information returned about an installment payment plan.
-    term_res:
+    term_response:
       type: object
       properties:
         id:
@@ -2886,165 +1874,34 @@ components:
           type: string
           description: The total amount the payer pays over the course of the plan.
       description: Stored data information used to create a transaction.
-    confirm_req:
-      type: object
-      properties:
-        payment_method:
-          $ref: '#/components/schemas/payment_method_secondary_apm'
-    payment_method_secondary_apm:
-      type: object
-      properties:
-        apm:
-          $ref: '#/components/schemas/payment_method_secondary_apm_fields'
-    payment_method_secondary_apm_fields:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: A string used to identify the payment method being used with
-            the transaction.
-          example: PAYPAL
-
-          enum:
-          - PAYPAL
-          - SOFORT
-          - IDEAL
-          - GIROPAY
-          - '...'
-        provider_payer_reference:
-          type: string
-          description: The payer reference from the payment method system.
-          example: CUST_12345
-
-      description: Data associated with an APM.
-    confirm_res:
-      type: object
-      properties:
-        payment_method:
-          $ref: '#/components/schemas/apm_res_secondary'
-    apm_res_secondary:
-      type: object
-      properties:
-        apm:
-          $ref: '#/components/schemas/apm_res_secondary_fields'
-    apm_res_secondary_fields:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: A string used to identify the payment method being used with
-            the transaction.
-          example: PAYPAL
-
-          enum:
-          - PAYPAL
-          - SOFORT
-          - IDEAL
-          - GIROPAY
-          - '...'
-        provider_transaction_reference:
-          type: string
-          description: The reference the payment method provider created for the transaction.
-          example: 49wnfs9w434234
-        provider_time_created:
-          type: string
-          description: The time the payment method provider created the transaction
-            at on their system.
-          example: 49wnfs9w434234
-        provider_payer_name:
-          type: string
-          description: A name of the payer from the payment method system.
-          example: James Mason
-
-      description: Data associated with the response of an APM transaction.
-    bank:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the bank.
-          example: High Street Bank
-        identifier_code:
-          type: string
-          description: The international identifier code for the bank.
-        iban:
-          type: string
-          description: The international identifier of the bank account.
-        code:
-          type: string
-          description: The local identifier of the bank.
-        account_number:
-          type: string
-          description: The local identifier of the bank account.
-      description: Data relating to a bank.
-    bank_account_res:
-      type: object
-
-
-      properties:
-        masked_account_number_last4:
-          type: string
-          description: The last 4 characters of the local reference for a bank account
-            number.
-        bank:
-          $ref: '#/components/schemas/bank_res'
-      description: Data relating to a bank transfer directly to or from the Payer's
-        bank account.
-    bank_res:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The local identifier code for the bank.
-      description: Data relating to a bank transfer.
+   
+    
+   
     transactions_list:
       type: object
       properties:
         total_record_count:
-          maximum: 15
-          type: number
-          description: The total number across all pages. Returned on the first page
-            and when the date range is a month or less.
-          example: 53412.0
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
         current_page_size:
-          maximum: 15
-          type: number
-          description: The total number of records returned on the current page. If
-            current_page_size is less than the page_size using in the query string
-            then this is the final page for that search.
-          example: 3412.0
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
         merchant_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant.
-          example: MER_c4c0df11039c48a9b63701adeaa296c3
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant.
-          example: Sandbox_merchant_2
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
         account_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant's transaction processing configuration.
-          example: TRA_6716058969854a48b33347043ff8225f
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
         account_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant's configuration account.
-          example: Transaction_Processing
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         filter:
-          type: object
-          properties: {}
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
-          type: object
-          properties: {}
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
         transactions:
           type: array
           items:
             $ref: '#/components/schemas/transactions_list_item'
         action:
-          $ref: '#/components/schemas/action_transaction'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     transactions_list_item:
       type: object
       properties:
@@ -3072,7 +1929,7 @@ components:
             from Payer to Merchant, or a REFUND where funds move from Merchant to
             Payer.
           example: SALE
-
+               
           enum:
           - SALE
           - REFUND
@@ -3081,34 +1938,34 @@ components:
           description: The amount the transaction can transfer from Payer to Merchant
             for a SALE or vice versa for a REFUND.
           example: "1999"
-
+                      
         currency:
           type: string
           description: The currency of the amount.
           example: USD
-
+               
           enum:
           - USD
           - CAD
           - SBD
           - EUR
           - JPY
-
-
-
-
-
+                        
+                        
+                      
+                                                                                     
+                                                  
         merchant_amount:
           type: string
           description: The amount the transaction can transfer from Payer to Merchant
             for a SALE or vice versa for a REFUND.
           example: "2999"
-
+                      
         merchant_currency:
           type: string
           description: The currency of the amount.
           example: EUR
-
+               
           enum:
           - USD
           - CAD
@@ -3138,7 +1995,7 @@ components:
         merchant_discount_currency:
           type: string
           description: The currency of the merchant discount amount.
-
+               
           example: EUR
           enum:
           - USD
@@ -3150,7 +2007,7 @@ components:
           type: string
           description: Merchant defined field to reference the transaction.
           example: MY-TRANS-20190924123456
-
+                                        
         time_created_reference:
           type: string
           description: Merchant's time indicating when the transaction was first created.
@@ -3181,10 +2038,10 @@ components:
           type: string
           description: 'The time the batch was created that contains this transaction.  '
         payment_method:
-          $ref: '#/components/schemas/payment_method_list_res'
+          $ref: '#/components/schemas/payment_method_list_response'
         system:
-          $ref: '#/components/schemas/system'
-    payment_method_list_res:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+    payment_method_list_response:
       type: object
       properties:
         entry_mode:
@@ -3192,7 +2049,7 @@ components:
           description: Indicates how the payment method information was obtained by
             the Merchant for this transaction.
           example: SWIPE
-
+                  
           enum:
           - MOTO
           - ECOM
@@ -3203,8 +2060,8 @@ components:
           - CONTACTLESS_CHIP
           - CONTACTLESS_SWIPE
         card:
-          $ref: '#/components/schemas/card_list_res'
-    card_list_res:
+          $ref: '#/components/schemas/card_list_response'
+    card_list_response:
       type: object
       properties:
         brand:
@@ -3227,7 +2084,7 @@ components:
           description: Global Payments defined reference for the transaction when
             submitted to payment method provider.
           example: "43634534520190924123456"
-
+                                        
         brand_reference:
           type: string
           description: The reference created by the schemes to uniquely identify the
@@ -3237,50 +2094,28 @@ components:
           description: 'Masked card number with first 6 and last 4 digits showing.
             minimum: 12 maximum: 19        '
       description: Data relating to the card payment method returned in a list response.
+    
+    
     transactions_list_real_time:
       type: object
       properties:
         total_record_count:
-          maximum: 15
-          type: number
-          description: The total number across all pages. Returned on the first page
-            and when the date range is a month or less.
-          example: 53412.0
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
         current_page_size:
-          maximum: 15
-          type: number
-          description: The total number of records returned on the current page. If
-            current_page_size is less than the page_size using in the query string
-            then this is the final page for that search.
-          example: 3412.0
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
         merchant_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant.
-          example: MER_c4c0df11039c48a9b63701adeaa296c3
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant.
-          example: Sandbox_merchant_2
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
         account_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant's transaction processing configuration.
-          example: TRA_6716058969854a48b33347043ff8225f
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
         account_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant's configuration account.
-          example: Transaction_Processing
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         filter:
-          $ref: '#/components/schemas/filter_obj'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
-          $ref: '#/components/schemas/paging_obj'
-        transactions:
-          $ref: '#/components/schemas/transactions_list_real_time_item'
-        action:
-          $ref: '#/components/schemas/action_transaction'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+       
     transactions_list_real_time_item:
       type: object
       properties:
@@ -3327,12 +2162,12 @@ components:
           description: The amount the transaction can transfer from Payer to Merchant
             for a SALE or vice versa for a REFUND.
           example: "1999"
-
+                      
         currency:
           type: string
           description: The currency of the amount.
           example: USD
-
+               
           enum:
           - USD
           - CAD
@@ -3361,33 +2196,30 @@ components:
           description: An identifier generated by Global Payments to uniquely identify
             the parent resource of this resource.
         create_action_id:
-
+                                
           type: string
           description: An identifier generated by Global Payments to uniquely identify
             the action that created this resource.
-        payment_method:
-          $ref: '#/components/schemas/payment_method_list_real_time_res'
-        system:
-          $ref: '#/components/schemas/system'
-    payment_method_list_real_time_res:
+        
+    payment_method_list_real_time_response:
       type: object
       properties:
         name:
           type: string
           description: The name of the owner of the payment method.
         result:
-
-
+                                                 
+                              
           type: string
           description: Result code from the payment method provider.
         message:
-
-
+                                          
+                                          
           type: string
           description: Result message from the payment method provider corresponding
             to the result code.
         entry_mode:
-
+                       
           type: string
           description: 'Indicates how the payment method information was obtained
             by the Merchant for this transaction. '
@@ -3402,8 +2234,8 @@ components:
           - CONTACTLESS_CHIP
           - CONTACTLESS_SWIPE
         card:
-          $ref: '#/components/schemas/card_list_real_time_res'
-    card_list_real_time_res:
+          $ref: '#/components/schemas/card_list_real_time_response'
+    card_list_real_time_response:
       type: object
       properties:
         brand:
@@ -3541,12 +2373,12 @@ components:
           description: The amount the transaction can transfer from Payer to Merchant
             for a SALE or vice versa for a REFUND.
           example: "1999"
-
+                      
         currency:
           type: string
           description: The currency of the amount.
           example: USD
-
+               
           enum:
           - USD
           - CAD
@@ -3579,7 +2411,7 @@ components:
         country:
           type: string
           description: Indicates the country associated with the transaction.
-
+              
           enum:
           - US
           - CA
@@ -3599,26 +2431,26 @@ components:
           description: 'Indicates the source IP Address of the system used to create
             the transaction. '
         site_reference:
-
+                              
           type: string
           description: 'Indicates the merchant defined reference the represents the
             source location used to create the transaction. '
         parent_resource_id:
-
+                                          
           type: string
           description: An identifier generated by Global Payments to uniquely identify
             the parent resource of this resource.
         create_action_id:
-
+                       
           type: string
           description: An identifier generated by Global Payments to uniquely identify
             the action that created this resource.
         payment_method:
-          $ref: '#/components/schemas/payment_method_list_real_time_res'
+          $ref: '#/components/schemas/payment_method_list_real_time_response'
         system:
-          $ref: '#/components/schemas/system'
-
-    payment_method_single_res:
+           $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+             
+    payment_method_single_response:
       type: object
       properties:
         name:
@@ -3636,7 +2468,7 @@ components:
           description: 'Indicates how the payment method information was obtained
             by the Merchant for this transaction. '
           example: SWIPE
-
+                  
           enum:
           - MOTO
           - ECOM
@@ -3647,8 +2479,11 @@ components:
           - CONTACTLESS_CHIP
           - CONTACTLESS_SWIPE
         card:
-          $ref: '#/components/schemas/card_list_real_time_res'
-    card_list_single_res:
+          $ref: '#/components/schemas/card_list_real_time_response'
+    
+    
+    
+    card_list_single_response:
       type: object
       properties:
         brand:
@@ -3716,870 +2551,5 @@ components:
           - NOT_MATCHED
           - NOT_CHECKED
       description: Data relating to the card payment method returned in a list response.
-    notifications:
-      type: object
-      properties:
-        return_url:
-          example: 'https://www.example.com/notifications/return'
-          type: string
-          description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
-        status_url:
-          example: 'https://www.example.com/notifications/status'
-          type: string
-          description: The merchant URL to notify the merchant of the latest status of the transaction.
-      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
-    notification_post_res:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Transaction.
-          example: "TRN_JOGrqvzOvbLy4V2n7cHsusYy8aainM"
-        time_created:
-          type: string
-          description: Global Payments time indicating when the Transaction was first
-            created. Value is in ISO-8601 format and in UTC.
-          example: "2020-04-20T13:17:21.914Z"
-        type:
-          type: string
-          description: Describes whether the transaction is a SALE, that moves funds
-            from Payer to Merchant, or a REFUND where funds move from Merchant to
-            Payer.
-          example: SALE
-          enum:
-          - SALE
-          - REFUND
-        status:
-          type: string
-          description: Indicates the current state of the transaction.
-          enum:
-          - DECLINED
-          - PREAUTHORIZED
-          - CAPTURED
-          - BATCHED
-          - REVERSED
-          example: CAPTURED
-        channel:
-          type: string
-          description: Describes whether the transaction was processed in a face to
-            face(CP) scenario or a Customer Not Present (CNP) scenario.
-          example: CP
-          enum:
-          - CP
-          - CNP
-        capture_mode:
-          type: string
-          description: Indicates whether the transaction is to be captured later or
-            captured automatically.
-          enum:
-          - AUTO
-          - LATER
-          example: "AUTO"
-        amount:
-          type: string
-          description: The amount the transaction can transfer from Payer to Merchant
-            for a SALE or vice versa for a REFUND.
-          example: "1999"
-        currency:
-          type: string
-          description: The currency of the amount.
-          example: USD
-          enum:
-          - USD
-          - CAD
-          - SBD
-          - EUR
-          - JPY- '...'
-        country:
-          type: string
-          description: Indictes whether the Merchant or the Payer initiated the creation
-            of a Transaction. In ISO 3166-1(alpha-2 code) format.
-          enum:
-          - US
-          - CA
-          - UK
-          - '...'
-          example: "US"
-        merchant_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant.
-          example: MER_cf4e1008-c921-4096-bec9-2372cb9476d8
-        merchant_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant.
-          example: Sandbox_merchant_2
-        account_id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Merchant's transaction processing configuration.
-          example: TRA_cf4e1008-c921-4096-bec9-2372cb9476d8
-        account_name:
-          type: string
-          description: A meaningful label generated by Global Payments to identify
-            the Merchant's configuration account.
-          example: Transaction_Processing
-        reference:
-          type: string
-          description: Merchant defined field to reference the Transaction.
-          example: MY-TRANS-20190924123456
-        batch_id:
-          type: string
-          description: Reference that uniquely identifies the batch the transaction
-            is in. Only CAPTURED transactions have a valid batch_id.
-          example: ""
-        payment_method:
-          $ref: '#/components/schemas/payment_method_not_res'
-        action:
-          $ref: '#/components/schemas/action_transaction'
-    payment_method_not_res:
-      type: object
-      properties:
-        result:
-          type: string
-          description: IIn payment_method] Result code from the payment method provider.
-        message:
-          type: string
-          description: Result message from the payment method provider corresponding
-            to the result code.
-        entry_mode:
-          type: string
-          description: 'Indicates how the payment method information was obtained
-            by the Merchant for this Transaction. '
-          example: SWIPE
-          default: SWIPE
-          enum:
-          - MOTO
-          - ECOM
-          - IN_APP
-          - CHIP
-          - SWIPE
-          - MANUAL
-          - CONTACTLESS_CHIP
-          - CONTACTLESS_SWIPE
-        apm:
-          $ref: '#/components/schemas/apm_not_res'
-
-    system:
-      type: object
-      properties:
-        mid:
-          type: string
-          description: Merchant Identifier.
-          example: "11112334"
-        tid:
-          type: string
-          description: Terminal Identifier.
-          example: "22229876"
-        hierarchy:
-          type: string
-          description: Identifies the location of a merchant identifier within the
-            merchant's hierarchical structure.
-          example: 000-00-000-000-000
-        name:
-          type: string
-          description: The merchant name that is associated with the merchant.
-          example: MERCHANT ABC INC.
-        dba:
-          type: string
-          description: The alternate name the merchant may be known as.
-          example: MERCHANT XYZ INC.
-      description: Merchant configuration relating to a transactions from the Global
-        Payments system. This info is relevant for troubleshooting and for integrators
-        using other Global Payments systems to payment process.
-
-    action_transaction:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier generated by Global Payments to identify
-            the Action.
-        type:
-          type: string
-          description: Indicates the action taken.
-          example: <ACTION EXECUTED>
-          enum:
-          - AUTHORIZE
-          - PREAUTHORIZE
-          - REVERSE
-          - CAPTURE
-          - ADJUST
-          - REFUND
-          - FORCE
-          - REAUTHORIZE
-          - MULTIPLE_CAPTURE
-          - INITIATE
-          - CONFIRM
-
-
-          - TRANSACTION_SINGLE
-          - TRANSACTION_LIST
-        time_created:
-          type: string
-          description: Global Payments time indicating when the Action was executed.
-            Value is in ISO-8601 format and in UTC.
-        result_code:
-          type: string
-          description: The result of the action executed.
-          enum:
-          - SUCCESS
-          - DECLINE
-        app_id:
-          type: string
-          description: The App id used to create the token for this request.
-          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        app_name:
-          type: string
-          description: The App Name used to create the token for this request.
-          example: demo_app
-      description: Information about the Action executed.
-    device:
-      type: object
-      properties:
-        time:
-          type: string
-          description: The time from the device in ISO8601 format
-        sequence_number:
-          type: string
-          description: The sequence number from the device used to align with processing
-            platform.
-      description: Data relating to a device used to facilitate the transaction.
-    mandate:
-      type: object
-      properties:
-        reference:
-          type: string
-          description: The reference to identify the mandate.
-          example: REF-MAN-341DE
-          default: 'REF-MAN-341DE        '
-      description: Data of a mandate between a payment method provider and a payer.
-    apm_req:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: A string used to identify the payment method being used with
-            the transaction.
-          example: ""
-          enum:
-          - PAYPAL
-          - SOFORT
-          - IDEAL
-          - GIROPAY
-          - '...'
-      description: Data associated with an APM.
-    apm_res:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: A string used to identify the payment method being used with
-            the transaction.
-          example: PAYPAL
-
-          enum:
-          - PAYPAL
-          - SOFORT
-          - IDEAL
-          - GIROPAY
-          - '...'
-        redirect_url:
-          type: string
-          description: URL to redirect the payer from the merchant's system to the
-            payment method's system.
-        session_token:
-          type: string
-          description: 'A string generated by the payment method to represent the
-            session created on the payment method''s platform to facilitate the creation
-            of a transaction. '
-          example: EC-0SR89134FA420913U
-        fund_status:
-          type: string
-          description: 'A string generated by the payment method that represents to
-            what degree the merchant is funded for the transaction. '
-          example: RECEIVED
-          enum:
-          - NOT_EXPECTED
-          - RECEIVED
-          - WAITING
-          - MISSING
-        wait_notification:
-          maximum: 1
-          type: number
-          description: 'This field indicates whether it''s appropriate to keep the
-            payer waiting for an update at the time the transaction is being executed
-            or to indicate to the payer that a update will be given later. '
-          example: 0.0
-        optional_redirect:
-          maximum: 1
-          type: number
-          description: 'Indicates that a redirect to the payment method is not required.
-            Some payment methods (for example, SEPA DirectDebit) provide the option
-            to redirect the customer to a page to display additional information about
-            the payment. '
-          example: 1.0
-        provider_transaction_reference:
-          type: string
-          description: The reference the payment method provider created for the transaction.
-          example: 49wnfs9w434234
-        provider_time_created:
-          type: string
-          description: The time the payment method provider created the transaction
-            at on their system.
-          example: 49wnfs9w434234
-        provider_payer_name:
-          type: string
-          description: A name of the payer from the payment method system.
-          example: James Mason
-
-        bank:
-          $ref: '#/components/schemas/bank'
-        mandate:
-          $ref: '#/components/schemas/mandate'
-      description: Data associated with the response of an APM transaction.
-    apm_not_res:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: A string used to identify the payment method being used with
-            the transaction.
-          example: PAYPAL
-          default: PAYPAL
-          enum:
-          - PAYPAL
-          - SOFORT
-          - IDEAL
-          - GIROPAY
-          - '...'
-        wait_notification:
-          maximum: 1
-          type: number
-          description: 'This field indicates whether it''s appropriate to keep the
-            payer waiting for an update at the time the transaction is being executed
-            or to indicate to the payer that a update will be given later. '
-          example: 0.0
-        fund_status:
-          type: string
-          description: 'A string generated by the payment method that represents to
-            what degree the merchant is funded for the transaction. '
-          example: RECEIVED
-          enum:
-          - NOT_EXPECTED
-          - RECEIVED
-          - WAITING
-          - MISSING
-        payment_description:
-          type: string
-          description: The reference the payment method provider created for the transaction.
-          example: 49wnfs9w434234
-        confirmed_accountholder:
-          type: string
-          description: A name of the payer from the payment method system.
-          example: Jimmy Nail
-          default: Jimmy Nail
-        account_number:
-          type: string
-          description: The local identifier of the bank account.
-        iban:
-          type: string
-          description: The international identifier of the bank account.
-        bank_identifier_code:
-          type: string
-          description: The international identifier code for the bank.
-        bank_name:
-          type: string
-          description: The name of the bank.
-          example: High Street Bank
-        bank_address:
-          type: string
-          description: The address of the bank.
-          example: Bond St. America
-        optional_redirect:
-          maximum: 1
-          type: number
-          description: 'Indicates that a redirect to the payment method is not required.
-            Some payment methods (for example, SEPA DirectDebit) provide the option
-            to redirect the customer to a page to display additional information about
-            the payment. '
-          example: 1.0
-      description: Data associated with an APM.
-    filter_obj:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name and value of the field used to search the list.
-          example: Value of name used to search the list
-      description: A name value list of the fields and field values used to filter
-        the list of resource objects.
-    paging_obj:
-      type: object
-      properties:
-        page:
-          type: string
-          description: 'Indicates the page sequence to return in the response. The
-            number of records presented on each page is determined by page_size field. '
-          example: "1"
-
-        page_size:
-          maximum: 1E+2
-          minimum: 1
-          type: number
-          description: The total number of objects to return in a single page for
-            that list
-          example: 25.0
-        order_by:
-          type: string
-          description: The value to order the entire list by.
-          example: TIME_CREATED
-          enum:
-          - TIME_CREATED
-          - STATUS
-          - TYPE
-          - DEPOSIT_ID
-        order:
-          type: string
-          description: The direction of the ordering of the entire list, ASC or DESC
-          example: ASC
-
-          enum:
-          - ASC
-          - DESC
-      description: The paging values used for this action.
-    errorhttp400:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This action failed due to something being wrong with the API
-            request.
-          example: MANDATORY_DATA_MISSING
-
-          enum:
-          - DUPLICATE_TRANSACTION
-          - INVALID_BATCH_ACTION
-          - INVALID_REQUEST_DATA
-          - INVALID_TRANSACTION_ACTION
-          - MANDATORY_DATA_MISSING
-          - TRANSACTION_NOT_FOUND
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "40016"
-          enum:
-          - 4xxxx Range
-        detailed_error_description:
-          type: string
-          description: Unique Text describing the specific error.
-          example: Bad track data
-    errorhttp401:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This action failed as token in the request is not valid.
-          example: NOT_AUTHENTICATED
-
-          enum:
-          - NOT_AUTHENTICATED
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "40001"
-          enum:
-          - 4xxxx Range
-          - "40001"
-          - "40002"
-        detailed_error_description:
-          type: string
-          description: Unique Text describing the specific error.
-          example: Invalid Access Token
-    errorhttp403:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This action is not authorized with the credentials being used.
-          example: ACTION_NOT_AUTHORIZED
-          enum:
-          - ACTION_NOT_AUTHORIZED
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "40003"
-          enum:
-          - 4xxxx Range
-          - "40003"
-          - "40004"
-        detailed_error_description:
-          type: string
-          description: Unique Text describing the specific error.
-          example: Permission not enabled to execute action
-    errorhttp500:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This indicates an unexpected issue occurred on the Global Payments
-            system.
-          example: SYSTEM_ERROR_DOWNSTREAM
-          enum:
-          - SYSTEM_ERROR_DOWNSTREAM
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "50011"
-          enum:
-          - 5xxxx Range
-        detailed_error_description:
-          type: string
-          description: Unique Text describing the specific error.
-          example: Processor Configuration error
-    errorhttp501:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This is an error not yet handled or mapped properly.
-          example: UNKNOWN_RESPONSE
-          enum:
-          - UNKNOWN_RESPONSE
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "50012"
-          enum:
-          - "50012"
-        detailed_error_description:
-          type: string
-          description: 'Unique Text describing the specific error not yet handled.      '
-    errorhttp502:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This is an error indicating there was an issue connecting to
-            a partner system..
-          example: UNAUTHORIZED_DOWNSTREAM
-          enum:
-          - UNAUTHORIZED_DOWNSTREAM
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "50002"
-          enum:
-          - 5xxxx Range
-        detailed_error_description:
-          type: string
-          description: Authentication error—Verify and correct credentials.
-    errorhttp504:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: This is an error indicating there was a timeout issue to another  system.
-          example: TIMEOUT_DOWNSTREAM
-          enum:
-          - TIMEOUT_DOWNSTREAM
-        detailed_error_code:
-          type: string
-          description: Unique reference to identify the error.
-          example: "50008"
-          enum:
-          - 5xxxx Range
-        detailed_error_description:
-          type: string
-          description: 'No response from payment method provider.           '
-  examples:
-    ECOMReq:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
-        ip_address: "123.123.123.123"
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          authentication:
-            xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-            cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-            eci: "5"
-          card:
-            number: "4263970000005262"
-            expiry_month: "05"
-            expiry_year: "25"
-            cvv: "852"
-            cvv_indicator: PRESENT
-            avs_address: Flat 123
-            avs_postal_code: "50001"
-
-    EMVReq:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
-        country: US
-        ip_address: "123.123.123.123"
-        site_reference: Site-1324
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: CHIP
-          card:
-            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
-            tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
-            funding: DEBIT
-            chip_condition: ""
-            pin_block: ""
-            brand_reference: ""
-
-    Moto_Capture_Later:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: LATER
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
-        ip_address: "123.123.123.123"
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: MOTO
-          card:
-            number: "4263970000005262"
-            expiry_month: "05"
-            expiry_year: "25"
-            cvv: "852"
-            cvv_indicator: PRESENT
-            avs_address: Flat 123
-            avs_postal_code: "50001"
-
-    Swipe:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
-        country: US
-        ip_address: "123.123.123.123"
-        site_reference: Site-1324
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: SWIPE
-          card:
-            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
-            tag: ""
-            funding: CREDIT
-            chip_condition: ""
-            pin_block: ""
-            brand_reference: ""
-
-    Authorization_With_Payment_Token:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        initiator: ""
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        payment_method:
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          authentication:
-              xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-              cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-              eci: "5"
-              mac:  ""
-
-    Stored_Credential:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        initiator: MERCHANT
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        payment_method:
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          authentication:
-              xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-              cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-              eci: "5"
-              mac: ""
-        stored_credential:
-          model: SUBSCRIPTION
-          reason: INCREMENTAL
-          sequence: SUBSEQUENT
-
-    Installments:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        initiator: MERCHANT
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        payment_method:
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          authentication:
-            xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-            cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-            eci: "5"
-            mac: ""
-        stored_credential:
-          model: INSTALLMENT
-          reason: INCREMENTAL
-          sequence: SUBSEQUENT
-        installment:
-          program: ""
-          term:
-            id: Gym Membership
-            time_unit: MONTH
-            time_unit_number: "12"
-
-    apms:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: EUR
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        site_reference: ""
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          apm:
-            provider: testpay
-        notifications:
-          return_url: https://www.example.com/return_url
-          status_url: https://www.example.com/status_url
-
-    ecom_refund:
-      value:
-        account_name: Transaction_Processing
-        type: REFUND
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC_Refund
-        order_reference: INV#88547
-        country: US
-        ip_address: "123.123.123.123"
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: ECOM
-          card:
-            number: "4263970000005262"
-            expiry_month: "05"
-            expiry_year: "25"
-            cvv: "852"
-            cvv_indicator: PRESENT
-            avs_address: Flat 123
-            avs_postal_code: "50001"
-
-    cardpresent_refund:
-      value:
-        account_name: Transaction_Processing
-        type: REFUND
-        channel: CP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC_Refund
-        order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
-        country: US
-        ip_address: "123.123.123.123"
-        site_reference: Site-1324
-        payment_method:
-          first_name: James
-          last_name: Mason
-          entry_mode: CHIP
-          card:
-            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
-            tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
-            funding: DEBIT
-            chip_condition: ""
-            pin_block: ""
-            brand_reference: ""
+   
+   

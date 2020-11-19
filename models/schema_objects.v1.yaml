@@ -15,6 +15,70 @@ paths: {}
 components:
   schemas: ## Schema Section - Objects
 
+    encryption:
+      type: object
+      properties:
+        method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.method
+        version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.version
+        info:
+         $ref: data_dictionary.v1.yaml#/components/schemas/encryption.info
+
+    order:
+      type: object
+      description: The information relating to an order. An order can be fulfilled by multiple transactions.
+      properties:
+        reference:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/order.reference'
+
+    authentication:
+      type: object
+      description: Information outlining the degree of authentication executed related to a transaction.
+      properties:
+        three_ds:
+          $ref: '#/components/schemas/three_ds'
+    
+    three_ds:
+      type: object
+      description: Information outlining the degree of 3D Secure authentication executed.
+      properties:
+        message_version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+        eci:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.eci
+        value:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.value
+        server_trans_ref:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        ds_trans_ref:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_ref
+
+    authentication_response:
+      type: object
+      description: Information outlining the degree of authentication executed related to a transaction.
+      properties:
+        three_ds:
+          $ref: '#/components/schemas/three_ds_response'
+    
+    three_ds_response:
+      type: object
+      description: Information outlining the degree of 3D Secure authentication executed.
+      properties:
+        value_result:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.value_result
+
+    stored_credential:
+      type: object
+      description: Stored data information used to create a transaction.
+      properties:
+        model:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.model  
+        reason:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.reason
+        sequence:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.sequence
+
     totals:
       type: object
       description: The total number of records and the total amount across those records.
@@ -33,15 +97,33 @@ components:
             number.
         bank:
           $ref: '#/components/schemas/bank'
-      description: Data relating to a bank transfer directly to or from the Payer's
-        bank account.
+      description: Data relating to a bank transfer directly to or from the Payer's bank account.
     
     bank:
       type: object
       properties:
         code:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.code'
-    
+
+    bank_account:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name assocaited with the bank account
+        identifier_code:
+          type: string
+          description: The international identifier code for the bank.
+        iban:
+          type: string
+          description: The international identifier of the bank account.
+        code:
+          type: string
+          description: The local identifier of the bank.
+        account_number:
+          type: string
+          description: The local identifier of the bank account.
+   
     filter:
       type: object
       description: Indicates what fields and values used to filter the current list of resource objects in the current response.
@@ -107,7 +189,7 @@ components:
           type: string
           description: Indicates the action taken.
           example: DEPOSIT_LIST
-          enum:
+          enum: ##REVISIT##
           - DEPOSIT_LIST
           - DEPOSIT_SINGLE
         time_created:

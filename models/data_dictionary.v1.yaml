@@ -85,7 +85,7 @@ components:
       maxLength: 50
     
 
-    authorization_mode:
+    transaction.authorization_mode:
       type: string
       description: Indicates if the merchant would like to authorize for an amount less than the intended amount.
       example: 'PARTIAL'
@@ -114,7 +114,7 @@ components:
       maxLength: 50
 
     #### C
-    channel:
+    transaction.channel:
       type: string
       description: Describes whether the transaction was processed in a face to
             face(CP) scenario or a Customer Not Present (CNP) scenario.
@@ -123,7 +123,7 @@ components:
       - CP
       - CNP
     
-    capture_mode:
+    transaction.capture_mode:
       type: string
       description: Indicates whether the transaction is to be captured automatically,later or later using more than 1 partial capture.
       example: 'AUTO'
@@ -133,7 +133,7 @@ components:
       - LATER
       - MULTIPLE
 
-    country:
+    country: ##REVISIT ## enums to external docs ##
       type: string
       description: The country in ISO-3166-1(alpha-2 code) format.
       example: 'US'
@@ -146,7 +146,7 @@ components:
       description: The total number of items.
       example: 123
 
-    currency:
+    currency: ##REVISIT ## enums to external docs ##
       type: string
       description: The currency of the amount in ISO-4217(alpha-3)
       example: 'USD'
@@ -175,7 +175,7 @@ components:
       minLength: 1
       maxLength: 50
     
-    entry_mode:
+    payment_method.entry_mode:
       type: string
       description: Indicates how the payment method information was obtained by the Merchant for this transaction.
       example: 'ECOM'                  
@@ -194,19 +194,27 @@ components:
       maxLength: 50
 
     #### F
-    first_name:
+    payment_method.first_name:
       type: string
       description: Specify the first name of the owner of the payment method.
       example: 'James'
       minLength: 0
       maxLength: 50
 
-    last_name:
+    payment_method.last_name:
       type: string
       description: Specify the surname of the owner of the payment method.
       example: 'Mason'
       minLength: 0
       maxLength: 50
+
+    payment_method.name:
+      type: string
+      description: The full name of the owner of the payment method.
+      example: 'James Mason'
+      minLength: 0
+      maxLength: 100
+
     
     funding_type:
       type: string
@@ -238,7 +246,7 @@ components:
       minLength: 1
       maxLength: 50
 
-    initiator:
+    transaction.initiator:
       type: string
       description: Indicates whether the Merchant or the Payer initiated the creation of a transaction.
       enum:
@@ -412,7 +420,7 @@ components:
       minLength: 1
       maxLength: 50
 
-    remaining_capture_count:
+    transaction.remaining_capture_count:
       type: integer
       description: Indicates the expected number of partial captures remaining.
     
@@ -433,10 +441,16 @@ components:
       minLength: 1
       maxLength: 128
 
-    status:
+    status: ##REVISIT ## enums to external docs ##
       type: string
       description: Indicates where a resource object is in it's lifecylce.
       example: 'FUNDED'
+
+    transaction.status: ##REVISIT ## enums to external docs ##
+      type: string
+      description: Indicates where a resource object is in it's lifecylce.
+      example: 'FUNDED'
+
 
     site_reference:
       type: string
@@ -482,6 +496,47 @@ components:
       
 
     #### T
+    three_ds.message_version:
+      type: string
+      description: The version of 3DS 
+      example: '1.0.0'
+      minLength: 0
+      maxLength: 50
+    
+    
+    three_ds.eci:
+      type: string
+      description: An indication of the degree of the authentication and liability shift obtained for this transaction. It is determined during the 3D Secure process.
+      example: '5'
+      minLength: 0
+      maxLength: 2
+    
+    three_ds.value:
+      type: string
+      description: The authentication value created as part of the 3D Secure process.
+      minLength: 0
+      maxLength: 50
+    
+    three_ds.value_result:
+      type: string
+      description: The result of the three_ds value validation by the brands or issuing bank.
+      minLength: 0
+      maxLength: 50
+
+    three_ds.server_trans_ref:
+      type: string
+      description: The reference created by the 3DSecure provider to identify the specific authentication attempt.
+      minLength: 0
+      maxLength: 50
+   
+    three_ds.ds_trans_ref:
+      type: string
+      description: The reference created by the 3DSecure Directory Server to identify the specific authentication attempt.
+      minLength: 0
+      maxLength: 50
+
+
+
     time_created:
       type: string
       format: date-time
@@ -746,6 +801,31 @@ components:
       minLength: 12
       maxLength: 50
 
+    card.number_first6:
+      type: string
+      description: 'First 6 digits of card number'
+      minLength: 6
+      maxLength: 6
+    
+    card.number_last4:
+      type: string
+      description: 'Last 4 digits of card number'
+      minLength: 4
+      maxLength: 4
+
+    digital_wallet.token_first6: ## REVISIT WHETHER we Kept this under Card
+      type: string
+      description: 'First 6 digits of digital wallet token'
+      minLength: 6
+      maxLength: 6
+
+    
+    digital_wallet.token_last4:
+      type: string
+      description: 'Last 4 digits of digital wallet token'
+      minLength: 4
+      maxLength: 4
+
 
     card.tag_response:
       type: string
@@ -984,7 +1064,7 @@ components:
       description: A string generated by the payment method to represent the session created on the payment method's platform to facilitate the creation of a transaction.
       example: EC-0SR89134FA420913U
 
-    apm.fund_status:
+    apm.fund_status: ##REVISIT ## enums to external docs ##
       type: string
       description: 'A string generated by the payment method that represents to what degree the merchant is funded for the transaction. '
       example: RECEIVED
@@ -1102,7 +1182,7 @@ components:
       minLength: 1
       maxLength: 50
 
-    dispute.status:
+    dispute.status: ##REVISIT ## enums to external docs ##
       type: string
       description: Indicated where the dispute is in the lifecycle.
       example: WITH_MERCHANT
@@ -1340,7 +1420,7 @@ components:
       maxLength: 50
 
 
-    action.resource_status:
+    action.resource_status: ##REVISIT ## enums to external docs ##
       type: string
       description: The status of the resource after the action was executed.
       example: REVERSED
