@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Transactions
-  description: Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a Refund from Merchant to Payer.
+  title: Disputes
+  description: Disputes are an act, initiated by a Payer or Payer’s bank to query or challenge the previous transfer of funds between that Payer and the Merchant.
   contact:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
@@ -13,134 +13,29 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Create
-    description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
+  - name: Accept
+    description: Accept liability for a Dispute.
 
-  - name: List Transactions
-    description: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
+  - name: Challenge
+    description: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
 
-  - name: Get a Transaction
-    description: Get a single view of a transaction using the Global Payments transaction id.    
+  - name: Get a Dispute
+    description: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute. 
   
-  - name: Refund a Sale
-    description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
-
-  - name: Reverse a Sale
-    description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-
-  - name: Capture a Preauth 
-    description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-
-  - name: Adjust a Sale
-    description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-
-  - name: ReAuth a Reverse Sale
-    description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
-
-  - name: Confirm a Transaction
-    description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
-
-  - name: List Settled Transactions
-    description: Get a list of settled or funded transactions  Page through the result set to access all records.
+  - name: List Disputes
+    description: Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.
   
+  - name: List Settled Disputes
+    description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records
+
 paths:
-  /transactions:
-    post:
-      operationId: createSaleOrRefundTransaction
-      tags:
-      - Create
-      summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
-      description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
-
-      parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/create_request'
-            examples:
-              Ecommerce Sale - Auto Capture:
-                $ref: ./models/examples.v1.yaml#/components/examples/ECOMReq
-              Mail Order/Telephone Order Sale - Delayed Capture:
-                $ref: ./models/examples.v1.yaml#/components/examples/Moto_Capture_Later
-              Ecommerce Refund:
-                $ref: ./models/examples.v1.yaml#/components/examples/ecom_refund
-              Card Present Sale - Chip:
-                $ref: ./models/examples.v1.yaml#/components/examples/EMVReq
-              Card Present Sale - Swipe:
-                $ref: ./models/examples.v1.yaml#/components/examples/Swipe
-              Card Present Refund - Chip:
-                $ref: ./models/examples.v1.yaml#/components/examples/cardpresent_refund
-              Sale with Tokenized Payment Method:
-                $ref: ./models/examples.v1.yaml#/components/examples/Authorization_With_Payment_Token
-              Sale with Credential On File:
-                $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
-              Sale with Installment:
-                $ref: ./models/examples.v1.yaml#/components/examples/Installments
-              Ecommerce - Alternative Payment Method:
-                $ref: ./models/examples.v1.yaml#/components/examples/apms
-        required: true
-        
-      
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/create_response'
-        '400':
-          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-
-        '401':
-          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-
-        '403':
-          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-
-        '404':
-          description: Resource Not Found
-          content: {}
-
-        '500':
-          $ref: ./models/errors.yaml#/components/responses/ServerError_500
-
-        '501':
-          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-
-        '502':
-          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-
-        '504':
-          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-
-        x-codegen-request-body-name: request
-    
-      
-      
-      callbacks: {}
-        
+  /disputes:
     get:
-      operationId: getSaleAndRefundTransactions
+      operationId: getDisputes
       tags:
-      - List Transactions
-      summary: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
-      description: Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.
+      - List Disputes
+      summary: Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.
       
       parameters:
         
@@ -153,113 +48,49 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
       
       
-      - name: id
+      - name: arn
         in: query
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
       
-      
-      - name: type
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-      
-      - name: channel
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-      
-      - name: amount
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-      
-      - name: currency
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-      
-      - name: number_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
-      
-      - name: number_last4
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
-      
-      - name: token_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_first6
-      
-      - name: token_last4
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_last4
-      
-      - name: account_name
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
       
       - name: brand
         in: query
         schema:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
       
-      - name: brand_reference
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-      
-      - name: authcode
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-      
-      - name: reference
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-      
       - name: status
         in: query
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
       
-      - name: from_time_created
+      - name: stage
         in: query
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
       
-      - name: to_time_created
+      
+      - name: from_stage_time_created
         in: query
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.from_stage_time_created
       
-      - name: country
+      - name: to_stage_time_created
         in: query
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-      
-      - name: batch_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.to_stage_time_created
+
+      - name: system.mid
         in: query
+        description: The system merchant identifier.
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-      
-      - name: entry_mode
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
+          
+      - name: system.hierarchy
         in: query
+        description: The system merchant hierarchy
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-     
-      
-      - name: name
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-     
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy    
      
       responses:
         '200':
@@ -275,7 +106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/dispute_list'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -295,13 +126,13 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
     
-  /transactions/{id}:
+  /disputes/{id}:
     get:
-      operationId: getSingleSaleOrRefundTransaction
+      operationId: getSingleDispute
       tags:
       - Get a Transaction
-      summary: Get a single view of a transaction using the Global Payments transaction id.
-      description: Get a single view of a transaction using the Global Payments transaction id.
+      summary: Get a single view of a transaction using the Global Payments dispute id.
+      description: Get a single view of a transaction using the Global Payments dispute id.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -330,7 +161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_single_real_time'
+                $ref: '#/components/schemas/dispute_single_real_time'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -350,14 +181,15 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
 
-  /transactions/{id}/refund:
+  /disputes/{id}/acceptance:
     post:
       operationId: createRefundTransactionFromSale
       tags:
-      - Refund a Sale
-      summary: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
-      description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
+      - Accept
+      summary: Accept liability for a Dispute that will likely result in financial impact to the Merchant.
+      description: Accept liability for a Dispute that will likely result in financial impact to the Merchant.
       parameters:
+
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -369,12 +201,12 @@ paths:
         required: true
         schema:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-        
+
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/change_amount_request'
+              $ref: '#/components/schemas/accept_response'
         required: false
       
       responses:
@@ -414,7 +246,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
 
-  /transactions/{id}/reversal:
+  /disputes/{id}/challenge:
     post:
       operationId: reverseExistingTransaction
       tags:
@@ -422,7 +254,6 @@ paths:
   
       summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
       description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
@@ -435,12 +266,11 @@ paths:
         required: true
         schema:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/change_amount_request'
+              $ref: '#/components/schemas/ChallengeDisputeRequest'
         required: false
         responses:
         '200':
@@ -454,7 +284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/existing_transaction_response'
+                $ref: '#/components/schemas/ChallengeDisputeResponse'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -474,7 +304,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
 
-  /transactions/{id}/capture:
+  /disputes/{id}/documents/{id}:
     post:
       operationId: captureSaleTransaction
       tags:
@@ -482,7 +312,7 @@ paths:
   
       summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
       description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-
+      
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
@@ -513,8 +343,34 @@ paths:
         
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/existing_transaction_response'
+               responses:
+          '200':
+            description: Success
+            content:
+              application/pdf:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              image/png:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              image/gif:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              image/jpeg:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              application/xml:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              application/zip:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
+              text/csv:
+                schema:
+                  $ref: '#/components/schemas/GetDocument'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -536,187 +392,13 @@ paths:
 
       x-codegen-request-body-name: request
  
-  /transactions/{id}/adjustment:
-    post:
-      operationId: adjustSaleTransaction
-      tags:
-       - Adjust a Sale
-      summary: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-      description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-      parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/change_amt_tag_request'
-        required: false
-      responses:
-        '200':
-          description: OK
-          headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-        
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/existing_transaction_response'
-        '400':
-          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-        '401':
-          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-        '403':
-          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-        '404':
-          description: Resource Not Found
-          content: {}
-        '500':
-          $ref: ./models/errors.yaml#/components/responses/ServerError_500
-        '501':
-          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-        '502':
-          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-        '504':
-          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
-
-  /transactions/{id}/reauthorization:
-    post:
-      operationId: reauthSaleTransaction
-      tags:
-      - ReAuth a Reverse Sale
-      summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
-      description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
-      parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/change_amount_request'
-        required: false
-        responses:
-        '200':
-          description: OK
-          headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-        
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/existing_transaction_response'
-        '400':
-          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-        '401':
-          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-        '403':
-          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-        '404':
-          description: Resource Not Found
-          content: {}
-        '500':
-          $ref: ./models/errors.yaml#/components/responses/ServerError_500
-        '501':
-          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-        '502':
-          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-        '504':
-          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-          
-      x-codegen-request-body-name: request
-
-  /transactions/{id}/confirmation:
-    post:
-      operationId: confirmTransaction
-      tags:
-      - Confirm a Transaction
-   
-      summary: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
-      description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
-      parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/confirm_request'
-        required: false
-      responses:
-        '200':
-          description: OK
-          headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-        
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/confirm_response'
-        '400':
-          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-        '401':
-          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-        '403':
-          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-        '404':
-          description: Resource Not Found
-          content: {}
-        '500':
-          $ref: ./models/errors.yaml#/components/responses/ServerError_500
-        '501':
-          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-        '502':
-          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-        '504':
-          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
-
-  /settlement/transactions:
+  /settlement/disputes:
     get:
-      operationId: getSettledTransactions
+      operationId: getSettledDisputes
       tags:
       - List Settled Transactions
-      summary: Get a list of funded transactions using filter criteria passed in the query string. Page through the result set to access all records.
-      description: Get a list of transactions using criteria passed in the query string. Page through the result set to access all records.
+      summary: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -726,95 +408,52 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
       
-          
-
       
-      - name: number_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
-      - name: number_last4
-        in: query
-        description: 'The last 4 of a card number    '
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
-      - name: deposit_status
-        in: query
-        description: 'Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,DELAYED, RESERVED, IRREG or RELEASED.'
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
-      - name: account_name
-        in: query
-        description: A unique identifier that identifies the account the search is being executed against.
-        required: true
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-      - name: brand
-        in: query
-        description: Indicates the card brand that issued the card.
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
       - name: arn
         in: query
-        description: Search by the full arn
         schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
-      - name: brand_reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+      
+      
+      - name: brand
         in: query
-        description: Search by the brand reference returned at the time of the transaction
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-      - name: authcode
-        in: query
-        description: Search by the authcode
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-      - name: reference
-        in: query
-        description: wildcard search by the reference the merchant submitted with the transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+      
       - name: status
         in: query
-        description: Search for transactions that have a status of FUNDED, REJECTED.
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-      - name: from_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+      
+      - name: stage
         in: query
-        description: The time to search from in a range, using the transaction time created value.
-        required: true
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+      
+      
+      - name: from_stage_time_created
         in: query
-        description: The time to search to in a range, using the transaction time created value.
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      - name: deposit_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.from_stage_time_created
+      
+      - name: to_stage_time_created
         in: query
-        description: 'Identifier that uniquely identifies the Deposit on the Global Payments system. '
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      - name: from_deposit_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.to_stage_time_created
+
+      - name: system.mid
         in: query
-        description: 'The time to search from in a range, using the time the deposit was created that contains this transaction.'
+        description: The system merchant identifier.
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_deposit_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
+          
+      - name: system.hierarchy
         in: query
-        description: The time to search to in a range, using the time the deposit was created that contains this transaction.
+        description: The system merchant hierarchy
         schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      - name: from_batch_time_created
-        in: query
-        description: The time to search from in a range, using the time the batch was created that contains this transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_batch_time_created
-        in: query
-        description: The time to search to in a range, using the time the batch was created that contains this transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy              
+
+      
       - name: system.mid
         in: query
         description: The system merchant identifier.
@@ -840,7 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/settled_dispute_list'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -1716,6 +1355,187 @@ components:
 
       description: Data relating to the card payment method returned in a list response.
 
+
+DisputeResponse:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name        
+
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        status_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status_time_created
+        
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage          
+        
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created         
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+
+        payer_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payer_amount
+
+        payer_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        merchant_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.merchant_amount
+
+        merchant_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
+
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+
+
+        investigator_comment:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+
+        system:
+           $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+
+        
+        last_adjustment_currency:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        last_adjustment_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        net_financial_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        net_financial_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        net_financial_funding:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        payment_method_provider:
+          type: array
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+                description: A comment in relation to the dispute from the payment
+                  method provider.
+                example: Payer never got the goods
+              reference:
+                type: string
+                description: The payment method provider's reference for the dispute.
+                example: CASE_NO_23423863
+              documents:
+                type: array
+                description: A list of evidence provided by the Merchant that relate
+                  to the Dispute.
+                items:
+                  $ref: '#/components/schemas/Document'
+            description: A set of data associated with the payment method provider
+              for this Dispute including their comment, documents and id for this
+              dispute.
+        transaction:
+          type: object
+          properties:
+            time_created:
+              type: string
+              description: Global Payments time indicating when the Transaction was
+                first created. Value is in ISO-8601 format and in UTC.
+            type:
+              type: string
+              description: Describes whether the transaction is a SALE, that moves
+                funds from Payer to Merchant, or a REFUND where funds move from Merchant
+                to Payer.
+              enum:
+              - SALE
+              - REFUND
+            amount:
+              type: string
+              description: The amount the transaction can transfer from Payer to Merchant
+                for a SALE or vice versa for a REFUND.
+              example: "1999"
+            currency:
+              type: string
+              description: The currency of the amount.
+              example: USD
+              enum:
+              - USD
+              - CAD
+              - SBD
+              - EUR
+              - JPY
+              - etc.
+            reference:
+              type: string
+              description: Merchant defined field to reference the Transaction.
+              example: MY-TRANS-20190924123456
+            remarks:
+              type: string
+              description: Merchant field to document remarks about the original Transaction.
+              example: MY-TRANS-REMARKS
+            payment_method:
+              type: object
+              properties:
+                card:
+                  type: object
+                  properties:
+                    number:
+                      type: string
+                      description: The the card account number used to authorize the
+                        Transaction.
+                    arn:
+                      type: string
+                      description: Global Payments reference sent to payment method
+                        provider for a Transaction.
+                    brand:
+                      type: string
+                      description: Indicates the card brand that issued the card.
+                      enum:
+                      - VISA
+                      - MASTERCARD
+                      - AMEX
+                      - DINERS
+                      - DISCOVER
+                      - JCB
+                    authcode:
+                      type: string
+                      description: Card Authorization code for successfully authorized
+                        transactions.
+                    brand_reference:
+                      type: string
+                      description: Card brand reference for this transaction.
+                  description: Data relating to the card payment method.
+          description: Information about the original Sale Transaction the Dispute
+            relates to.
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to
+            the Dispute.
+          items:
+            $ref: '#/components/schemas/Document'
+        action:
+          $ref: '#/components/schemas/ResponseAction'
 
 
 
