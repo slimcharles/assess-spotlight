@@ -39,9 +39,9 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
             X-GP-Version:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:

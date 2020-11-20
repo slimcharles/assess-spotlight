@@ -159,7 +159,7 @@ paths:
             X-GP-Version:
               $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
             Content-Encoding:
-               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
           content:
             application/json:
               schema:
