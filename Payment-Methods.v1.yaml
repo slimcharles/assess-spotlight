@@ -1,0 +1,1136 @@
+
+openapi: 3.0.1
+info:
+  title: Stored Payment Methods
+  description: Payment Method storage is the Global Payments service where sensitive information is securely stored in exchange for a Global Payments unique identifier. This identifier, commonly referred to as a token, is then used to create Sale and Refund Transactions.
+  version: 2020 10 22
+
+contact:
+    name: 'API Integrations'
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: 'api.integrations@globalpay.com'
+ 
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+
+tags:
+  - name: Create
+    description: Create a stored payment method on the Global Payments system and return a unique Global Payments ID  that can be used to create future Sale or Refund Transactions.
+
+  - name: List Payment Methods
+    description: Return a list of stored payment methods.
+
+  - name: Get a Payment Methods
+    description: Return a single stored payment method.
+
+  - name: Edit a Payment Method
+    description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number. 
+
+  - name: Detokenize a Payment Method
+    description: Detokenize the stored payment method to get a full payment method information.
+
+  - name: Delete a Payment Method
+    description: Delete a stored payment method.
+
+  - name: Search for a Payment Method
+    description: Return a list of stored payment methods where search criteria is in the message body.
+
+paths:
+  /payment-methods:
+    get:
+      tags:
+      - List Payment Methods
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+      
+        - name: id
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
+  
+        - name: number_last4
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
+      
+        - name: reference
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+        
+        - name: status
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
+        
+        - name: from_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+        
+        - name: to_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+        - name: from_time_last_updated
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_last_updated
+        
+        - name: to_time_last_updated
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_last_updated
+
+      responses:
+        '200':
+          description: OK
+          headers:
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create_list_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
+    post:
+      tags:
+      - Create
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+     
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_request'
+        required: true
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create_pm_res'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+  /payment-methods/{id}:
+    get:
+      tags:
+      - Read
+      summary: Return a single view of a stored payment method.
+      description: Return a single view of a stored payment method.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      
+      - name: id
+        in: path
+        description: 'The id of the stored payment method. '
+        required: true
+        schema:
+          type: string
+          default: "PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0"
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment_method_list_res'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+    patch:
+      tags:
+      - Edit
+      summary: 'Change information about a stored payment method such as update the
+        card expiry date or the funding type of card or the bank identifier of the
+        account number. '
+      description: Change information about a stored payment method such as update
+        the card expiry date or the funding type of card or the bank identifier of
+        the account number.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
+      - name: X-GP-Version
+        in: header
+        description: Indicates the version of the GP API for this message.
+        required: true
+        schema:
+          type: string
+          default: "2020-10-22"
+      - name: Accept
+        in: header
+        description: Expected format of the response message.
+        schema:
+          type: string
+          default: application/json
+      - name: Content-type
+        in: header
+        description: Format of the message.
+        required: true
+        schema:
+          type: string
+          default: application/json
+
+      - name: X-GP-Idempotency
+        in: header
+        description: Field submitted in the request that is used to ensure idempotency
+          is maintain with this action.
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: This is the Global Payments payment method id returned when the
+          payment method was first stored.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payment_method_patch_req'
+        required: true
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment_method_patch_res'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+      
+  /payment-methods/{id}/detokenize:
+    post:
+      tags:
+      - Detokenize
+      summary: 'Detokenize the stored payment method. '
+      description: Detokenize the stored payment method.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
+      - name: X-GP-Version
+        in: header
+        description: Indicates the version of the GP API for this message.
+        required: true
+        schema:
+          type: string
+          default: "2020-10-22"
+      - name: Accept
+        in: header
+        description: Expected format of the response message.
+        schema:
+          type: string
+          default: application/json
+      - name: Content-type
+        in: header
+        description: Format of the message.
+        required: true
+        schema:
+          type: string
+          default: application/json
+
+      - name: X-GP-Idempotency
+        in: header
+        description: Field submitted in the request that is used to ensure idempotency
+          is maintain with this action.
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: This is the Global Payments payment method id returned when the
+          payment method was first stored.
+        required: true
+        schema:
+          type: string
+          default: "PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0"
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment_method_detokenize_res'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+  /payment-methods/{id}/delete:
+    post:
+      tags:
+      - Delete
+      summary: Delete a stored payment method.
+      description: Delete a stored payment method.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
+      - name: X-GP-Version
+        in: header
+        description: Indicates the version of the GP API for this message.
+        required: true
+        schema:
+          type: string
+          default: "2020-10-22"
+      - name: Accept
+        in: header
+        description: Expected format of the response message.
+        schema:
+          type: string
+          default: application/json
+      - name: Content-type
+        in: header
+        description: Format of the message.
+        required: true
+        schema:
+          type: string
+          default: application/json
+      - name: X-GP-Idempotency
+        in: header
+        description: Field submitted in the request that is used to ensure idempotency
+          is maintain with this action.
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: 'The id of the stored payment method. '
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment_method_delete'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+  /payment-methods/search:
+    post:
+      tags:
+      - Read
+      summary: Return a list of stored payment methods where search criteria is in
+        the message body.
+      description: Return a list of stored payment methods where search criteria is
+        in the message body.
+      parameters:
+      - name: Authorization
+        in: header
+        description: The Bearer token used when executing this action.
+        required: true
+        schema:
+          type: string
+          default: Bearer YX06YElOGvuMmj3mtNhmGYVujpCs
+      - name: X-GP-Version
+        in: header
+        description: Indicates the version of the GP API for this message.
+        required: true
+        schema:
+          type: string
+          default: "2020-10-22"
+      - name: Accept
+        in: header
+        description: Expected format of the response message.
+        schema:
+          type: string
+          default: application/json
+      - name: Content-type
+        in: header
+        description: Format of the message.
+        required: true
+        schema:
+          type: string
+          default: application/json
+
+      - name: X-GP-Idempotency
+        in: header
+        description: Field submitted in the request that is used to ensure idempotency
+          is maintain with this action.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/search_pm_req'
+        required: true
+      responses:
+        200:
+          description: Success
+          headers:
+            Content-type:
+              description: Format of the message.
+              schema:
+                type: string
+                default: application/json
+            Content-Encoding:
+              description: Compression algorithm used in the response.
+              schema:
+                type: string
+                default: gzip
+            X-GP-Version:
+              description: Indicates the version of the GP API for this message.
+              schema:
+                type: string
+                default: "2020-10-22"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create_list_res'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+
+
+components:
+  schemas:
+    create_pm_req:
+      required:
+      - account_name
+      type: object
+      properties:
+        account_name:
+          type: string
+          description: A meaningful name to identify the account being used as part
+            of this action.
+          example: Tokenization
+        reference:
+          type: string
+          description: Merchant defined field to reference the stored payment method.
+          example: card_default_1
+        name:
+          type: string
+          description: Specify the name of the owner of the payment method.
+        card:
+          $ref: '#/components/schemas/card_tk_req'
+    create_pm_res:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Stored Payment Method.
+          example: PMT_234233234234
+        time_created:
+          type: string
+          description: Global Payments time indicating when the Payment Method was
+            first created. Value is in ISO-8601 format and in UTC.
+        status:
+          type: string
+          description: Indicates the current state the stored Payment Method is in
+            in its life-cycle.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DELETED
+        reference:
+          type: string
+          description: Merchant defined field to reference the Payment Method .
+          example: MY-TRANS-20190924123456
+          default: My-TRANS-20190924123456
+        merchant_id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant.
+          example: MER_c4c0df11039c48a9b63701adeaa296c3
+        merchant_name:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant.
+          example: Sandbox_merchant_2
+        account_id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant's processing configuration.
+          example: TKA_eba30a1b5c4a468d90ceeef2ffff7f5e
+        account_name:
+          type: string
+          description: A meaningful name to identify the account being used as part
+            of this action.
+          example: Tokenization
+        card:
+          $ref: '#/components/schemas/card_tk_res'
+        action:
+          $ref: '#/components/schemas/action'
+    create_list_res:
+      type: object
+      properties:
+        total_record_count:
+          maximum: 15
+          type: number
+          description: The total number across all pages. Returned on the first page
+            and when the date range is a month or less.
+          example: 3412.0
+        current_page_size:
+          maximum: 15
+          type: number
+          description: The total number of records returned on the current page. If
+            current_page_size is less than the page_size using in the query string
+            then this is the final page for that search.
+          example: 3412.0
+        merchant_id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant.
+          example: MER_c4c0df11039c48a9b63701adeaa296c3
+        merchant_name:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant.
+          example: Sandbox_merchant_2
+        account_id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Merchant's processing configuration.
+          example: TKA_eba30a1b5c4a468d90ceeef2ffff7f5e
+        account_name:
+          type: string
+          description: A meaningful name to identify the account being used as part
+            of this action.
+          example: Tokenization
+        payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_method_list_res'
+        action:
+          $ref: '#/components/schemas/action'
+    search_pm_req:
+      required:
+      - account_name
+      type: object
+      properties:
+        account_name:
+          type: string
+          description: A meaningful name to identify the account being used as part
+            of this action.
+          example: Tokenization
+        card:
+          $ref: '#/components/schemas/card_tk_search_req'
+    payment_method_list_res:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Stored Payment Method.
+          example: PMT_234233234234
+        time_created:
+          type: string
+          description: Global Payments time indicating when the stored Payment Method  was
+            first created. Value is in ISO-8601 format and in UTC.
+        status:
+          type: string
+          description: Indicates the current state the stored Payment Method is in
+            in its life-cycle.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DELETED
+        reference:
+          type: string
+          description: Merchant defined field to reference the Payment Method.
+          example: MY-TRANS-20190924123456
+          default: My-TRANS-20190924123456
+        card:
+          $ref: '#/components/schemas/card_tk_res'
+    payment_method_patch_req:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Merchant defined field to reference the stored payment method.
+          example: card_default_1
+        name:
+          type: string
+          description: Specify the name of the owner of the payment method.
+        card:
+          $ref: '#/components/schemas/card_tk_req'
+    payment_method_patch_res:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Stored Payment Method.
+          example: PMT_234233234234
+        time_created:
+          type: string
+          description: Global Payments time indicating when the Payment Method was
+            first created. Value is in ISO-8601 format and in UTC.
+        status:
+          type: string
+          description: Indicates the current state the Payment Method is in in its
+            life-cycle.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DELETED
+        reference:
+          type: string
+          description: Merchant defined field to reference the stored payment method.
+          example: card_default_1
+          default: ""
+        name:
+          type: string
+          description: Specify the name of the owner of the payment method.
+        card:
+          $ref: '#/components/schemas/card_tk_res'
+        action:
+          $ref: '#/components/schemas/action'
+    payment_method_detokenize_res:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Stored Payment Method.
+          example: PMT_234233234234
+        time_created:
+          type: string
+          description: Global Payments time indicating when the Payment Method was
+            first created. Value is in ISO-8601 format and in UTC.
+        status:
+          type: string
+          description: Indicates the current state the Payment Method is in in its
+            life-cycle.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DELETED
+        reference:
+          type: string
+          description: Merchant defined field to reference the stored payment method.
+          example: card_default_1
+          default: ""
+        name:
+          type: string
+          description: Specify the name of the owner of the payment method.
+        card:
+          $ref: '#/components/schemas/card_detokenize_res'
+        action:
+          $ref: '#/components/schemas/action'
+    payment_method_delete:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Stored Payment Method.
+          example: PMT_234233234234
+        time_created:
+          type: string
+          description: Global Payments time indicating when the Payment Method was
+            first created. Value is in ISO-8601 format and in UTC.
+        status:
+          type: string
+          description: Indicates the current state the Payment Method is in in its
+            life-cycle.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - DELETED
+        reference:
+          type: string
+          description: Merchant defined field to reference the stored payment method.
+          example: card_default_1
+          default: ""
+        name:
+          type: string
+          description: Specify the name of the owner of the payment method.
+        card:
+          $ref: '#/components/schemas/card_tk_res'
+        action:
+          $ref: '#/components/schemas/action'
+    card_tk_req:
+      type: object
+      properties:
+        number:
+          type: string
+          description: 'The card account number to store. '
+          example: "4263970000005262"
+        expiry_month:
+          type: string
+          description: '2 digit expiry date month. '
+          example: "12"
+        expiry_year:
+          type: string
+          description: 2 digit expiry date year.
+          example: "25"
+      description: Data relating to the card payment method.
+    card_tk_search_req:
+      type: object
+      properties:
+        number:
+          type: string
+          description: 'The card account number to store. '
+          example: "4263970000005262"
+        expiry_month:
+          type: string
+          description: '2 digit expiry date month. '
+          example: "12"
+        expiry_year:
+          type: string
+          description: 2 digit expiry date year.
+          example: "25"
+      description: Data relating to the card payment method.
+    card_detokenize_res:
+      type: object
+      properties:
+        number_last4:
+          type: string
+          description: 'Last 4 digits of card number. minimum: 12 maximum: 19'
+        brand:
+          type: string
+          description: Indicates the card brand that issued the card.
+          enum:
+          - VISA
+          - MASTERCARD
+          - AMEX
+          - DINERS
+          - DISCOVER
+          - JCB
+          - INTERAC
+        number:
+          type: string
+          description: 'IIn card] The the card account number used to authorize the
+            Transaction. '
+        expiry_month:
+          type: string
+          description: '2 digit expiry date month. '
+        expiry_year:
+          type: string
+          description: 2 digit expiry date year.
+      description: Data relating to the card payment method.
+    card_tk_res:
+      type: object
+      properties:
+        number_last4:
+          type: string
+          description: 'Last 4 digits of card number. minimum: 12 maximum: 19'
+        brand:
+          type: string
+          description: Indicates the card brand that issued the card.
+          enum:
+          - VISA
+          - MASTERCARD
+          - AMEX
+          - DINERS
+          - DISCOVER
+          - JCB
+          - INTERAC
+        expiry_month:
+          type: string
+          description: '2 digit expiry date month. '
+        expiry_year:
+          type: string7
+          description: 2 digit expiry date year.
+      description: Data relating to the card payment method.
+    action:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier generated by Global Payments to identify
+            the Action.
+        type:
+          type: string
+          description: Indicates the action taken.
+          example: <ACTION TAKEN>
+          enum:
+          - PAYMENT_METHOD_SINGLE
+          - PAYMENT_METHOD_LIST
+          - PAYMENT_METHOD_CREATE
+          - PAYMENT_METHOD_EDIT
+          - PAYMENT_METHOD_DELETE
+          - PAYMENT_METHOD_DETOKENIZE
+        time_created:
+          type: string
+          description: Global Payments time indicating when the Action was executed.
+            Value is in ISO-8601 format and in UTC.
+        result_code:
+          type: string
+          description: The result of the action executed.
+          enum:
+          - SUCCESS
+        app_id:
+          type: string
+          description: The App id used to create the token for this request.
+          example: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+        app_name:
+          type: string
+          description: A meaningful label to identify the API app used to execute
+            the action.
+          example: demo_app
+      description: Information about the Action executed.
+    errorhttp400:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This action failed due to something being wrong with the API
+            request.
+          example: MANDATORY_DATA_MISSING
+          default: MANDATORY_DATA_MISSING
+          enum:
+          - DUPLICATE_TRANSACTION
+          - INVALID_BATCH_ACTION
+          - INVALID_REQUEST_DATA
+          - INVALID_TRANSACTION_ACTION
+          - MANDATORY_DATA_MISSING
+          - TRANSACTION_NOT_FOUND
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "40016"
+          enum:
+          - 4xxxx Range
+        detailed_error_description:
+          type: string
+          description: Unique Text describing the specific error.
+          example: Bad track data
+    errorhttp401:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This action failed as token in the request is not valid.
+          example: NOT_AUTHENTICATED
+          default: NOT_AUTHENTICATED
+          enum:
+          - NOT_AUTHENTICATED
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "40001"
+          enum:
+          - 4xxxx Range
+          - "40001"
+          - "40002"
+        detailed_error_description:
+          type: string
+          description: Unique Text describing the specific error.
+          example: Invalid Access Token
+    errorhttp403:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This action is not authorized with the credentials being used.
+          example: ACTION_NOT_AUTHORIZED
+          enum:
+          - ACTION_NOT_AUTHORIZED
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "40003"
+          enum:
+          - 4xxxx Range
+          - "40003"
+          - "40004"
+        detailed_error_description:
+          type: string
+          description: Unique Text describing the specific error.
+          example: Permission not enabled to execute action
+    errorhttp500:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This indicates an unexpected issue occurred on the Global Payments
+            system.
+          example: SYSTEM_ERROR_DOWNSTREAM
+          enum:
+          - SYSTEM_ERROR_DOWNSTREAM
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "50011"
+          enum:
+          - 5xxxx Range
+        detailed_error_description:
+          type: string
+          description: Unique Text describing the specific error.
+          example: Processor Configuration error
+    errorhttp501:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This is an error not yet handled or mapped properly.
+          example: UNKNOWN_RESPONSE
+          enum:
+          - UNKNOWN_RESPONSE
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "50012"
+          enum:
+          - "50012"
+        detailed_error_description:
+          type: string
+          description: 'Unique Text describing the specific error not yet handled.      '
+    errorhttp502:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This is an error indicating there was an issue connecting to
+            a partner system..
+          example: UNAUTHORIZED_DOWNSTREAM
+          enum:
+          - UNAUTHORIZED_DOWNSTREAM
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "50002"
+          enum:
+          - 5xxxx Range
+        detailed_error_description:
+          type: string
+          description: Authentication error—Verify and correct credentials.
+    errorhttp504:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: This is an error indicating there was a timout issue to another  system.
+          example: TIMEOUT_DOWNSTREAM
+          enum:
+          - TIMEOUT_DOWNSTREAM
+        detailed_error_code:
+          type: string
+          description: Unique reference to identify the error.
+          example: "50008"
+          enum:
+          - 5xxxx Range
+        detailed_error_description:
+          type: string
+          description: 'No response from payment method provider.           '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization header using the Bearer scheme.  Example: ''Authorization:
+        Bearer {token}'''

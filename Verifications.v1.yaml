@@ -20,7 +20,7 @@ tags:
 paths:
   /transactions:
     post:
-      operationId: createSaleOrRefundTransaction
+      operationId: createVerification
       tags:
       - Create
       summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
