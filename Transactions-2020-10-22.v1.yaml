@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: '3.0.3'
 info:
   title: Transactions
   description: Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a Refund from Merchant to Payer.

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: '3.0.3'
 info:
   title: Disputes
   description: Disputes are an act, initiated by a Payer or Payer’s bank to query or challenge the previous transfer of funds between that Payer and the Merchant.

@@ -75,6 +75,9 @@ components:
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
 
+        transaction_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
