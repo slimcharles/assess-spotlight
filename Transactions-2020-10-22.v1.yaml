@@ -92,13 +92,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
@@ -266,11 +270,14 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
@@ -318,13 +325,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
         
           content:
@@ -382,13 +393,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
         
           content:
@@ -442,14 +457,22 @@ paths:
             schema:
               $ref: '#/components/schemas/change_amount_request'
         required: false
-        responses:
+      responses:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -502,14 +525,23 @@ paths:
             schema:
               $ref: '#/components/schemas/change_amt_tag_request'
         required: false
+      
       responses:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -533,8 +565,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-      x-codegen-request-body-name: request
+    
  
   /transactions/{id}/adjustment:
     post:
@@ -565,10 +596,18 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -619,14 +658,22 @@ paths:
             schema:
               $ref: '#/components/schemas/change_amount_request'
         required: false
-        responses:
+      responses:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -682,10 +729,18 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -718,147 +773,151 @@ paths:
       summary: Get a list of funded transactions using filter criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of transactions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
-      
-          
-
-      
-      - name: number_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
-      - name: number_last4
-        in: query
-        description: 'The last 4 of a card number    '
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
-      - name: deposit_status
-        in: query
-        description: 'Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,DELAYED, RESERVED, IRREG or RELEASED.'
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
-      - name: account_name
-        in: query
-        description: A unique identifier that identifies the account the search is being executed against.
-        required: true
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-      - name: brand
-        in: query
-        description: Indicates the card brand that issued the card.
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-      - name: arn
-        in: query
-        description: Search by the full arn
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
-      - name: brand_reference
-        in: query
-        description: Search by the brand reference returned at the time of the transaction
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-      - name: authcode
-        in: query
-        description: Search by the authcode
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-      - name: reference
-        in: query
-        description: wildcard search by the reference the merchant submitted with the transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-      - name: status
-        in: query
-        description: Search for transactions that have a status of FUNDED, REJECTED.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-      - name: from_time_created
-        in: query
-        description: The time to search from in a range, using the transaction time created value.
-        required: true
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_time_created
-        in: query
-        description: The time to search to in a range, using the transaction time created value.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      - name: deposit_id
-        in: query
-        description: 'Identifier that uniquely identifies the Deposit on the Global Payments system. '
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      - name: from_deposit_time_created
-        in: query
-        description: 'The time to search from in a range, using the time the deposit was created that contains this transaction.'
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_deposit_time_created
-        in: query
-        description: The time to search to in a range, using the time the deposit was created that contains this transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      - name: from_batch_time_created
-        in: query
-        description: The time to search from in a range, using the time the batch was created that contains this transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      - name: to_batch_time_created
-        in: query
-        description: The time to search to in a range, using the time the batch was created that contains this transaction.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      - name: system.mid
-        in: query
-        description: The system merchant identifier.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
-      - name: system.hierarchy
-        in: query
-        description: The system merchant hierarchy
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
-        responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
         
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/transactions_list'
-        '400':
-          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-        '401':
-          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-        '403':
-          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-        '404':
-          description: Resource Not Found
-          content: {}
-        '500':
-          $ref: ./models/errors.yaml#/components/responses/ServerError_500
-        '501':
-          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-        '502':
-          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-        '504':
-          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+            
+
+        
+        - name: number_first6
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
+        - name: number_last4
+          in: query
+          description: 'The last 4 of a card number    '
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
+        - name: deposit_status
+          in: query
+          description: 'Search for Deposits that have a status of FUNDED, SPLIT_FUNDING,DELAYED, RESERVED, IRREG or RELEASED.'
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
+        - name: account_name
+          in: query
+          description: A unique identifier that identifies the account the search is being executed against.
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        - name: brand
+          in: query
+          description: Indicates the card brand that issued the card.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+        - name: arn
+          in: query
+          description: Search by the full arn
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+        - name: brand_reference
+          in: query
+          description: Search by the brand reference returned at the time of the transaction
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+        - name: authcode
+          in: query
+          description: Search by the authcode
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        - name: reference
+          in: query
+          description: wildcard search by the reference the merchant submitted with the transaction.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+        - name: status
+          in: query
+          description: Search for transactions that have a status of FUNDED, REJECTED.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
+        - name: from_time_created
+          in: query
+          description: The time to search from in a range, using the transaction time created value.
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+        - name: to_time_created
+          in: query
+          description: The time to search to in a range, using the transaction time created value.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+        - name: deposit_id
+          in: query
+          description: 'Identifier that uniquely identifies the Deposit on the Global Payments system. '
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        - name: from_deposit_time_created
+          in: query
+          description: 'The time to search from in a range, using the time the deposit was created that contains this transaction.'
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+        - name: to_deposit_time_created
+          in: query
+          description: The time to search to in a range, using the time the deposit was created that contains this transaction.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+        - name: from_batch_time_created
+          in: query
+          description: The time to search from in a range, using the time the batch was created that contains this transaction.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+        - name: to_batch_time_created
+          in: query
+          description: The time to search to in a range, using the time the batch was created that contains this transaction.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+        - name: system.mid
+          in: query
+          description: The system merchant identifier.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
+        - name: system.hierarchy
+          in: query
+          description: The system merchant hierarchy
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+        
+      responses:
+          '200':
+            description: OK
+            headers:
+              Content-Type:
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              Content-Encoding:  
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              X-GP-Version:  
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+            
+          
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/transactions_list'
+          '400':
+            $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+          '401':
+            $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+          '403':
+            $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+          '404':
+            description: Resource Not Found
+            content: {}
+          '500':
+            $ref: ./models/errors.yaml#/components/responses/ServerError_500
+          '501':
+            $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+          '502':
+            $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+          '504':
+            $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+      x-codegen-request-body-name: request
 
 
 
@@ -1287,17 +1346,16 @@ components:
       type: object
       properties:
         provider:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
       description: Data associated with an APM.
   
     apm_response:
       type: object
       properties:
         provider:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
         redirect_url:
-          provider:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
         session_token:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.session_token
         fund_status:
@@ -1456,7 +1514,7 @@ components:
       type: object
       properties:
         entry_mode:
-         ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         card:
           $ref: '#/components/schemas/card_list_response'
     card_list_response:
