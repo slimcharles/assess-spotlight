@@ -249,6 +249,20 @@ components:
       type: string
       format: date
       example: '2020-11-11'
+
+    from_stage_time_created:
+      description: The start time to search for in a range, using stage_time_created value.
+      type: string
+      format: date
+      example: '2020-11-11'
+
+    to_stage_time_created:
+      description: The end time to search for in a range, using stage_time_created value.
+      type: string
+      format: date
+      example: '2020-11-11'
+      
+    
    
       
     #### G
