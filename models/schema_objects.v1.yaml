@@ -312,6 +312,20 @@ components:
 
 
 
+  Document:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the document on the Global Payments system
+          example: DOC_lskdnfosdfjsdfsdf23dasd
+        b64_content:
+          type: string
+          description: The document represented as a base64 encoded string.
+  
+
+
+
 ## Security Section
   securitySchemes:  ## Security Section
     bearerAuth:

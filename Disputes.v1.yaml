@@ -106,7 +106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/dispute_list'
+                $ref: '#/components/schemas/disputes_list'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -270,7 +270,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChallengeDisputeRequest'
+              $ref: '#/components/schemas/challenge_request'
         required: false
         responses:
         '200':
@@ -504,514 +504,72 @@ paths:
 
 
 components:
- 
- 
   schemas:
 
-    create_request:
-      required:
-      - account_name
-      - amount
-      - channel
-      - country
-      - currency
-      - payment_method
-      - reference
-
+    accept_response:
       type: object
       properties:
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-                                                                               
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-          
-        channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-
-        capture_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
-
-        remaining_capture_count:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
-
-        authorization_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
-
-        amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
-        currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
-        gratuity_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
-
-        cashback_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.cashback_amount
-
-        surcharge_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.surcharge_amount
-
-        convenience_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.convenience_amount
-
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-
-        description:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
-        
-        language:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/language
-
-
-        ip_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/ip_address
-  
-        site_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
-
-      
-        order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
-
-        initiator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator          
-        stored_credential:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
-
-
-        payment_method:
-          $ref: '#/components/schemas/payment_method_request'
-        
-       
-
-
-
-        installment:
-          $ref: '#/components/schemas/installment_request'
-               
-    create_response:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
+         id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
         status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
-          
-        channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-
-        capture_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
-
-        ##REVISIT##
-        authorization_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
-
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage 
         amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
         
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-    
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                                                    
-        batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-       
-        payment_method:
-          $ref: '#/components/schemas/payment_method_response'
-       
-        installment:
-          $ref: '#/components/schemas/installment_response'
-       
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+
+        
+
+    challenge_request:
+      type: object
+      properties:
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.b64_content
+
     
-    payment_method_request:
+    challenge_response:
       type: object
       properties:
         id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
-        first_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
-        last_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
-        name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-
-        
-        entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-        encryption:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
-        authentication:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication
-        digital_wallet:
-          $ref: '#/components/schemas/digital_wallet'
-        apm:
-          $ref: '#/components/schemas/apm_request'
-        card:
-          $ref: '#/components/schemas/card_request'
-          
-    payment_method_response:
-      type: object
-      properties:
-        id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
-        result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-        message:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-        entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-
-        authentication:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication_response
-        digital_wallet:
-          $ref: '#/components/schemas/digital_wallet'
-        apm:
-          $ref: '#/components/schemas/apm_response'
-        card:
-          $ref: '#/components/schemas/card_response'
-    
-    card_request:
-      type: object
-      properties:
-        number:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
-        expiry_month:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
-        expiry_year:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
-        track:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.track
-        tag:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
-        chip_condition:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.chip_condition
-        pin_block:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.pin_block
-        cvv:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
-        cvv_indicator:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-        avs_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
-        avs_postal_code:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
-        funding:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
-        authcode:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-  
-    card_response:
-      type: object
-      properties:
-        masked_number_last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-       
-        tag_response:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag_response
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
-        brand:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-
-        brand_time_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_time_reference
-        
-        cvv_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
-
-        avs_address_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
-
-        avs_postal_code_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
-
-        avs_action:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
-         
-    digital_wallet:
-      type: object
-      properties:
-        token:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
-        token_format:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_format
-          
-        cryptogram:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.cryptogram
-        provider:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.provider
-        expiry_month:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
-        expiry_year:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
-        eci:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/eci
-        cvv:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
-        cvv_indicator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-        avs_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
-        avs_postal_code:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
-
-    ### just amount in the request
-    change_amount_request:
-      type: object
-      properties:
-        amount: ##REVISIT - include reference##
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-    change_amt_tag_request:
-      type: object
-      properties:
-        amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-        gratuity_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
-        payment_method:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
-
-
-    existing_transaction_response:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
         status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
-          
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage 
         amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-    
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                                                    
-        batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-       
-        payment_method:
-          $ref: '#/components/schemas/existing_transaction_payment_method_response'
-       
-       
+
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    existing_transaction_payment_method_response:
-      type: object
-      properties:
-        result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-                           
-        message:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-                  
-        card:
-          $ref: '#/components/schemas/existing_transaction_card_response'
-    existing_transaction_card_response:
-      type: object
-      properties:
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-   
-   ## Here I am lord
-    confirm_request:
-      type: object
-      properties:
-        payment_method:
-          $ref: '#/components/schemas/payment_method_secondary_apm'
-    payment_method_secondary_apm:
-      type: object
-      properties:
-        apm:
-          $ref: '#/components/schemas/payment_method_secondary_apm_fields'
-    payment_method_secondary_apm_fields:
-      type: object
-      properties:
-        provider:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-        provider_payer_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
-      description: Data associated with an APM.
- 
-    confirm_response:
-      type: object
-      properties:
-        payment_method:
-          $ref: '#/components/schemas/apm_response_secondary'
-    apm_response_secondary:
-      type: object
-      properties:
-        apm:
-          $ref: '#/components/schemas/apm_response_secondary_fields'
-    apm_response_secondary_fields:
-      type: object
-      properties:
-        provider:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-        provider_payer_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
-        provider_transaction_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
-        provider_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
-        provider_payer_name:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
-      description: Data associated with the response of an APM transaction.
-   
 
 
-   
-    device:
-      type: object
-      properties:
-        time:
-          type: string
-          description: The time from the device in ISO8601 format
-        sequence_number:
-          type: string
-          description: The sequence number from the device used to align with processing platform.
-      description: Data relating to a device used to facilitate the transaction.
-   
-    apm_request:
-      type: object
-      properties:
-        provider:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-      description: Data associated with an APM.
-  
-    apm_response:
-      type: object
-      properties:
-        provider:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-        redirect_url:
-          provider:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
-        session_token:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.session_token
-        fund_status:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.fund_status
-        wait_notification:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
-        optional_redirect:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
-        provider_transaction_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
-        provider_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_time_created
-        provider_payer_name:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
-                                              
-        bank:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/bank_account
-        mandate:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/mandate
-      description: Data associated with the response of an APM transaction.
-   
-   
-          
-       
-   
-    installment_request:
-      type: object
-      properties:
-        program:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.program
-        term:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
-      description: Information that relates to an installment payment plan.
-    term_request:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.id
-        time_unit:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit
-        time_unit_number:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit_number
-      description: information relating to the terms of the installment payment plan.
-    installment_response:
-      type: object
-      properties:
-        program:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.program
-        term:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
-      description: Information that relates to an installment payment plan.
-    term_response:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.id
-        time_unit:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit
-        time_unit_number:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit_number
-        interest_rate:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.interest_rate
-        first_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.first_amount
-        subsequent_amount:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.subsequent_amount
-        last_amount:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.last_amount
-        total_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.total_amount
-      description: Stored data information used to create a transaction.
-   
-    
-   
-    transactions_list:
+    disputes_list:
       type: object
       properties:
         total_record_count:
@@ -1030,333 +588,76 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
-        transactions:
+        disputes:
           type: array
           items:
-            $ref: '#/components/schemas/transactions_list_item'
+            $ref: '#/components/schemas/disputes_list_item'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    transactions_list_item:
-      type: object
-      properties:
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-        status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-         
-        amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-        currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
-        merchant_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_amount
-                      
-        merchant_currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
-        discount_amount:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.discount_amount
-        discount_currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
-        merchant_discount_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_discount_amount
-        merchant_discount_currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                        
-        time_created_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created_reference
-
-        deposit_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
-        deposit_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-        deposit_status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
-
-        batch_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-        batch_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
-        payment_method:
-          $ref: '#/components/schemas/payment_method_list_response'
-        system:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
-   
-    payment_method_list_response:
-      type: object
-      properties:
-        entry_mode:
-         ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-        card:
-          $ref: '#/components/schemas/card_list_response'
-    card_list_response:
-      type: object
-      properties:
-        brand:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        arn:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
-                                        
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-        masked_number_first6last4:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-      description: Data relating to the card payment method returned in a list response.
-    
-    
-    transactions_list_real_time:
-      type: object
-      properties:
-        total_record_count:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
-        current_page_size:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        filter:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
-        paging:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
-       
-    transactions_list_real_time_item:
+  
+    disputes_list_item:
       type: object
       properties:
         id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
         status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-          
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage          
+        
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created         
         amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
 
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-        
-        batch_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
+       
 
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-        
-        parent_resource_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
-        create_action_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
-        
-    payment_method_list_real_time_response:
-      type: object
-      properties:
-        name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
 
         result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
 
-        message:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-
-        entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-
-        card:
-          $ref: '#/components/schemas/card_list_real_time_response'
-    
-    card_list_real_time_response:
-      type: object
-      properties:
-        brand:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-        
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-
-        masked_number_first6last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-
-        masked_number_last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-
-        funding:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
-        
-        cvv_indicator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-        
-        cvv_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
-                
-        avs_address_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
-
-        avs_postal_code_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
-
-
-      description: Data relating to the card payment method returned in a list response.
-    
-    
-    transactions_single_real_time:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-        
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
-        time_last_updated:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_updated
-
-        status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-
-        type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        
-                                                                      
-        
-       
-        
-        
-        channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-        
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-
-        
-        amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
-        currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
-
-
-        description:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
-        
-        order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
-        
-        batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-        
-        initiator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
-
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-
-        language:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/language
-
-        ip_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/ip_address
-
-        site_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
-
-        parent_resource_id:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
-        create_action_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
-        payment_method:
-          $ref: '#/components/schemas/payment_method_list_real_time_response'
         system:
            $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
-             
-    payment_method_single_response:
-      type: object
-      properties:
-        name:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-        result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-        message:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-        entry_mode:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-        card:
-          $ref: '#/components/schemas/card_list_real_time_response'
-      
-    
-    card_list_single_response:
-      type: object
-      properties:
-        brand:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-        
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-        
-        masked_number_first6last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-        
-        masked_number_last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-        
-        funding:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
-        
-        cvv_indicator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-          
-        cvv_result:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
 
-        avs_address_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
+        last_adjustment_amount:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
+        
+        last_adjustment_currency:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_currency
 
-        avs_postal_code_result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
 
-      description: Data relating to the card payment method returned in a list response.
+        payment_method:
+          type: object
+            properties:
+              card:
+                  type: object
+                  properties:
+                    number:
+                     $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                    arn:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                    brand:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+                   
+          description: Information about the original Sale Transaction the Dispute relates to.
+        
+        
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
-
-DisputeResponse:
+    dispute_single_real_time:
       type: object
       properties:
         id:
@@ -1419,81 +720,53 @@ DisputeResponse:
         system:
            $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
 
-        
+        last_adjustment_amount:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
+
         last_adjustment_currency:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_currency
+
         last_adjustment_funding:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
         last_adjustment_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_time_created
         net_financial_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_amount
         net_financial_currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_currency
         net_financial_funding:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_funding
         payment_method_provider:
           type: array
           items:
             type: object
             properties:
               comment:
-                type: string
-                description: A comment in relation to the dispute from the payment
-                  method provider.
-                example: Payer never got the goods
+                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payment_method_provider.comment
               reference:
-                type: string
-                description: The payment method provider's reference for the dispute.
-                example: CASE_NO_23423863
+                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payment_method_provider.reference
               documents:
                 type: array
-                description: A list of evidence provided by the Merchant that relate
-                  to the Dispute.
+                description: A list of evidence provided by the Merchant that relate to the Dispute.
                 items:
-                  $ref: '#/components/schemas/Document'
-            description: A set of data associated with the payment method provider
-              for this Dispute including their comment, documents and id for this
-              dispute.
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
+            description: A set of data associated with the payment method provider for this Dispute including their comment, documents and id for this dispute.
         transaction:
           type: object
           properties:
             time_created:
-              type: string
-              description: Global Payments time indicating when the Transaction was
-                first created. Value is in ISO-8601 format and in UTC.
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
             type:
-              type: string
-              description: Describes whether the transaction is a SALE, that moves
-                funds from Payer to Merchant, or a REFUND where funds move from Merchant
-                to Payer.
-              enum:
-              - SALE
-              - REFUND
+               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+              
             amount:
-              type: string
-              description: The amount the transaction can transfer from Payer to Merchant
-                for a SALE or vice versa for a REFUND.
-              example: "1999"
+               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
             currency:
-              type: string
-              description: The currency of the amount.
-              example: USD
-              enum:
-              - USD
-              - CAD
-              - SBD
-              - EUR
-              - JPY
-              - etc.
+               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
             reference:
-              type: string
-              description: Merchant defined field to reference the Transaction.
-              example: MY-TRANS-20190924123456
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
             remarks:
-              type: string
-              description: Merchant field to document remarks about the original Transaction.
-              example: MY-TRANS-REMARKS
+               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.remarks
             payment_method:
               type: object
               properties:
@@ -1501,44 +774,156 @@ DisputeResponse:
                   type: object
                   properties:
                     number:
-                      type: string
-                      description: The the card account number used to authorize the
-                        Transaction.
+                     $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
                     arn:
-                      type: string
-                      description: Global Payments reference sent to payment method
-                        provider for a Transaction.
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
                     brand:
-                      type: string
-                      description: Indicates the card brand that issued the card.
-                      enum:
-                      - VISA
-                      - MASTERCARD
-                      - AMEX
-                      - DINERS
-                      - DISCOVER
-                      - JCB
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
                     authcode:
-                      type: string
-                      description: Card Authorization code for successfully authorized
-                        transactions.
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
                     brand_reference:
-                      type: string
-                      description: Card brand reference for this transaction.
-                  description: Data relating to the card payment method.
-          description: Information about the original Sale Transaction the Dispute
-            relates to.
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+          description: Information about the original Sale Transaction the Dispute relates to.
         documents:
           type: array
-          description: A list of evidence provided by the Merchant that relate to
-            the Dispute.
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
           items:
-            $ref: '#/components/schemas/Document'
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
         action:
-          $ref: '#/components/schemas/ResponseAction'
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
 
 
+    settled_disputes_list:
+      type: object
+      properties:
+        total_record_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
+        current_page_size:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        filter:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
+        paging:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        disputes:
+          type: array
+          items:
+            $ref: '#/components/schemas/settled_disputes_list_item'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
+    settled_disputes_list_item:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/diputes.stage
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        funding_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        deposit_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        deposit_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+        system:
+          type: object
+          properties:
+            $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+           
+              
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.reason_code
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.reason_description
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.time_to_respond_by
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.result
+        last_adjustment_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_amount
+        last_adjustment_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_funding
+        last_adjustment_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_time_created
+        transaction:
+          type: object
+          properties:
+            time_created:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created
+            merchant_time_created:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_time_reference
+            type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+            amount:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+            currency:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+            reference:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+            payment_method:
+              type: object
+              properties:
+                card:
+                  type: object
+                  properties:
+                    masked_number_first6last4:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                    arn:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                    brand:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+                    authcode:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+                    brand_reference:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+                  description: Data relating to the card payment method.
+          description: Information about the original Sale Transaction the Dispute relates to.
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+
+
+      disputes_list:
+      type: object
+      properties:
+        total_record_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
+        current_page_size:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        filter:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
+        paging:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        disputes:
+          type: array
+          items:
+            $ref: '#/components/schemas/disputes_list_item'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
    
