@@ -28,6 +28,9 @@ tags:
   - name: List Settled Disputes
     description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records
 
+  - name: Download Document
+    description: Get a Document associated with a Dispute.
+
 paths:
   /disputes:
     get:
@@ -130,9 +133,9 @@ paths:
     get:
       operationId: getSingleDispute
       tags:
-      - Get a Transaction
-      summary: Get a single view of a transaction using the Global Payments dispute id.
-      description: Get a single view of a transaction using the Global Payments dispute id.
+      - Get a Dispute
+      summary: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute. 
+      description: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute. 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -183,7 +186,7 @@ paths:
 
   /disputes/{id}/acceptance:
     post:
-      operationId: createRefundTransactionFromSale
+      operationId: acceptDispute
       tags:
       - Accept
       summary: Accept liability for a Dispute that will likely result in financial impact to the Merchant.
@@ -243,12 +246,11 @@ paths:
 
   /disputes/{id}/challenge:
     post:
-      operationId: reverseExistingTransaction
+      operationId: challengeDispute
       tags:
-      - Reverse a Sale
-  
-      summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-      description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
+      - Challenge
+      description: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
+      summary: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
@@ -299,14 +301,14 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
 
-  /disputes/{id}/documents/{id}:
+  /disputes/{id}/documents/{doc_id}:
     post:
       operationId: getDisputeDocument
       tags:
-      - Download Evidence
+      - Download Document
   
-      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
+      summary: Get a Document associated with a Dispute.
+      description: Get a Document associated with a Dispute.
       
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
@@ -316,6 +318,12 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
       
       - name: id
+        in: path
+        required: true
+        schema:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+
+      - name: doc_id
         in: path
         required: true
         schema:
@@ -331,7 +339,6 @@ paths:
           - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
           content:
             application/json:
-            schema:
               $ref: ./models/schema_objects.v1.yaml#/components/schemas/document
           
         '400':
@@ -359,7 +366,7 @@ paths:
     get:
       operationId: getSettledDisputes
       tags:
-      - List Settled Transactions
+      - List Settled Disputes
       summary: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
       parameters:
@@ -416,17 +423,8 @@ paths:
         schema:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy              
 
-      
-      - name: system.mid
-        in: query
-        description: The system merchant identifier.
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
-      - name: system.hierarchy
-        in: query
-        description: The system merchant hierarchy
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+     
+     
         responses:
         '200':
           description: OK
@@ -442,7 +440,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/settled_dispute_list'
+                $ref: '#/components/schemas/settled_disputes_list'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -785,19 +783,19 @@ components:
         status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
         stage:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/diputes.stage
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
         stage_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         funding_type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         deposit_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         deposit_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.stage_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         system:
           type: object
           properties:
@@ -805,28 +803,28 @@ components:
            
               
         reason_code:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.reason_code
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
         reason_description:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.reason_description
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
         time_to_respond_by:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.time_to_respond_by
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
         result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.result
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
         last_adjustment_amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
         last_adjustment_currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
         last_adjustment_funding:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_funding
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
         last_adjustment_time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/disputes.last_adjustment_time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_time_created
         transaction:
           type: object
           properties:
             time_created:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
             merchant_time_created:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_time_reference
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created_reference
             type:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
             amount:
@@ -857,30 +855,4 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
 
-      disputes_list:
-      type: object
-      properties:
-        total_record_count:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
-        current_page_size:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        filter:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
-        paging:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
-        disputes:
-          type: array
-          items:
-            $ref: '#/components/schemas/disputes_list_item'
-        action:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-
-   
+    

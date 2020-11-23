@@ -312,7 +312,7 @@ components:
 
 
 
-  Document:
+    document:
       type: object
       properties:
         id:
