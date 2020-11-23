@@ -1219,11 +1219,24 @@ components:
       type: string
       description: The merchant URL to return the payer to, once the payer has completed payment using the payment method. This returns control of the payer's payment experience to the merchant.
 
+    notifications.decoupled_challenge_return_url:
+      example: 'https://www.example.com/notifications/return'
+      type: string
+      description: The merchant URL that will receive the notification when the customer has completed the authentication when the authentication is decoupled and separate to the purchase.
+
+    notifications.challenge_return_url:
+      type: string
+      description: The merchant URL that will receive the notification when the customer has completed the authentication.
+
     notifications.status_url:
       example: 'https://www.example.com/notifications/status'
       type: string
       description: The merchant URL to notify the merchant of the latest status of the transaction.
       
+    
+    notifications.three_ds_method_return_url:
+      type: string
+      description: The merchant URL that will receive the notification when the 3DS ACS successfully gathers device information and to close the hidden iFrame accordingly. 
 
     payment_method.result:
       type: string

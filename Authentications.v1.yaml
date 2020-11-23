@@ -1,0 +1,87 @@
+openapi: 3.0.1
+info:
+  title: Authentications
+  description: Authentications represent the attempt to reduce fraud by validating the payer who is executing the transaction.
+  contact:
+    name: 'API Integrations'
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: 'api.integrations@globalpay.com'
+  version: '2020 10 22'
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+tags:
+  - name: Check Availability
+    description: Confirm the available mechanisms to authenticate the payer based on the payment method.
+
+  - name: Initiate
+    description: Commence the authentication process
+
+  - name: Get Results
+    description: Get the result of the authentication process
+
+paths:
+  /authentications:
+    post:
+      operationId: check3DSAvailability
+      tags:
+      - Check Availability
+      summary: Confirm the available mechanisms to authenticate the payer based on the payment method.
+      description: Confirm the available mechanisms to authenticate the payer based on the payment method.
+      parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_request'
+          required: true
+
+components:
+  schemas:
+    create_request:
+      required:
+      - account_name
+      - amount
+      - channel
+      - country
+      - currency
+      - payment_method
+      - reference
+
+      type: object
+      properties:
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+                                                          
+        channel:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+        
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+
+        reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+
+        payment_method:
+          $ref: '#/components/schemas/payment_method_request'
+        
+        notifcations:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
+
+
+
+
+
