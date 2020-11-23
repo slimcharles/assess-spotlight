@@ -91,6 +91,41 @@ components:
       example: AAACBUGDZYYYIgGFGYNlAAAAAAA=
       minLength: 0
       maxLength: 50
+
+    authentication.preference:
+      type: string
+      description: Indicates whether a challenge is requested for this transaction. The Issuer may override whatever preference is specified in this field.
+       NO_PREFERENCE - No preference as to whether the customer is challenged
+       NO_CHALLENGE_REQUESTED - Preference is for the customer not be challenged
+       CHALLENGE_PREFERRED - Preference is for the customer to be challenged.
+       CHALLENGE_MANDATED - A challenge is required for the transaction to be authorized due to local/regional mandates or other variables.
+       NO_CHALLENGE_REQUESTED_TRANSACTION_RISK_ANALYSIS_PERFORMED
+       NO_CHALLENGE_REQUESTED_DATA_SHARE_ONLY
+       NO_CHALLENGE_REQUESTED_SCA_ALREADY_PERFORMED
+       NO_CHALLENGE_REQUESTED_WHITELIST
+       CHALLENGE_REQUESTED_PROMPT_FOR_WHITELIST
+      enum:
+      - NO_PREFERENCE
+      - NO_CHALLENGE_REQUESTED
+      - CHALLENGE_PREFERRED
+      - CHALLENGE_MANDATED
+      - NO_CHALLENGE_REQUESTED_TRANSACTION_RISK_ANALYSIS_PERFORMED
+      - NO_CHALLENGE_REQUESTED_DATA_SHARE_ONLY
+      - NO_CHALLENGE_REQUESTED_SCA_ALREADY_PERFORMED
+      - NO_CHALLENGE_REQUESTED_WHITELIST
+      - CHALLENGE_REQUESTED_PROMPT_FOR_WHITELIST
+
+    authentication.source:
+      type: string
+      description: Indicates the type of channel used to initiate the transaction. Allowed Values are
+       BROWSER
+       MERCHANT_INITIATED
+       MOBILE_SDK
+      enum:
+      - BROWSER
+      - MERCHANT_INITIATED
+      - MOBILE_SDK
+
     
 
     transaction.authorization_mode:
@@ -541,7 +576,7 @@ components:
     #### T
     three_ds.message_version:
       type: string
-      description: The version of 3DS 
+      description: Indicates the version of 3DS 
       example: '1.0.0'
       minLength: 0
       maxLength: 50
@@ -577,7 +612,237 @@ components:
       description: The reference created by the 3DSecure Directory Server to identify the specific authentication attempt.
       minLength: 0
       maxLength: 50
+    
+    three_ds.acs_trans_ref:
+      type: string
+      description: Unique transaction identifier assigned by the ACS.
+      minLength: 0
+      maxLength: 50
 
+
+    three_ds.ds_protocol_version_start:
+      type: string
+      description: The version range supported by the Directory Server (Card Scheme).
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.ds_protocol_version_end:
+      type: string
+      description: The version range supported by the Directory Server (Card Scheme).
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.acs_protocol_version_start:
+      type: string
+      description: The version range supported by the Access Control Server (Issuer).
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.acs_protocol_version_end:
+      type: string
+      description: The version range supported by the Access Control Server (Issuer).
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.liability_shift:
+      type: string
+      description: Indicates if the merchant has achieved a liabiliy shift.
+      enum:
+      - YES
+      - NO
+      - UNSURE
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.enrolled_status:
+      type: string
+      description: Indicates if payer is enrolled for 3DS.
+      enum:
+      - ENROLLED
+      - NOT_ENROLLED
+      - NOT_ENROLLED_ATTEMPT
+      - UNABLE_TO_VERIFY
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.acs_info_indicator:
+      type: string
+      description: Identifies the 3D Secure 2 features that the ACS supports, for example, Whitelisting or Decoupled Authentication.
+      enum:
+      - NOT_AVAILABLE
+      - AUTHENTICATION_AVAILABLE_AT_ACS
+      - ATTEMPTS_SUPPORTED_BY_ACS
+      - DECOUPLED_AUTHENTICATION_SUPPORTED
+      - WHITELISTING_SUPPORTED
+      - SCHEME_INFO_INDICATOR_##
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.challenge_model:
+      type: string
+      description: Indicates the type of authentication method the Issuer will use to challenge the customer. 
+      enum:
+      - STATIC_CHALLENGE
+      - DYNAMIC_CHALLENGE
+      - OUT_OF_BAND_CHALLENGE
+      - DECOUPLED
+      minLength: 0
+      maxLength: 50
+
+    three_ds.challenge_completion_indicator:
+      type: string
+      description: Indicates whether a transaction qualifies as an authenticated transaction or account verification. YES = Authentication/Account Verification Successful. NO = Not Authenticated/Account Not Verified; Transaction denied.
+      enum:
+      - YES
+      - NO
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.challenge_status:
+      type: string
+      description: Indicates whether a challenge is required due to local/regional mandates or another variable.
+      enum:
+      - MANDATED
+      - NOT_MANDATED
+      - UNKNOWN
+    
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.redirect_url:
+      type: string
+      description: URL to redirect the payer from the merchant's system to the payment method's system. This is used to determine or execute a challenge to the payer.
+      
+    three_ds.message_type:
+      type: string
+      description: Indicates what is the authentication value format used.
+      enum:
+        - PAREQ
+        - CREQ
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.challenge_value:
+      type: string
+      description: The value to be submitted in the request to the redirect_url when challenging an authentication. It is Base64url encoded and must be sent to the ACS.
+      minLength: 0
+      maxLength: 50
+      
+    three_ds.method_url:
+      type: string
+      description: The URL to facilitate the ACS gathering device data. If the ACS does not support this functionality, this field will not be returned.
+
+      
+    encoded_method_data:
+      type: string
+      description: JSON object containing the Base64Url encoded string, made up of the integator's method_notification_url and the server_trans_ref which must be sent to the Method URL.
+    
+    three_ds.merchant_contact_url:
+      type: string
+      description: The URL of the merchant's website or customer care site. Should provide contact information for use in the event of a problem.
+
+     
+      minLength: 0
+      maxLength: 50
+
+    authentication.message_category:
+      type: string
+      description: Indicates the reason category the authentication was initiated. PAYMENT_AUTHENTICATION or NON_PAYMENT_AUTHENTICATION - non payment activity such as adding or maintaining cards or card verification (OTB).
+      enum:
+        - PAYMENT_AUTHENTICATION
+        - NON_PAYMENT_AUTHENTICATION
+      minLength: 0
+      maxLength: 50
+
+
+    three_ds.method_url_completion_status:
+      type: string
+      description: Indicates whether the 3DS Method was completed successfully. 
+      enum:
+        - YES
+        - NO
+        - UNAVAILABLE
+      minLength: 0
+      maxLength: 50
+
+    authentication.status:
+      type: string
+      description: Indicates where the authentication is in its lifecycle
+      enum:
+        - AVAILABLE
+        - NOT_ENROLLED
+        - CHALLENGE_REQUIRED
+        - SUCCESS_AUTHENTICATED
+        - SUCCESS_ATTEMPT_MADE
+        - NOT_AUTHENTICATED
+        - FAILED
+
+      minLength: 0
+      maxLength: 50
+
+    authentication.status_reason:
+      type: string
+      description: Provides information on why the authentication status field has the specified value.
+      enum:
+        - CARD_AUTHENTICATION_FAILED
+        - UNKNOWN_DEVICE
+        - UNSUPPORTED_DEVICE
+        - EXCEEDS_AUTHENTICATION_FREQUENCY_LIMIT
+        - EXPIRED_CARD
+        - INVALID_CARD_NUMBER
+        - INVALID_TRANSACTION
+        - NO_CARD_RECORD
+        - SECURITY_FAILURE
+        - STOLEN_CARD
+        - SUSPECTED_FRAUD
+        - TRANSACTION_NOT_PERMITTED_TO_CARDHOLDER
+        - CARDHOLDER_NOT_ENROLLED_IN_SERVICE
+        - TRANSACTION_TIMED_OUT_AT_THE_ACS
+        - LOW_CONFIDENCE
+        - MEDIUM_CONFIDENCE
+        - HIGH_CONFIDENCE
+        - VERY_HIGH_CONFIDENCE
+        - EXCEEDS_ACS_MAXIMUM_CHALLENGES
+        - NON_PAYMENT_TRANSACTION_NOT_SUPPORTED
+        - THREERI_TRANSACTION_NOT_SUPPORTED
+        - ACS_TECHNICAL_ISSUE
+        - DECOUPLED_AUTHENTICATION_REQUIRED_BY_ACS
+        - DECOUPLED_MAX_EXPIRY_TIME_EXCEEDED
+        - INSUFFICIENT_TIME_TO_AUTHENTICATE
+        - AUTHENTICATION_ATTEMPTED_BUT_NOT_PERFORMED
+        - SCHEME_STATUS_REASON##
+
+      minLength: 0
+      maxLength: 50
+
+    three_ds.cardholder_response_info:
+      type: string
+      description: Optional text provided by the ACS/Issuer to customer during a Frictionless transaction that was not authenticated. For example, a customer care phone number to call.
+      minLength: 0
+    
+    three_ds.acs_transaction_status:
+      type: string
+      description: Indicates whether a transaction qualifies as an authenticated transaction or account verification. P
+      enum:
+        - AUTHENTICATION_SUCCESSFUL
+        - AUTHENTICATION_FAILED
+        - AUTHENTICATION_COULD_NOT_BE_PERFORMED
+        - AUTHENTICATION_ATTEMPTED_BUT_NOT_SUCCESSFUL
+        - CHALLENGE_REQUIRED
+        - AUTHENTICATION_ISSUER_REJECTED
+        - DECOUPLED_AUTHENTICATION_CONFIRMED
+        - CHALLENGE_PREFERENCE_ACKNOWLEDGED_INFORMATIONAL_ONLY
+
+    three_ds.session_data:
+      type: string
+      description: An integrator defined object used to store and send data to the ACS that is also returned back to the integrator.
+
+    three_ds.message_extension:
+      type: string
+    
+
+
+      
     time_updated:
       type: string
       format: date-time
