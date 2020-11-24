@@ -22,7 +22,7 @@ components:
         $ref: 'data_dictionary.v1.yaml#/components/schemas/Accept'
 
     header_Authorization:
-      name: Authorization
+      name: authorization
       in: header
       required: true
       description: Bearer access token value used to access the API.

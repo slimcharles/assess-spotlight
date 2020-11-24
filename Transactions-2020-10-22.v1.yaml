@@ -1775,6 +1775,15 @@ components:
       description: Data relating to the card payment method returned in a list response.
 
 
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        
+
+
 
 
 
