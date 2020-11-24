@@ -35,9 +35,11 @@ components:
           last_name: Mason
           entry_mode: ECOM
           authentication: 
-            xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-            cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-            eci: "5"
+            three_ds:
+              server_trans_ref: vJ9NXpFueXsAqeb4iAbJJbe+66s=
+              value: AAACBUGDZYYYIgGFGYNlAAAAAAA=
+              eci: "5"
+              message_version: "1.0.0"
           card: 
             number: "4263970000005262"
             expiry_month: "05"
