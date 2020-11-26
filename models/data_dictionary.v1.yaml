@@ -401,6 +401,401 @@ components:
       minLength: 0
       maxLength: 50
 
+    order.time_created_reference:
+      type: string
+      description: Merchant defined time the order was created.
+      minLength: 0
+      maxLength: 50
+
+    order.amount:
+      type: string
+      description: The total amount of the order.
+      example: '11099'
+
+      
+    order.address_match_indicator:
+      type: string
+      description: Indicates whether the shipping address matches the billing address.
+      enum:
+        - YES
+        - NO
+
+    address.line_1:
+      type: string
+      description: First line of the address.
+      minLength: 0
+      maxLength: 50
+
+    address.line_2:
+      type: string
+      description: Second line of the address.
+      minLength: 0
+      maxLength: 50
+
+    address.line_3:
+      type: string
+      description: Third  line of the address.
+      minLength: 0
+      maxLength: 50
+
+    address.city:
+      type: string
+      description: Merchant defined field common to all transactions that are part of the same order.
+      example: 'INV#88547'
+      minLength: 0
+      maxLength: 50
+
+    address.postal_code:
+      type: string
+      description: The city or town of the address.
+      minLength: 0
+      maxLength: 50
+
+    address.state:
+      type: string
+      description: The status or region of the address
+      minLength: 0
+      maxLength: 50
+      
+    address.country:
+      type: string
+      description: The county of the address.
+      minLength: 0
+      maxLength: 50
+
+    order.gift_card_count:
+      type: number
+      description: The total number of prepaid or gift cards purchased.
+      minimum: 0
+      maximum: 500
+
+    order.gift_card_amount:
+      type: string
+      description: The amount of the gift card. 
+      minLength: 0
+      maxLength: 3
+    
+    order.gift_card_currency:
+      type: string
+      description: The currency of the gift card. 
+      minLength: 0
+      maxLength: 3
+
+    order.delivery_email:
+      type: string
+      description: For ELECTRONIC_DELIVERY, the email address to which the merchandise was delivered. The field must be submitted in the form name@host.domain.
+      minLength: 0
+      maxLength: 50
+
+
+    order.delivery_timeframe:
+      type: string
+      description: Indicates the delivery timeframe for the order.
+      enum:
+      - ELECTRONIC_DELIVERY
+      - SAME_DAY
+      - OVERNIGHT
+      - TWO_DAYS_OR_MORE
+
+
+    order.shipping_method:
+      type: string
+      description: Indicates shipping method chosen for the transaction. Must be speific to this transaction, not generally to the merchant. If one or more items are included in the sale, use the Shipping Indicator code for the physical goods. If all the goods are digital, use the Shipping Method code that describes the most expensive item.
+      enum:
+      - BILLING_ADDRESS
+      - ANOTHER_VERIFIED_ADDRESS UNVERIFIED_ADDRESS
+      - SHIP_TO_STORE
+      - DIGITAL_GOODS
+      - TRAVEL_AND_EVENT_TICKETS
+      - OTHER
+      
+
+    order.shipping_name_matches_cardholder_name:
+      type: string
+      description: Indicates whether the account customer name matches the shipping address name.
+     
+
+
+    order.preorder_indicator:
+      type: string
+      description: Indicates whether the customer is paying for merchandise that will be available at a future date.
+      enum:
+      - FIRST_TIME_ORDER
+      - REORDER
+
+
+    order.preorder_availability_date:
+      type: string
+      format: date
+      example: '2020-11-11'
+      description: In the case of a preorder; the expected date when the merchandise will be available
+      
+
+
+    order.category:
+      type: string
+      description: The type of order being authenticated.
+      enum:
+      - GOODS_SERVICE_PURCHASE
+      - CHECK_ACCEPTANCE
+      - ACCOUNT_FUNDING
+      - QUASI_CASH_TRANSACTION
+      - PREPAID_ACTIVATION_AND_LOAD
+
+    payer.reference:
+      type: string
+      description: An integrator's reference to the payer.
+
+    payer.account_age:
+      type: string
+      description: Length of time the customer has had an account with the merchant.
+      enum:
+      - NO_ACCOUNT
+      - THIS_TRANSACTION
+      - LESS_THAN_THIRTY_DAYS
+      - THIRTY_TO_SIXTY_DAYS
+      - MORE_THEN_SIXTY_DAYS
+      
+    payer.account_creation_date:
+      type: string
+      format: date
+      description:  Date the customer opened their account with the merchant.
+      example: '2020-11-11'
+
+    payer.account_change_date:
+      type: string
+      format: date
+      description:  Date the customer's account with the merchant was last changed. For example, if the billing or shipping details changed, new payment account or new users added.
+      example: '2020-11-11'
+
+    payer.account_change_indicator:
+      type: string
+      description: Length of time since the account has changed.
+      enum:
+      - THIS_TRANSACTION
+      - LESS_THAN_THIRTY_DAYS
+      - THIRTY_TO_SIXTY_DAYS
+      - MORE_THEN_SIXTY_DAYS
+
+    payer.account_password_change_date:
+      type: string
+      format: date
+      description: Date the customer's account with the merchant had a password change or account reset.
+      example: '2020-11-11'
+
+
+    payer.account_password_change_indicator:
+      type: string
+      description: Length of time since the customer's account with the merchant has had a password change or account reset.
+      enum:
+      - NO_CHANGE
+      - THIS_TRANSACTION
+      - LESS_THAN_THIRTY_DAYS
+      - THIRTY_TO_SIXTY_DAYS
+      - MORE_THEN_SIXTY_DAYS  
+
+
+    payer.home_phone.country_code:
+      type: string
+      description: The country code of the phone number.
+
+    payer.home_phone.subscriber_number:
+      type: string
+      description: The phone number.
+
+    payer.work_phone.countrycode:
+      type: string
+      description: The country code of the phone number.
+
+    payer.work_phone.subscriber_number:
+      type: string
+      description: The phone number.
+
+    payment_account_creation_date:
+      type: string
+      format: date
+      description: Date the payment account was associated with the customer's account.
+      example: '2020-11-11'
+
+    payment_account_age_indicator:
+      type: string
+      description: Length of time the customer has had an account with the merchant.
+      enum:
+      - NO_ACCOUNT
+      - THIS_TRANSACTION
+      - LESS_THAN_THIRTY_DAYS
+      - THIRTY_TO_SIXTY_DAYS.
+      - MORE_THEN_SIXTY_DAYS
+
+    suspicious_account_activity:
+      type: string
+      description: Indicates whether there has been suspicious activity on this customer's account, including fraudulent activity. 
+      enum:
+      - SUSPICIOUS_ACTIVITY
+      - NO_SUSPICIOUS_ACTIVITY
+
+    purchases_last_6months_count:
+      type: string
+      description: Number of purchases with this customer's account during the previous six months.
+
+    transactions_last_24hours_count:
+      type: string
+      description: Number of transactions (successful and abandoned) for this customer account with the merchant in the previous 24 hours.
+
+    transaction_last_year_count:
+      type: string
+      description: umber of transactions (successful and abandoned) for this customer account with the merchant in the previous year.
+
+    provision_attempt_last_24hours_count:
+      type: string
+      description: Number of Add Card attempts in the last 24 hours.
+
+    shipping_address_time_created_reference:
+      type: string
+      format: date
+      description: Date the shipping address was first used with the merchant.
+      example: '2020-11-11'
+
+    shipping_address_creation_indicator:
+      type: string
+      description: When the shipping address was first used with the merchant.
+      enum:
+      - THIS_TRANSACTION
+      - LESS_THAN_THIRTY_DAYS
+      - THIRTY_TO_SIXTY_DAYS
+      - MORE_THEN_SIXTY_DAYS
+
+    payer_prior_three_ds_authentication_data.authentication_method:
+      type: string
+      description: Method used by the customer previously to authenticate. 
+      enum:
+      - FRICTIONLESS_AUTHENTICATION
+      - CHALLENGE_OCCURRED
+      - AVS_VERIFIED
+      - OTHER_ISSUER_METHOD
+
+    payer_prior_three_ds_authentication_data.acs_transaction_reference:
+      type: string
+      description: ACS Transaction ID for a prior 3DS authenticated transaction.
+
+
+    payer_prior_three_ds_authentication_data.authentication_timestamp:
+      type: string
+      format: date-time
+      description: Date and time in UTC of the prior customer authentication. Minimum of 3 microseconds precision, can be up to 6. Must also include timezone.
+
+    payer_prior_three_ds_authentication_data.authentication_data:
+      type: string
+      description: Data that documents and supports a specific authentication process.
+
+    recurring_authorization_data.max_number_of_instalments:
+      type: string
+      description: Indicates the maximum number of authorizations permitted for instalment payments.
+
+    recurring_authorization_data.frequency:
+      type: string
+      description: The minimum number of days between recurring authorizations.
+
+    recurring_authorization_data.expiry_date:
+      type: string
+      format: date
+      description: Date after which no further recurring authorizations shall be performed.
+
+    payer_login_data.authentication_data:
+      type: string
+      description: NOT IN USE
+
+    payer_login_data.authentication_timestamp:
+      type: string
+      format: date-time
+      description: The timestamp of the authentication with the merchant. Minimum of 3 microseconds precision, can be up to 6. Must also include timezone.
+
+    payer_login_data.authentication_type: 
+      type: string
+      description: Method used by the customer previously to authenticate with the merchant. 
+      enum:
+      - NOT_AUTHENTICATED
+      - MERCHANT_SYSTEM_AUTHENTICATION
+      - FEDERATED_ID_AUTHENTICATION
+      - ISSUER_CREDENTIAL_AUTHENTICATION
+      - THIRD_PARTY_AUTHENTICATION
+      - FIDO_AUTHENTICATION
+
+    browser.accept_header:
+      type: string
+      description: HTTP accept headers as sent by the browser. Allowed characters are [a-zA-Z0-9-/,+;.*=␣]
+      minLength: 0
+      maxLength: 2048
+
+    browser.color_depth:
+      type: string
+      description: Browser color depth. 
+      enum:
+      - ONE_BIT
+      - TWO_BITS
+      - FOUR_BITS
+      - EIGHT_BITS
+      - FIFTEEN_BITS
+      - SIXTEEN_BITS
+      - TWENTY_FOUR_BITS
+      - THIRTY_TWO_BITS
+      - FORTY_EIGHT_BITS
+
+    browser.ip:
+      type: string
+      description: IP address returned by the browser. IPv4 and IPv6 accepted. Allowed characters are [a-fA-F0-9:]
+      minLength: 0
+      maxLength: 39
+
+    browser.java_enabled:
+      type: string
+      description: Whether the browser can execute Java.
+      enum:
+      - YES
+      - NO
+
+    browser.javascript_enabled:
+      type: string
+      description: Whether the browser can execute Javascript.
+      enum:
+      - YES
+      - NO
+
+    browser.language:
+      type: string
+      description: Browser Language. Allowed characters  [a-zA-Z0-9-]
+      maxLength: 8
+
+    browser.screen_height:
+      type: string
+      description: Total height of the customer's screen in pixels.
+
+    browser.screen_width:
+      type: string
+      description: Total width of the customer's screen in pixels.
+
+    browser.challenge_window_size:
+      type: string
+      description: Dimensions of the challenge window that has been displayed to the customer. The ACS shall reply with content that is formatted to appropriately.
+      enum:
+        - WINDOWED_250X400
+        - WINDOWED_390X400
+        - WINDOWED_500X600
+        - WINDOWED_600X400
+        - FULL_SCREEN
+
+    browser.timezone::
+      type: string
+      description: Time difference between UTC time and the customer's browser local time, in minutes.
+      maxLength: 5
+
+
+    browser.user_agent::
+      type: string
+      description: Exact content of the HTTP user-agent header sent by the browser. Allowed characters are [a-zA-Z0-9/-_.␣():;',"{}]
+      maxLength: 2048
+
+
     #### P
     pagination.total_record_count:
       type: number
@@ -822,7 +1217,7 @@ components:
     
     three_ds.acs_transaction_status:
       type: string
-      description: Indicates whether a transaction qualifies as an authenticated transaction or account verification. P
+      description: Indicates whether a transaction qualifies as an authenticated transaction or account verification. 
       enum:
         - AUTHENTICATION_SUCCESSFUL
         - AUTHENTICATION_FAILED
@@ -839,6 +1234,7 @@ components:
 
     three_ds.message_extension:
       type: string
+      description: Scheme specific data elements used to to carry additional data. Message extension is sent based on rules set by each scheme and may not always be present in the response.
     
 
 
