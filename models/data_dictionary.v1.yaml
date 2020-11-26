@@ -125,10 +125,15 @@ components:
 
     authentication.source:
       type: string
-      description: Indicates the type of channel used to initiate the transaction. Allowed Values are
-       BROWSER
-       MERCHANT_INITIATED
-       MOBILE_SDK
+      description: Indicates the type of channel used to initiate the transaction. 
+      enum:
+      - BROWSER
+      - MERCHANT_INITIATED
+      - MOBILE_SDK
+
+    three_ds.authentication_source:
+      type: string
+      description: Indicates the type of channel used to initiate the transaction. 
       enum:
       - BROWSER
       - MERCHANT_INITIATED
@@ -687,7 +692,8 @@ components:
       - AVS_VERIFIED
       - OTHER_ISSUER_METHOD
 
-    payer_prior_three_ds_authentication_data.acs_transaction_reference:
+    # Rename to consistent field name acs_trans_ref
+    payer_prior_three_ds_authentication_data.acs_transaction_reference: #
       type: string
       description: ACS Transaction ID for a prior 3DS authenticated transaction.
 
@@ -1027,6 +1033,11 @@ components:
       minLength: 0
       maxLength: 50
 
+    three_ds.acs_reference_number:
+      type: string
+      description: Reference Number assigned by the ACS.
+      minLength: 0
+      maxLength: 50
 
     three_ds.ds_protocol_version_start:
       type: string
@@ -1223,6 +1234,7 @@ components:
       minLength: 0
       maxLength: 50
 
+   
     three_ds.cardholder_response_info:
       type: string
       description: Optional text provided by the ACS/Issuer to customer during a Frictionless transaction that was not authenticated. For example, a customer care phone number to call.

@@ -16,7 +16,7 @@ paths: {}
 
 components:
   callbacks:
-    APM Return:
+    apm_return:
       '{$request.body#/notifications.return_url}':
         get:
           parameters:
@@ -133,7 +133,7 @@ components:
             '200':
               description: OK
 
-    APM Status:
+    apm_status:
       '{$request.body#/notifications.status_url}':
         post:
           parameters:
@@ -152,3 +152,7 @@ components:
           responses:
             '200':
               description: OK
+
+
+
+              

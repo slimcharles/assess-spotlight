@@ -411,8 +411,10 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_availability_date
         category:
           $ref: data_dictionary.v1.yaml#/components/schemas/order.category  
-          
-    browser:
+    
+
+    ## Rename to Browser ??     
+    browser_data:
       type: object
       description: The information relating to a browser.
       properties:
