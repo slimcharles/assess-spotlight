@@ -16,7 +16,7 @@ paths: {}
 
 components:
   callbacks:
-    apm_return:
+    transaction.payment_method.apm_return:
       '{$request.body#/notifications.return_url}':
         get:
           parameters:
@@ -133,7 +133,7 @@ components:
             '200':
               description: OK
 
-    apm_status:
+    transaction.payment_method.apm_status:
       '{$request.body#/notifications.status_url}':
         post:
           parameters:

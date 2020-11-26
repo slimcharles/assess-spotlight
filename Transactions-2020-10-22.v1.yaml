@@ -138,10 +138,10 @@ paths:
       
       
       callbacks:
-        APM Return:
-          $ref: ./models/callbacks.v1.yaml#/components/callbacks/apm_return
-        APM Status:
-          $ref: ./models/callbacks.v1.yaml#/components/callbacks/apm_status
+        APM Return Notification:
+          $ref: ./models/callbacks.v1.yaml#/components/callbacks/transaction.payment_method.apm_return
+        APM Status Notification:
+          $ref: ./models/callbacks.v1.yaml#/components/callbacks/transaction.payment_method.apm_status
 
         
     get:

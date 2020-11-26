@@ -146,6 +146,17 @@ components:
       - MERCHANT_INITIATED
       - MOBILE_SDK
 
+    three_ds.authentication_request_type:
+      type: string
+      description: Indicates the type of channel used to initiate the transaction.
+      enum:
+      - PAYMENT_TRANSACTION
+      - RECURRING_TRANSACTION
+      - INSTALMENT_TRANSACTION
+      - ADD_CARD
+      - MAINTAIN_CARD
+      - CARDHOLDER_VERIFICATION
+
     
 
     transaction.authorization_mode:
@@ -1138,6 +1149,10 @@ components:
     three_ds.redirect_url:
       type: string
       description: URL to redirect the payer from the merchant's system to the payment method's system. This is used to determine or execute a challenge to the payer.
+
+    three_ds.acs_challenge_request_url:
+      type: string
+      description: The ACS URL that the payer is redirect to execute a challenge to the payer.
       
     three_ds.message_type:
       type: string

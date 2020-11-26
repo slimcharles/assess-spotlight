@@ -91,6 +91,10 @@ paths:
 
         x-codegen-request-body-name: request
 
+      callbacks:
+        Challenge Return Notification:
+          $ref: ./models/callbacks.v1.yaml#/components/callbacks/three_ds.challenge_return
+       
 
   /authentications/{id}/initiate:
     post:
@@ -167,7 +171,79 @@ paths:
 
         x-codegen-request-body-name: request
 
+      callbacks:
+        Challenge Return Notification:
+          $ref: ./models/callbacks.v1.yaml#/components/callbacks/three_ds.challenge_return
 
+  /authentications/{id}/result:
+    get:
+      operationId: get3DSResult
+      tags:
+      - Get Result
+      summary: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+
+      description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+
+      parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+      - name: id
+        in: path
+        required: true
+        schema:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.id
+
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/result_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+
+        '404':
+          description: Resource Not Found
+          content: {}
+
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+
+        x-codegen-request-body-name: request
+
+    
 
 components:
   schemas:
@@ -451,13 +527,108 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_model
         challenge_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_status
-
-
-
        
         challenge_value:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_value
 
+    
+    result_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.id
+
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status          
+          
+        channel:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+    
+        source:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
+
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        
+       
+        three_ds:
+          $ref: '#/components/schemas/three_ds_result_response'                                                
+        
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+     
+    three_ds_result_response:
+      type: object
+      properties:
+        acs_trans_ref:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_ref
+
+        ds_trans_ref:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_ref
+
+        server_trans_ref:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        
+        acs_reference_number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_reference_number
+        
+        liability_shift:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.liability_shift
+        
+        authentication_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_model
+
+        authentication_value:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.value
+
+        eci:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.eci
+
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status
+
+        status_reason:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status_reason
+
+        redirect_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
+
+        acs_challenge_request_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_challenge_request_url
+
+        authentication_source:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
+
+        challenge_value:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_value
+
+        message_category:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.message_category
+        
+        message_version:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+      
+        authentication_request_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.authentication_request_type
+       
       
     
 
