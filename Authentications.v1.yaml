@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Authentications
-  description: Authentications represent the attempt to reduce fraud by validating the payer who is executing the transaction.
+  description: Authentications represent the attempt to validate the payer to reduce the risk of fraud when transaction processing.
   contact:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
@@ -41,7 +41,55 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_request'
-          required: true
+        required: true
+
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+
+        '404':
+          description: Resource Not Found
+          content: {}
+
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+
+        x-codegen-request-body-name: request
 
 components:
   schemas:
@@ -84,7 +132,110 @@ components:
         notifcations:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
 
+    create_response:
+      required:
+      - account_name
+      - amount
+      - channel
+      - country
+      - currency
+      - payment_method
+      - reference
 
+      type: object
+      properties:
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+                                                          
+        channel:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
 
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+        
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
 
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
 
+        reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+
+        transaction_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+
+        payment_method:
+          $ref: '#/components/schemas/payment_method_request'
+        
+        notifcations:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
+
+    payment_method_request:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+        first_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
+        last_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+
+        
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
+        card:
+          $ref: '#/components/schemas/card_request'
+          
+    payment_method_response:
+      type: object
+      properties:
+        id:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
+        message:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+
+        card:
+          $ref: '#/components/schemas/card_response'
+    
+    card_request:
+      type: object
+      properties:
+        number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+        
+  
+    card_response:
+      type: object
+      properties:
+        masked_number_last4:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
+       
+        authcode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        
+        brand:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+
+        brand_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+
+               

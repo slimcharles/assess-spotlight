@@ -209,6 +209,7 @@ components:
 
     notifications:
       type: object
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
       properties:
         return_url:
          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.return_url
@@ -224,7 +225,7 @@ components:
         
         decoupled_challenge_return_url:
           $ref: data_dictionary.v1.yaml#/components/schemas/notifications.decoupled_challenge_return_url
-      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+      
 
     notification_post_response:
       type: object
@@ -287,14 +288,13 @@ components:
         provider:
          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider
         redirect_url:
-          provider:
-            $ref: data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
         session_token:
           $ref: data_dictionary.v1.yaml#/components/schemas/apm.session_token
         fund_status:
-           $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
         wait_notification:
-           $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
         optional_redirect:
           $ref: data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
         provider_transaction_reference:
