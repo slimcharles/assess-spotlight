@@ -28,8 +28,8 @@ paths:
       operationId: check3DSAvailability
       tags:
       - Check Availability
-      summary: Confirm the available mechanisms to authenticate the payer based on the payment method.
-      description: Confirm the available mechanisms to authenticate the payer based on the payment method.
+      summary: Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
+      description: Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
@@ -91,6 +91,85 @@ paths:
 
         x-codegen-request-body-name: request
 
+
+
+  /authentications/{id}/initiate:
+    post:
+      operationId: initiate3DS
+      tags:
+      - Initiate
+      summary: Assuming you have already gathered the relevant device data and (conditionally) the ACS Method URL process is complete, your application can now kick-off 3D Secure 2 authentication. This includes the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL (or whether it took place at all) and a link to the merchant's About or Contact page.
+
+      description: Assuming you have already gathered the relevant device data and (conditionally) the ACS Method URL process is complete, your application can now kick-off 3D Secure 2 authentication. This includes the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL (or whether it took place at all) and a link to the merchant's About or Contact page
+
+      parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+      - name: id
+        in: path
+        required: true
+        schema:
+         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.id
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/initiate_request'
+        required: true
+
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+
+        '404':
+          description: Resource Not Found
+          content: {}
+
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+
+        x-codegen-request-body-name: request
+
+
+
 components:
   schemas:
     create_request:
@@ -126,6 +205,22 @@ components:
         transaction_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
 
+        message_category:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.message_category
+
+        preference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.preference
+
+        source:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
+        
+        initator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
+        
+        stored_credential:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
+
+
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
@@ -133,6 +228,114 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
 
     create_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.id
+
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+
+        transaction_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+        
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status          
+          
+        channel:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        
+        country:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+    
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        
+        reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+
+        three_ds:
+          $ref: '#/components/schemas/three_ds_check_availability_response'                                                
+        
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+     
+
+    payment_method_request:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+        
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+        card:
+          $ref: '#/components/schemas/card_request'
+
+    card_request:
+      type: object
+      properties:
+        number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+
+    three_ds_check_availability_response:
+      type: object
+      properties:
+        server_trans_ref:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        message_version:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+        ds_protocol_version_start:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_protocol_version_start
+        ds_protocol_version_end:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_protocol_version_end
+        acs_protocol_version_start:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_start
+        acs_protocol_version_end:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_end
+        enrolled_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.enrolled_status
+        eci:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.eci
+        liability_shift:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.liability_shift
+        challenge_model:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_model
+        challenge_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_status
+        message_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
+        challenge_value:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_value
+
+        redirect_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
+        method_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url
+        
+        method_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/three_ds.method_data
+
+
+    initiate_request:
       required:
       - account_name
       - amount
@@ -144,98 +347,28 @@ components:
 
       type: object
       properties:
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-                                                          
-        channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+        merchant_contact_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.merchant_contact_url
+        source:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
 
-        country:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+                 
         
-        amount:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-
-        currency:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
-        reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-
-        transaction_type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
-        notifcations:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
-
-    payment_method_request:
-      type: object
-      properties:
-        id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
-        first_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
-        last_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
-        name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-
         
-        entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-        card:
-          $ref: '#/components/schemas/card_request'
-          
-    payment_method_response:
-      type: object
-      properties:
-        id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
-        result:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-        message:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-        entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
 
-        card:
-          $ref: '#/components/schemas/card_response'
     
-    card_request:
-      type: object
-      properties:
-        number:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
-        expiry_month:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
-        expiry_year:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
-        cvv:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
-        cvv_indicator:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-        avs_address:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
-        avs_postal_code:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
-        
-  
-    card_response:
-      type: object
-      properties:
-        masked_number_last4:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-       
-        authcode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
-        brand:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
 
-        brand_reference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+
+
+
+
+
+
+                
+  
+  
 
                

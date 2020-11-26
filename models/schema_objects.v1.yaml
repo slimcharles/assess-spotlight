@@ -25,13 +25,7 @@ components:
         info:
          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.info
 
-    order:
-      type: object
-      description: The information relating to an order. An order can be fulfilled by multiple transactions.
-      properties:
-        reference:
-          $ref: 'data_dictionary.v1.yaml#/components/schemas/order.reference'
-
+   
     authentication:
       type: object
       description: Information outlining the degree of authentication executed related to a transaction.
@@ -334,8 +328,103 @@ components:
           type: string
           description: The document represented as a base64 encoded string.
   
+    three_ds.method_data:
+      type: object
+      description: Stored data information used to create a transaction.
+      properties:
+        three_ds_server_trans_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        
+        three_ds_method_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.three_ds_method_return_url
+        
+        encoded_method_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/method_data.encoded_method_data
 
+    address:
+      type: object
+      properties:
+        line_1:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_1
+        line_2:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_2
+        line_3:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_3
+        city:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.city
+        postal_code:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.postal_code
+        state:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.state
+        country: 
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.country
+
+
+    order:
+      type: object
+      description: The information relating to an order. An order can be fulfilled by multiple transactions.
+      properties:
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.reference
+        
+        time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.time_created_reference
+
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency  
+          
+        address_match_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.address_match_indicator
     
+        shipping_address:
+           $ref: '#/components/schemas/address'
+
+        gift_card_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_count
+        
+        gift_card_amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_amount
+        gift_card_currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        delivery_email:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_email
+        delivery_timeframe:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_timeframe
+        shipping_method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_method
+        shipping_name_matches_cardholder_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_name_matches_cardholder_name
+        preorder_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_indicator
+        preorder_availability_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_availability_date
+        category:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.category  
+          
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Security Section
