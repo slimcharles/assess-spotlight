@@ -93,6 +93,13 @@ components:
       minLength: 1
       maxLength: 50
 
+    authentication.reference:
+      type: string
+      description:  Merchant defined field to uniquely reference the authentication attempt.
+      example: 'My reference 2'
+      minLength: 1
+      maxLength: 50
+
     authentication.value:
       type: string
       description: A CNP Card transaction's 3D Secure Customer Authentication Verification Value that is used to determine and validate the degree of authentication executed for this transaction.

@@ -41,9 +41,13 @@ paths:
             Content-Type:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding    
             X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+                
           content:
             application/json:
               schema:

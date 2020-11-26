@@ -273,10 +273,14 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -333,10 +337,14 @@ paths:
         '200':
           description: OK
           headers:
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type      
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-          - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            Content-Type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               $ref: ./models/schema_objects.v1.yaml#/components/schemas/document

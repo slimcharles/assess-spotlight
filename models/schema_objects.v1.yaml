@@ -531,15 +531,71 @@ components:
 
 
 
+  
+    three_ds.challange_return_notification:
+      type: object
+      properties:
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.id
 
+        time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/time_created
 
+        status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.status          
+          
+        channel:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.channel
 
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+                      
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        
+        country:
+          $ref: data_dictionary.v1.yaml#/components/schemas/country
+    
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.reference
 
+        merchant_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_name
+        
+       
+        three_ds:
+          $ref: '#/components/schemas/three_ds_notification'                                                
+        
+        action:
+          $ref: schema_objects.v1.yaml#/components/schemas/action
+    
+    
+    three_ds_notification:
+      type: object
+      properties:
+        acs_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_ref
+        
+        message_type:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
 
+        message_extension:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension
+        
+        message_version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
 
+        acs_transaction_status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_transaction_status
 
-
-
+        three_ds.session_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.session_data
 
 
 

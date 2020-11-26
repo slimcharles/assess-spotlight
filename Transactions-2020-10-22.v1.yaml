@@ -13,7 +13,7 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Create
+  - name: Create a Sale or Refund
     description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
 
   - name: List Transactions
@@ -25,7 +25,7 @@ tags:
   - name: Refund a Sale
     description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
 
-  - name: Reverse a Sale
+  - name: Reverse a Sale or Refund
     description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
 
   - name: Capture a Preauth 
@@ -48,7 +48,7 @@ paths:
     post:
       operationId: createSaleOrRefundTransaction
       tags:
-      - Create
+      - Create a Sale or Refund
       summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
       description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
 
@@ -438,7 +438,7 @@ paths:
     post:
       operationId: reverseExistingTransaction
       tags:
-      - Reverse a Sale
+      - Reverse a Sale or Refund transaction
   
       summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
       description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.

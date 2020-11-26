@@ -141,7 +141,7 @@ components:
             - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
             - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Version
             - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
-          
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Encoding
                               
           requestBody:
             content:
@@ -149,6 +149,27 @@ components:
                 schema:
                   $ref: schema_objects.v1.yaml#/components/schemas/notification_post_response
           description: The endpoint which will receive payment-status messages. This will include the result of the transaction or any updates to the transaction status. The Status URL will receive the final status of the transaction.
+          responses:
+            '200':
+              description: OK
+
+    three_ds.challenge_return:
+      '{$request.body#/notifications.challenge_return_url}':
+        post:
+          parameters:
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Signature
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          
+                              
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: schema_objects.v1.yaml#/components/schemas/three_ds.challange_return_notification
+          description: The endpoint which will receive 3DS challenge return notification messages. These notifications indicate that the payer has completed the 3DS authentication challenge and the result of the challenge can be obtained.
           responses:
             '200':
               description: OK
