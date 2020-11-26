@@ -191,7 +191,12 @@ components:
       enum: 
         - ISO-3166-1(alpha-2 code)
         - US
-    
+     
+    phone.subscriber_number:
+      type: string
+      description: The phone number.
+
+
     count:
       type: number
       description: The total number of items.
@@ -619,13 +624,13 @@ components:
       type: string
       description: The phone number.
 
-    payment_account_creation_date:
+    payer.payment_account_creation_date:
       type: string
       format: date
       description: Date the payment account was associated with the customer's account.
       example: '2020-11-11'
 
-    payment_account_age_indicator:
+    payer.payment_account_age_indicator:
       type: string
       description: Length of time the customer has had an account with the merchant.
       enum:
@@ -635,36 +640,36 @@ components:
       - THIRTY_TO_SIXTY_DAYS.
       - MORE_THEN_SIXTY_DAYS
 
-    suspicious_account_activity:
+    payer.suspicious_account_activity:
       type: string
       description: Indicates whether there has been suspicious activity on this customer's account, including fraudulent activity. 
       enum:
       - SUSPICIOUS_ACTIVITY
       - NO_SUSPICIOUS_ACTIVITY
 
-    purchases_last_6months_count:
+    payer.purchases_last_6months_count:
       type: string
       description: Number of purchases with this customer's account during the previous six months.
 
-    transactions_last_24hours_count:
+    payer.transactions_last_24hours_count:
       type: string
       description: Number of transactions (successful and abandoned) for this customer account with the merchant in the previous 24 hours.
 
-    transaction_last_year_count:
+    payer.transaction_last_year_count:
       type: string
       description: umber of transactions (successful and abandoned) for this customer account with the merchant in the previous year.
 
-    provision_attempt_last_24hours_count:
+    payer.provision_attempt_last_24hours_count:
       type: string
       description: Number of Add Card attempts in the last 24 hours.
 
-    shipping_address_time_created_reference:
+    payer.shipping_address_time_created_reference:
       type: string
       format: date
       description: Date the shipping address was first used with the merchant.
       example: '2020-11-11'
 
-    shipping_address_creation_indicator:
+    payer.shipping_address_creation_indicator:
       type: string
       description: When the shipping address was first used with the merchant.
       enum:
@@ -792,13 +797,13 @@ components:
         - WINDOWED_600X400
         - FULL_SCREEN
 
-    browser.timezone::
+    browser.timezone:
       type: string
       description: Time difference between UTC time and the customer's browser local time, in minutes.
       maxLength: 5
 
 
-    browser.user_agent::
+    browser.user_agent:
       type: string
       description: Exact content of the HTTP user-agent header sent by the browser. Allowed characters are [a-zA-Z0-9/-_.␣():;',"{}]
       maxLength: 2048

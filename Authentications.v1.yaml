@@ -92,7 +92,6 @@ paths:
         x-codegen-request-body-name: request
 
 
-
   /authentications/{id}/initiate:
     post:
       operationId: initiate3DS
@@ -337,23 +336,23 @@ components:
 
     initiate_request:
       required:
-      - account_name
-      - amount
-      - channel
-      - country
-      - currency
+      - source
       - payment_method
-      - reference
 
       type: object
       properties:
         merchant_contact_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.merchant_contact_url
+
+        method_url_completion_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
+
         source:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
 
-                 
-        
+        order:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
+
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
