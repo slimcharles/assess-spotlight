@@ -1693,10 +1693,11 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
         
         description:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
         
-        order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
+        order_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/order.reference
+            
         
         batch_id:
            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
