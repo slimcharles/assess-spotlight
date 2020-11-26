@@ -28,7 +28,7 @@ tags:
   - name: Reverse a Sale or Refund
     description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
 
-  - name: Capture a Preauth 
+  - name: Capture a Sale 
     description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
 
   - name: Adjust a Sale
@@ -80,8 +80,6 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/Authorization_With_Payment_Token
               Sale with Credential On File:
                 $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
-              Sale with Installment:
-                $ref: ./models/examples.v1.yaml#/components/examples/Installments
               Ecommerce - Alternative Payment Method:
                 $ref: ./models/examples.v1.yaml#/components/examples/apms
         required: true
@@ -262,7 +260,6 @@ paths:
         in: query
         schema:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-     
       
       - name: name
         in: query
@@ -287,7 +284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transactions_list'
+                $ref: '#/components/schemas/transactions_list_real_time'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -438,7 +435,7 @@ paths:
     post:
       operationId: reverseExistingTransaction
       tags:
-      - Reverse a Sale or Refund transaction
+      - Reverse a Sale or Refund
   
       summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
       description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
@@ -506,7 +503,7 @@ paths:
     post:
       operationId: captureSaleTransaction
       tags:
-      - Capture a Preauth 
+      - Capture a Sale
   
       summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
       description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
@@ -1002,7 +999,11 @@ components:
 
       
         order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
+          type: object
+          properties:
+            reference:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/order.reference
+            
 
         initiator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator          
@@ -1013,12 +1014,6 @@ components:
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
-       
-
-
-
-        installment:
-          $ref: '#/components/schemas/installment_request'
                
     create_response:
       type: object
@@ -1071,10 +1066,7 @@ components:
        
         payment_method:
           $ref: '#/components/schemas/payment_method_response'
-       
-        installment:
-          $ref: '#/components/schemas/installment_response'
-       
+     
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     
@@ -1394,6 +1386,8 @@ components:
         term:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
       description: Information that relates to an installment payment plan.
+    
+    
     term_request:
       type: object
       properties:
@@ -1412,6 +1406,7 @@ components:
         term:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
       description: Information that relates to an installment payment plan.
+    
     term_response:
       type: object
       properties:
@@ -1559,6 +1554,12 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/transactions_list_real_time_item'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
        
     transactions_list_real_time_item:
       type: object
@@ -1593,6 +1594,8 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
         create_action_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
+        payment_method:
+            $ref: '#/components/schemas/payment_method_list_real_time_response'
         
     payment_method_list_real_time_response:
       type: object
@@ -1676,11 +1679,6 @@ components:
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         
-                                                                      
-        
-       
-        
-        
         channel:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
         
@@ -1694,8 +1692,6 @@ components:
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
         
-
-
         description:
            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
         
@@ -1725,11 +1721,11 @@ components:
         create_action_id:
            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
         payment_method:
-          $ref: '#/components/schemas/payment_method_list_real_time_response'
+          $ref: '#/components/schemas/payment_method_single_real_time_response'
         system:
            $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
              
-    payment_method_single_response:
+    payment_method_single_real_time_response:
       type: object
       properties:
         name:
@@ -1741,10 +1737,10 @@ components:
         entry_mode:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         card:
-          $ref: '#/components/schemas/card_list_real_time_response'
+          $ref: '#/components/schemas/card_single_real_time_response'
       
     
-    card_list_single_response:
+    card_single_real_time_response:
       type: object
       properties:
         brand:

@@ -21,7 +21,7 @@ tags:
   - name: List Payment Methods
     description: Return a list of stored payment methods.
 
-  - name: Get a Payment Methods
+  - name: Get a Payment Method
     description: Return a single stored payment method.
 
   - name: Edit a Payment Method
@@ -39,8 +39,11 @@ tags:
 paths:
   /payment-methods:
     get:
+      operationId: getPaymentMethodList
       tags:
       - List Payment Methods
+      description: Return a list of stored payment methods.
+
       parameters:
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
@@ -123,8 +126,11 @@ paths:
         x-codegen-request-body-name: request
 
     post:
+      operationId: storePaymentMethod
       tags:
       - Create
+      description: Create a stored payment method on the Global Payments system and return a unique Global Payments ID  that can be used to create future Sale or Refund Transactions.
+      
       parameters:
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
@@ -175,8 +181,9 @@ paths:
 
   /payment-methods/{id}:
     get:
+      operationId: getPaymentMethod
       tags:
-      - Read
+      - Get a Payment Method
       summary: Return a single view of a stored payment method.
       description: Return a single view of a stored payment method.
       parameters:
@@ -203,7 +210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payment_method_list_response'
+                $ref: '#/components/schemas/payment_method_single_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -223,8 +230,12 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
     patch:
+      operationId: editPaymentMethod
       tags:
       - Edit a Payment Method
+      description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number. 
+
+ 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
@@ -279,10 +290,11 @@ paths:
       
   /payment-methods/{id}/detokenize:
     post:
+      operationId: detokenizePaymentMethod
       tags:
-      - Detokenize
-      summary: 'Detokenize the stored payment method. '
-      description: Detokenize the stored payment method.
+      - Detokenize a Payment Method
+      description: Detokenize the stored payment method to get a full payment method information.
+
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
@@ -331,8 +343,9 @@ paths:
         x-codegen-request-body-name: request
   /payment-methods/{id}/delete:
     post:
+      operationId: deletePaymentMethod
       tags:
-      - Delete
+      - Delete a Payment Method
       summary: Delete a stored payment method.
       description: Delete a stored payment method.
       parameters:
@@ -381,14 +394,14 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
+  
+  
   /payment-methods/search:
     post:
+      operationId: searchPaymentMethod
       tags:
-      - Read
-      summary: Return a list of stored payment methods where search criteria is in
-        the message body.
-      description: Return a list of stored payment methods where search criteria is
-        in the message body.
+      - Search for a Payment Method
+      description: Return a list of stored payment methods where search criteria is in the message body.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type

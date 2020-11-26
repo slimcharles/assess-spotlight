@@ -14,13 +14,14 @@ servers:
     description: Production Environment
 tags:
   - name: Check Availability
-    description: Confirm the available mechanisms to authenticate the payer based on the payment method.
+    description:  Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
 
   - name: Initiate
-    description: Commence the authentication process
+    description: For 3DS 2, submit data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
 
-  - name: Get Results
-    description: Get the result of the authentication process
+  - name: Get Result
+    description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+  
 
 paths:
   /authentications:
@@ -101,9 +102,9 @@ paths:
       operationId: initiate3DS
       tags:
       - Initiate
-      summary: Assuming you have already gathered the relevant device data and (conditionally) the ACS Method URL process is complete, your application can now kick-off 3D Secure 2 authentication. This includes the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL (or whether it took place at all) and a link to the merchant's About or Contact page.
+      summary: For 3DS 2, submit data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
 
-      description: Assuming you have already gathered the relevant device data and (conditionally) the ACS Method URL process is complete, your application can now kick-off 3D Secure 2 authentication. This includes the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL (or whether it took place at all) and a link to the merchant's About or Contact page
+      description: For 3DS 2, submit data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      

@@ -14,8 +14,11 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: View GP API activity.
-    description: Get a list of actions using criteria passed in the query string. Page through the result set to access all records and view all available information relating to a single action.
+  - name: Get a list of Actions
+    description: Get a list of Actions using criteria passed in the query string. Page through the result set to access all records.
+
+  - name: Get a Single Action
+    description: Get the details of a single action using its unique id.
 
 security:
   - bearerAuth: [] 
@@ -175,7 +178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/actions_list'
+                $ref: '#/components/schemas/action_single'
        
           '400':
             $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
@@ -273,7 +276,7 @@ components:
         
        
        
-    actions_single:
+    action_single:
       type: object
       properties:
         id:
