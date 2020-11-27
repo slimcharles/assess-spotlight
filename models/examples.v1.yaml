@@ -393,6 +393,7 @@ components:
             provider: APPLEPAY
             eci: 5        
 
+## Authentications
 ## Authentications 3DS 1
     authentication_3ds1_check_availability_challenge:
       value:
@@ -412,7 +413,6 @@ components:
           three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
 
 ## Authentications 3DS 2
-
     authentication_3ds2_check_availability_challenge:
       value:
         account_name: Transaction Processing
@@ -532,7 +532,30 @@ components:
           three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
       
 
+
+## Payments Methods
+## Create a Stored Payment Method
+    create_payment_method:
+      value:
+        usage_mode: MULTIPLE
+        reference: "card-1"
+        card:
+          number: '4012001037141112'
+          expiry_month: '12'
+          expiry_year: '25'
+          cvv: '456'
   
+## Create a Single Use Stored Payment Method
+    create_payment_method_single:
+      value:
+        usage_mode: SINGLE
+        reference: "card-431"
+        card:
+          number: '4012001037141112'
+          expiry_month: '12'
+          expiry_year: '25'
+          cvv: '456'
+
 
 
 

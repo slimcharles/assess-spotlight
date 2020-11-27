@@ -862,5 +862,12 @@ components:
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        
 
     

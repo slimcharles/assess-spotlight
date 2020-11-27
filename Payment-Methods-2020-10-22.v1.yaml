@@ -142,7 +142,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_request'
-        required: true
+            examples:
+              Store a Card:
+                $ref: ./models/examples.v1.yaml#/components/examples/create_payment_method
+              Create Single Use Token:
+                $ref: ./models/examples.v1.yaml#/components/examples/create_payment_method_single
       
       responses:
         '200':
@@ -454,8 +458,8 @@ components:
   schemas:
     create_request:
       required:
-      - account_name
       - card
+      - reference
       type: object
       properties:
         account_name:
@@ -513,7 +517,7 @@ components:
         payment_methods:
           type: array
           items:
-            $ref: '#/components/schemas/payment_method_list_response'
+            $ref: '#/components/schemas/payment_method_single_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
    
@@ -663,6 +667,13 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
       description: Data relating to the card payment method.
     
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        
     
 
     

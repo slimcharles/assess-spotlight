@@ -20,9 +20,7 @@ tags:
   - name: Get a Single Action
     description: Get the details of a single action using its unique id.
 
-security:
-  - bearerAuth: [] 
-      
+
 paths:
   /actions:
     get:
@@ -363,9 +361,16 @@ components:
         total_time_downstream_milliseconds:
           ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.total_time_downstream_milliseconds
 
-
-
-
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        
+
   

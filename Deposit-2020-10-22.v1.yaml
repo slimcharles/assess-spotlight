@@ -23,8 +23,6 @@ tags:
     externalDocs:
       url: 'https://developer.globalpay.com/settlement-reporting/step-by-step-guide'      
 
-security:
-  - bearerAuth: []     
 
 paths:
   /settlement/deposits:
@@ -259,4 +257,11 @@ components:
           
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        

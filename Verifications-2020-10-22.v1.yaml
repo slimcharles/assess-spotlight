@@ -252,4 +252,11 @@ components:
         avs_action:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
     
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer 
+      
+security:
+  - bearerAuth: []        
    
