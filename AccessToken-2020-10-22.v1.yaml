@@ -33,7 +33,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/request'
-        required: false
+            examples:
+              Get Access Token:
+                $ref: ./models/examples.v1.yaml#/components/examples/access_token_get
+
+              Get Access Token - Set Permissions:
+                $ref: ./models/examples.v1.yaml#/components/examples/access_token_with_permissions_get
+        required: true
       responses:
         '200':
           description: OK
