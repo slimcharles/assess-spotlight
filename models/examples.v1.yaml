@@ -34,8 +34,21 @@ components:
         seconds_to_expire: 604799
         permissions:
         - TRN_POST_Authorize
-
-
+  
+    verification_request:
+      value:
+        account_name: Transaction_Processing
+        channel: CNP
+        currency: USD
+        reference: MY_TRANS_REF_12345
+        country: US
+        payment_method:
+          name: James Mason
+          entry_mode: ECOM
+          card:
+            number: '4263970000005262'
+            expiry_month: '05'
+            expiry_year: '25'
     
     ECOMReq:
       value:

@@ -1468,6 +1468,7 @@ components:
     card.expiry_year:
       type: string
       description: The 2 digit expiry date year of the card.
+      example: '25'
       minLength: 2
       maxLength: 2
 

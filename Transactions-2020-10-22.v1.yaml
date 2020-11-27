@@ -1087,7 +1087,7 @@ components:
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name        
         entry_mode:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         encryption:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
         authentication:
@@ -1095,7 +1095,6 @@ components:
 
         card:
           $ref: '#/components/schemas/card_request'
-
         digital_wallet:
           $ref: '#/components/schemas/digital_wallet_request'
         apm:

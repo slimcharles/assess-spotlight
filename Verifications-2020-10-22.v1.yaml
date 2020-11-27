@@ -18,7 +18,7 @@ tags:
 
   
 paths:
-  /transactions:
+  /verifications:
     post:
       operationId: createVerification
       tags:
@@ -26,10 +26,9 @@ paths:
       description: Verify a payment method to ensure it can be used to create a Transaction at a later time.
       
       parameters:
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version 
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
       
       requestBody:
@@ -37,6 +36,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_request'
+            examples:
+              Verify a Card:
+                $ref: ./models/examples.v1.yaml#/components/examples/verification_request
         required: true
         
             
@@ -45,13 +47,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
@@ -82,7 +88,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
 
-        x-codegen-request-body-name: request
+    
     
     
 components:
@@ -115,7 +121,7 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
 
         payment_method:
-          $ref: Transactions-2020-10-22.v1.yaml#/components/schemas/payment_method_request
+          $ref: '#/components/schemas/payment_method_request'
               
     create_response:
       type: object
@@ -153,9 +159,97 @@ components:
       
        
         payment_method:
-          $ref: 'Transactions-2020-10-22.v1.yaml#/components/schemas/payment_method_response'
+          $ref: '#/components/schemas/payment_method_response'
              
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+
+ 
+    payment_method_request:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+        first_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
+        last_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name        
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+        encryption:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
+        
+
+        card:
+          $ref: '#/components/schemas/card_request'
+        
+       
+    payment_method_response:
+      type: object
+      properties:
+        id:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
+        message:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
+        entry_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+       
+        card:
+          $ref: '#/components/schemas/card_response'
+    
+
+    
+    card_request:
+      type: object
+      properties:
+        number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+
+        track:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.track
+        
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+       
+  
+    card_response:
+      type: object
+      properties:
+        masked_number_last4:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
+       
+        
+        
+        brand:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+
+        brand_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+
+        cvv_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
+
+        avs_address_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
+
+        avs_postal_code_result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
+
+        avs_action:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
     
    
