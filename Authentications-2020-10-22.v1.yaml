@@ -42,7 +42,18 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_request'
+            examples:
+              Check Availability - 3DS 1 Challenge:
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds1_check_availability_challenge
+
+              Check Availability - 3DS 2 Challenge:
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds2_check_availability_challenge
+
+              Check Availability - 3DS 2 Frictionless:
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds2_check_availability_frictionless
         required: true
+      
+        
 
       responses:
         '200':
@@ -122,7 +133,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/initiate_request'
+            examples:
+              Initiate - 3DS 2 Challenge:
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds2_initiate_challenge
+
         required: true
+        
 
       responses:
         '200':

@@ -312,3 +312,197 @@ components:
             chip_condition: ""
             pin_block: ""
             brand_reference: ""
+
+
+
+    digital_wallet_apple_tokenized:
+      value:
+        account_name: Transaction_Processing
+        type: SALE
+        channel: CNP
+        capture_mode: AUTO
+        amount: "1999"
+        currency: USD
+        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
+        country: US
+        payment_method: 
+          name: James Mason
+          entry_mode: ECOM
+          digital_wallet:
+            provider: APPLEPAY
+            payment_token:
+                version: EC_v1,
+                data: Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA==,
+                header: 
+                    ephemeralPublicKey: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA==,
+                    transactionId: fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3,
+                    publicKeyHash: h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk=
+                
+    digital_wallet_apple_detokenized:
+      value:
+        account_name: Transaction_Processing
+        type: SALE
+        channel: CNP
+        capture_mode: AUTO
+        amount: 1999
+        currency: USD
+        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
+        country: US
+        payment_method: 
+          name: James Mason
+          entry_mode: ECOM
+          digital_wallet:
+            token: 5167300431085507
+            token_format: CARD_NUMBER
+            expiry_month: 12
+            expiry_year: 20
+            cryptogram: 234234234
+            provider: APPLEPAY
+            eci: 5        
+
+## Authentications 3DS 1
+    authentication_3ds1_check_availability_challenge:
+      value:
+        account_name: Transaction Processing
+        reference: 3ds1_ref1
+        channel: CNP
+        amount: '6089'
+        currency: EUR
+        country: FR
+        payment_method:
+          card:
+            number: '4012001037141112'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: https://ensi808o85za.x.pipedream.net/
+          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+
+## Authentications 3DS 2
+
+    authentication_3ds2_check_availability_challenge:
+      value:
+        account_name: Transaction Processing
+        reference: 3ds2_ref1
+        channel: CNP
+        amount: '5089'
+        currency: EUR
+        country: FR
+        payment_method:
+          card:
+            number: '4012001038488884'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: https://ensi808o85za.x.pipedream.net/
+          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+
+    authentication_3ds2_initiate_challenge:
+      value:
+        method_url_completion_status: 'YES'
+        source: BROWSER
+        merchant_contact_url: https://enp4qhvjseljg.x.pipedream.net/
+        order:
+          time_created_reference: '2019-04-26T10:19:32.552327Z'
+          amount: 5089
+          currency: EUR
+          reference: 3400dd37-101d-4940-be15-3c963b6109b3
+          address_match_indicator: 'false'
+          shipping_address:
+            line1: Apartment 852
+            line2: Complex 741
+            line3: House 963
+            city: Chicago
+            postal_code: '50001'
+            state: IL
+            country: '840'
+          gift_card_count: '01'
+          gift_card_currency: EUR
+          gift_card_amount: '25000'
+          delivery_email: james.mason@example.com
+          delivery_timeframe: ELECTRONIC_DELIVERY
+          shipping_method: ANOTHER_VERIFIED_ADDRESS
+          shipping_name_matches_cardholder_name: 'true'
+          preorder_indicator: MERCHANDISE_AVAILABLE
+          preorder_availability_date: '2019-04-18'
+          reorder_indicator: FIRST_TIME_ORDER
+          category: GOODS_SERVICE_PURCHASE
+        payment_method:
+          card:
+            number: '4012001038488884'
+            expiry_month: '12'
+            expiry_year: '25'
+        payer:
+          reference: 6dcb24f5-74a0-4da3-98da-4f0aa0e88db3
+          account_age: LESS_THAN_THIRTY_DAYS
+          account_creation_date: '2019-01-10'
+          account_change_date: '2019-01-28'
+          account_change_indicator: THIS_TRANSACTION
+          account_password_change_date: '2019-01-15'
+          account_password_change_indicator: LESS_THAN_THIRTY_DAYS
+          home_phone:
+            country_code: '44'
+            subscriber_number: '123456789'
+          work_phone:
+            country_code: '44'
+            subscriber_number: '1801555888'
+          payment_account_creation_date: '2019-01-01'
+          payment_account_age_indicator: LESS_THAN_THIRTY_DAYS
+          suspicious_account_activity: NO_SUSPICIOUS_ACTIVITY
+          purchases_last_6months_count: '03'
+          transactions_last_24hours_count: '01'
+          transaction_last_year_count: '05'
+          provision_attempt_last_24hours_count: '01'
+          shipping_address_time_created_reference: '2019-01-28'
+          shipping_address_creation_indicator: THIS_TRANSACTION
+        payer_prior_three_ds_authentication_data:
+          authentication_method: FRICTIONLESS_AUTHENTICATION
+          acs_transaction_reference: 26c3f619-39a4-4040-bf1f-6fd433e6d615
+          authentication_timestamp: '2020-07-28T10:26:49.712Z'
+          authentication_data: secret123
+        recurring_authorization_data:
+          max_number_of_instalments: '05'
+          frequency: '25'
+          expiry_date: '2019-08-25'
+        payer_login_data:
+          authentication_data: secret123
+          authentication_timestamp: '2020-07-28T10:26:49.712Z'
+          authentication_type: MERCHANT_SYSTEM_AUTHENTICATION
+        browser_data:
+          accept_header: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+          color_depth: TWENTY_FOUR_BITS
+          ip: 123.123.123.123
+          java_enabled: 'true'
+          javascript_enabled: 'true'
+          language: en-US
+          screen_height: '1080'
+          screen_width: '1920'
+          challenge_window_size: FULL_SCREEN
+          timezone: '0'
+          user_agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/70.0.3538.110 Safari/537.36
+    
+    authentication_3ds2_check_availability_frictionless:
+      value:
+        account_name: Transaction Processing
+        reference: 3ds1_ref2
+        channel: CNP
+        amount: '5089'
+        currency: EUR
+        country: FR
+        payment_method:
+          card:
+            number: '4263970000005262'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: https://ensi808o85za.x.pipedream.net/
+          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+      
+
+  
+
+
+
+
+        
+

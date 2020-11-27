@@ -82,6 +82,11 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
               Ecommerce - Alternative Payment Method:
                 $ref: ./models/examples.v1.yaml#/components/examples/apms
+        
+              Apple Pay Sale - Tokenized Payment Token:
+                $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_tokenized
+              Apple Pay Sale - DeTokenized Payment Token:
+                $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_detokenized
         required: true
         
       
@@ -1080,22 +1085,23 @@ components:
         last_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
         name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-
-        
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name        
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
         encryption:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
         authentication:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication
-        digital_wallet:
-          $ref: '#/components/schemas/digital_wallet'
-        apm:
-          $ref: '#/components/schemas/apm_request'
+
         card:
           $ref: '#/components/schemas/card_request'
-          
+
+        digital_wallet:
+          $ref: '#/components/schemas/digital_wallet_request'
+        apm:
+          $ref: '#/components/schemas/apm_request'
+
+       
     payment_method_response:
       type: object
       properties:
@@ -1107,7 +1113,6 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-
         authentication:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication_response
         digital_wallet:
@@ -1116,6 +1121,8 @@ components:
           $ref: '#/components/schemas/apm_response'
         card:
           $ref: '#/components/schemas/card_response'
+    
+
     
     card_request:
       type: object
@@ -1137,7 +1144,7 @@ components:
         cvv:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
         cvv_indicator:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
         avs_address:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
         avs_postal_code:
@@ -1145,7 +1152,7 @@ components:
         funding:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
         authcode:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
   
@@ -1180,7 +1187,33 @@ components:
 
         avs_action:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
-         
+   
+    digital_wallet_request:  
+      type: object
+      properties:      
+        token:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
+        token_format:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_format
+        cryptogram:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.cryptogram
+        provider:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.provider
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+        eci:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/eci
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+
     digital_wallet:
       type: object
       properties:
@@ -1188,7 +1221,6 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
         token_format:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_format
-          
         cryptogram:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.cryptogram
         provider:
@@ -1254,11 +1286,9 @@ components:
                                                                     
         batch_id:
            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-       
+   
         payment_method:
           $ref: '#/components/schemas/existing_transaction_payment_method_response'
-       
-       
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     existing_transaction_payment_method_response:
@@ -1339,12 +1369,14 @@ components:
           description: The sequence number from the device used to align with processing platform.
       description: Data relating to a device used to facilitate the transaction.
    
+   
+   
     apm_request:
       type: object
       properties:
         provider:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-      description: Data associated with an APM.
+        
   
     apm_response:
       type: object

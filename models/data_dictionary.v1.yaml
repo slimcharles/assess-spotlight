@@ -1402,8 +1402,8 @@ components:
     Authorization:
       description: Bearer access token value used to access the API.
       type: string
-      default: 'Bearer GhJ3ScJazfhloPa8i1fUJLkAOCHw'
-      example: 'Bearer GhJ3ScJazfhloPa8i1fUJLkAOCHw'
+      default: 'Bearer GWDkpxjZRVJa2CQp1sJv17nByv1g'
+      example: 'Bearer GWDkpxjZRVJa2CQp1sJv17nByv1g'
     
 
     Accept:
