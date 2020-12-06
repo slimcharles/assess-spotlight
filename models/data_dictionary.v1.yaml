@@ -1804,6 +1804,7 @@ components:
       type: string
       description: A string used to identify the payment method being used with the transaction.
       enum:
+      - TESTPAY
       - PAYPAL
       - SOFORT
       - IDEAL

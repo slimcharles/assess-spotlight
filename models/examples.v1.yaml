@@ -93,10 +93,6 @@ components:
         reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
         description: SKU#BLK-MED-G123-GUC
         order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
         country: US
         ip_address: "123.123.123.123"
         site_reference: Site-1324
@@ -179,9 +175,7 @@ components:
         reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
         description: SKU#BLK-MED-G123-GUC
         order_reference: INV#88547
-        initiator: ""
         country: US
-        language: ""
         ip_address: "123.123.123.123"
         payment_method: 
           id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
@@ -192,7 +186,7 @@ components:
               xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
               cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
               eci: "5"
-              mac:  ""       
+             
     
     Stored_Credential:
       value:
