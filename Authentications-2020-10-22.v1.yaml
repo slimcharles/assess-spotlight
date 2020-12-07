@@ -101,7 +101,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
 
-        x-codegen-request-body-name: request
+
 
       callbacks:
         Challenge Return Notification:
@@ -186,7 +186,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
 
-        x-codegen-request-body-name: request
+
 
       callbacks:
         Challenge Return Notification:
@@ -258,7 +258,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
 
-        x-codegen-request-body-name: request
+
 
     
 
