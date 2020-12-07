@@ -391,7 +391,7 @@ components:
 ## Authentications 3DS 1
     authentication_3ds1_check_availability_challenge:
       value:
-        account_name: Transaction Processing
+        account_name: Transaction_Processing
         reference: 3ds1_ref1
         channel: CNP
         amount: '6089'
@@ -409,7 +409,7 @@ components:
 ## Authentications 3DS 2
     authentication_3ds2_check_availability_challenge:
       value:
-        account_name: Transaction Processing
+        account_name: Transaction_Processing
         reference: 3ds2_ref1
         channel: CNP
         amount: '5089'
@@ -510,7 +510,7 @@ components:
     
     authentication_3ds2_check_availability_frictionless:
       value:
-        account_name: Transaction Processing
+        account_name: Transaction_Processing
         reference: 3ds1_ref2
         channel: CNP
         amount: '5089'
