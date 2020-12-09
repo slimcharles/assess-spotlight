@@ -82,6 +82,9 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
               Ecommerce - Alternative Payment Method:
                 $ref: ./models/examples.v1.yaml#/components/examples/apms
+              
+              Ecommerce - PayPal:
+                $ref: ./models/examples.v1.yaml#/components/examples/apm_paypal
         
               Apple Pay Sale - Tokenized Payment Token:
                 $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_tokenized

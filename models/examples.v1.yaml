@@ -43,7 +43,7 @@ components:
         reference: MY_TRANS_REF_12345
         country: US
         payment_method:
-          name: James Mason
+          name: "James Mason"
           entry_mode: ECOM
           card:
             number: '4263970000005262'
@@ -64,8 +64,7 @@ components:
         country: US
         ip_address: "123.123.123.123"
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           authentication: 
             three_ds:
@@ -97,8 +96,7 @@ components:
         ip_address: "123.123.123.123"
         site_reference: Site-1324
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: CHIP
           card:
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
@@ -122,8 +120,7 @@ components:
         country: US
         ip_address: "123.123.123.123"
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: MOTO
           card: 
             number: "4263970000005262"
@@ -153,8 +150,7 @@ components:
         ip_address: "123.123.123.123"
         site_reference: Site-1324
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: SWIPE
           card: 
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
@@ -179,8 +175,7 @@ components:
         ip_address: "123.123.123.123"
         payment_method: 
           id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           authentication: 
               xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
@@ -205,8 +200,7 @@ components:
         ip_address: "123.123.123.123"
         payment_method: 
           id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           authentication: 
               xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
@@ -235,8 +229,7 @@ components:
         ip_address: "123.123.123.123"
         payment_method: 
           id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           authentication: 
             xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
@@ -266,23 +259,35 @@ components:
         description: SKU#BLK-MED-G123-GUC
         order_reference: INV#88547
         country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        site_reference: ""
         payment_method: 
-        
-            
-  
-  
-  
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           apm: 
             provider: testpay
         notifications: 
           return_url: https://www.example.com/return_url
           status_url: https://www.example.com/status_url
+    
+    apm_paypal:
+      value: 
+        account_name: Transaction_Processing
+        type: SALE
+        channel: CNP
+        capture_mode: AUTO
+        amount: "2999"
+        currency: EUR
+        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
+        description: SKU#BLK-MED-G123-GUC
+        country: GB
+        payment_method: 
+          name: "James Mason"
+          entry_mode: ECOM
+          apm: 
+            provider: paypal
+        notifications: 
+          return_url: https://www.example.com/return_url
+          status_url: https://www.example.com/status_url
+          cancel_url: https://www.example.com/cancel_url
 
     ecom_refund:
       value:
@@ -298,8 +303,7 @@ components:
         country: US
         ip_address: "123.123.123.123"
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: ECOM
           card: 
             number: "4263970000005262"
@@ -329,17 +333,12 @@ components:
         ip_address: "123.123.123.123"
         site_reference: Site-1324
         payment_method: 
-          first_name: James
-          last_name: Mason
+          name: "James Mason"
           entry_mode: CHIP
           card: 
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
             tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
             funding: DEBIT
-            chip_condition: ""
-            pin_block: ""
-            brand_reference: ""
-
 
 
     digital_wallet_apple_tokenized:
@@ -353,7 +352,7 @@ components:
         reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
         country: US
         payment_method: 
-          name: James Mason
+          name: "James Mason"
           entry_mode: ECOM
           digital_wallet:
             provider: APPLEPAY
@@ -376,7 +375,7 @@ components:
         reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
         country: US
         payment_method: 
-          name: James Mason
+          name: "James Mason"
           entry_mode: ECOM
           digital_wallet:
             token: 5167300431085507
