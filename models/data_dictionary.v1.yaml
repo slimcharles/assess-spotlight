@@ -1391,13 +1391,13 @@ components:
     Accept-Encoding:
       description: Compression algorithm user can accept in the response to this request.
       default: 'gzip'
-      example: 'gzip'
+
       
     Content-Encoding:
       description: Indicates if the message is compressed and using what compression mechanism.
       type: string
       default: 'gzip'
-      example: 'gzip'  
+
 
     Authorization:
       description: Bearer access token value used to access the API.
@@ -1416,7 +1416,7 @@ components:
       description: Indicates the format of the message.
       type: string
       default: 'application/json'
-      example: 'application/json'
+
 
      
     xid:
