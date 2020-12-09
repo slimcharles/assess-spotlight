@@ -652,8 +652,8 @@ components:
       type: http
       scheme: bearer 
 
-  security:
-  - bearerAuth: []  
+security:
+- bearerAuth: []  
       
       
       
