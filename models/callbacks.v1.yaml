@@ -21,6 +21,12 @@ components:
         get:
           parameters:
           - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+        
+          - name: X-GP-Signature
+            in: query
+            required: true
+            schema:
+              $ref: data_dictionary.v1.yaml#/components/schemas/X-GP-Signature
           
           - name: id
             in: query

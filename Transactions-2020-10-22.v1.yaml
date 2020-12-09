@@ -139,10 +139,6 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
 
-        x-codegen-request-body-name: request
-    
-      
-      
       callbacks:
         APM Return Notification:
           $ref: ./models/callbacks.v1.yaml#/components/callbacks/transaction.payment_method.apm_return
@@ -310,7 +306,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
     
   /transactions/{id}:
     get:
@@ -369,7 +365,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /transactions/{id}/refund:
     post:
@@ -437,7 +433,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /transactions/{id}/reversal:
     post:
@@ -505,7 +501,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /transactions/{id}/capture:
     post:
@@ -574,7 +570,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
     
  
   /transactions/{id}/adjustment:
@@ -640,7 +636,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /transactions/{id}/reauthorization:
     post:
@@ -707,7 +703,7 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
           
-      x-codegen-request-body-name: request
+      
 
   /transactions/{id}/confirmation:
     post:
@@ -773,7 +769,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /settlement/transactions:
     get:
@@ -927,7 +923,7 @@ paths:
             $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
           '504':
             $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-      x-codegen-request-body-name: request
+      
 
 
 
