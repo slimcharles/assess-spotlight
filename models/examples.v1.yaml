@@ -19,57 +19,53 @@ components:
     
     access_token_get:
       value:
-        app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        nonce: random_string
-        secret: e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716
-        grant_type: client_credentials
+        app_id: "i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR"
+        nonce: "random_string"
+        secret: "e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716"
+        grant_type: "client_credentials"
      
       
     access_token_with_permissions_get:
       value:
-        app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
-        nonce: random_string
-        secret: e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716
-        grant_type: client_credentials
+        app_id: "i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR"
+        nonce: "random_string"
+        secret: "e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716"
+        grant_type: "client_credentials"
         seconds_to_expire: 604799
         permissions:
         - TRN_POST_Authorize
   
     verification_request:
       value:
-        account_name: Transaction_Processing
-        channel: CNP
-        currency: USD
-        reference: MY_TRANS_REF_12345
-        country: US
+        account_name: "Transaction_Processing"
+        channel: "CNP"
+        currency: "USD"
+        reference: "MY_TRANS_REF_12345"
+        country: "US"
         payment_method:
           name: "James Mason"
-          entry_mode: ECOM
+          entry_mode: "ECOM"
           card:
-            number: '4263970000005262'
-            expiry_month: '05'
-            expiry_year: '25'
+            number: "4263970000005262"
+            expiry_month: "05"
+            expiry_year: "25"
     
     ECOMReq:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
-        ip_address: "123.123.123.123"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
-          entry_mode: ECOM
+          entry_mode: "ECOM"
           authentication: 
             three_ds:
-              server_trans_ref: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-              value: AAACBUGDZYYYIgGFGYNlAAAAAAA=
+              server_trans_ref: "vJ9NXpFueXsAqeb4iAbJJbe+66s="
+              value: "AAACBUGDZYYYIgGFGYNlAAAAAAA="
               eci: "5"
               message_version: "1.0.0"
           card: 
@@ -77,84 +73,69 @@ components:
             expiry_month: "05"
             expiry_year: "25"
             cvv: "852"
-            cvv_indicator: PRESENT
-            avs_address: Flat 123
+            cvv_indicator: "PRESENT"
+            avs_address: "Flat 123"
             avs_postal_code: "50001"
 
     EMVReq:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         ip_address: "123.123.123.123"
-        site_reference: Site-1324
+        site_reference: "Site-1324"
         payment_method: 
           name: "James Mason"
-          entry_mode: CHIP
+          entry_mode: "CHIP"
           card:
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
             tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
-            funding: DEBIT
+            funding: "DEBIT"
             chip_condition: ""
             pin_block: ""
             brand_reference: ""
         
     Moto_Capture_Later:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: LATER
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "LATER"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
         country: US
-        ip_address: "123.123.123.123"
         payment_method: 
           name: "James Mason"
-          entry_mode: MOTO
+          entry_mode: "MOTO"
           card: 
             number: "4263970000005262"
             expiry_month: "05"
             expiry_year: "25"
             cvv: "852"
-            cvv_indicator: PRESENT
-            avs_address: Flat 123
+            cvv_indicator: "PRESENT"
+            avs_address: "Flat 123"
             avs_postal_code: "50001"
 
     Swipe:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CP"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
-        country: US
-        ip_address: "123.123.123.123"
-        site_reference: Site-1324
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
-          entry_mode: SWIPE
+          entry_mode: "SWIPE"
           card: 
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
-            tag: ""
             funding: CREDIT
             chip_condition: ""
             pin_block: ""
@@ -162,248 +143,190 @@ components:
 
     Authorization_With_Payment_Token:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
+        currency: "USD"
         reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
+        country: "US"
         ip_address: "123.123.123.123"
         payment_method: 
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
+          id: "PMT_f6878e2a-2744-4d63-9420-3cc25c349ad2"
           name: "James Mason"
           entry_mode: ECOM
           authentication: 
-              xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-              cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
+            three_ds:
+              server_trans_ref: "vJ9NXpFueXsAqeb4iAbJJbe+66s="
+              value: "AAACBUGDZYYYIgGFGYNlAAAAAAA="
               eci: "5"
+              message_version: "1.0.0"
              
     
     Stored_Credential:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        initiator: MERCHANT
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
+          id: "PMT_f6878e2a-2744-4d63-9420-3cc25c349ad2"
           name: "James Mason"
-          entry_mode: ECOM
-          authentication: 
-              xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-              cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-              eci: "5"
-              mac: ""
+          entry_mode: "ECOM"
+          
+        initiator: "MERCHANT"
         stored_credential: 
-          model: SUBSCRIPTION
-          reason: INCREMENTAL
-          sequence: SUBSEQUENT
+          model: "SUBSCRIPTION"
+          reason: "INCREMENTAL"
+          sequence: "SUBSEQUENT"
 
-    Installments:
-      value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        initiator: MERCHANT
-        country: US
-        language: ""
-        ip_address: "123.123.123.123"
-        payment_method: 
-          id: PMT_41db09dd-784e-47f7-a5b8-39f4853fbdc0
-          name: "James Mason"
-          entry_mode: ECOM
-          authentication: 
-            xid: vJ9NXpFueXsAqeb4iAbJJbe+66s=
-            cavv: AAACBUGDZYYYIgGFGYNlAAAAAAA=
-            eci: "5"
-            mac: ""
-        stored_credential: 
-          model: INSTALLMENT
-          reason: INCREMENTAL
-          sequence: SUBSEQUENT
-        installment: 
-          program: ""
-          term: 
-            id: Gym Membership
-            time_unit: MONTH
-            time_unit_number: "12"
-        
     apms:
       value: 
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
         amount: "1999"
-        currency: EUR
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        order_reference: INV#88547
-        country: US
+        currency: "EUR"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
-          entry_mode: ECOM
+          entry_mode: "ECOM"
           apm: 
-            provider: testpay
+            provider: "testpay"
         notifications: 
-          return_url: https://www.example.com/return_url
-          status_url: https://www.example.com/status_url
+          return_url: "https://www.example.com/return_url"
+          status_url: "https://www.example.com/status_url"
     
     apm_paypal:
       value: 
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
         amount: "2999"
-        currency: EUR
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC
-        country: GB
+        currency: "EUR"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "GB"
         payment_method: 
           name: "James Mason"
-          entry_mode: ECOM
+          entry_mode: "ECOM"
           apm: 
-            provider: paypal
+            provider: "paypal"
         notifications: 
-          return_url: https://www.example.com/return_url
-          status_url: https://www.example.com/status_url
-          cancel_url: https://www.example.com/cancel_url
+          return_url: "https://www.example.com/return_url"
+          status_url: "https://www.example.com/status_url"
+          cancel_url: "https://www.example.com/cancel_url"
 
     ecom_refund:
       value:
-        account_name: Transaction_Processing
-        type: REFUND
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "REFUND"
+        channel: "CNP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC_Refund
-        order_reference: INV#88547
-        country: US
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         ip_address: "123.123.123.123"
         payment_method: 
           name: "James Mason"
-          entry_mode: ECOM
+          entry_mode: "ECOM"
           card: 
             number: "4263970000005262"
             expiry_month: "05"
             expiry_year: "25"
             cvv: "852"
             cvv_indicator: PRESENT
-            avs_address: Flat 123
+            avs_address: "Flat 123"
             avs_postal_code: "50001"
     
     cardpresent_refund:
       value:
-        account_name: Transaction_Processing
-        type: REFUND
-        channel: CP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "REFUND"
+        channel: "CP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        description: SKU#BLK-MED-G123-GUC_Refund
-        order_reference: INV#88547
-        gratuity_amount: ""
-        cashback_amount: ""
-        surcharge_amount: ""
-        convenience_amount: ""
-        country: US
-        ip_address: "123.123.123.123"
-        site_reference: Site-1324
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
-          entry_mode: CHIP
+          entry_mode: "CHIP"
           card: 
             track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
             tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
-            funding: DEBIT
+            funding: "DEBIT"
 
 
     digital_wallet_apple_tokenized:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
         amount: "1999"
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        country: US
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
           entry_mode: ECOM
           digital_wallet:
-            provider: APPLEPAY
+            provider: "APPLEPAY"
             payment_token:
-              version: EC_v1,
-              data: Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA==,
+              version: "EC_v1"
+              data: "Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA=="
               header: 
-                  ephemeralPublicKey: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA==,
-                  transactionId: fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3,
-                  publicKeyHash: h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk=
+                  ephemeralPublicKey: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA=="
+                  transactionId: "fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3"
+                  publicKeyHash: "h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk="
                 
     digital_wallet_apple_detokenized:
       value:
-        account_name: Transaction_Processing
-        type: SALE
-        channel: CNP
-        capture_mode: AUTO
-        amount: 1999
-        currency: USD
-        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
-        country: US
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
         payment_method: 
           name: "James Mason"
           entry_mode: ECOM
           digital_wallet:
-            token: 5167300431085507
-            token_format: CARD_NUMBER
-            expiry_month: 12
-            expiry_year: 20
-            cryptogram: 234234234
-            provider: APPLEPAY
-            eci: 5        
+            token: "5167300431085507"
+            token_format: "CARD_NUMBER"
+            expiry_month: "12"
+            expiry_year: "20"
+            cryptogram: "234234234"
+            provider: "APPLEPAY"
+            eci: "5"        
 
 ## Authentications
 ## Authentications 3DS 1
     authentication_3ds1_check_availability_challenge:
       value:
-        account_name: Transaction_Processing
-        reference: 3ds1_ref1
-        channel: CNP
-        amount: '6089'
-        currency: EUR
-        country: FR
+        account_name: "Transaction_Processing"
+        reference: "3ds1_ref1"
+        channel: "CNP"
+        amount: "6089"
+        currency: "EUR"
+        country: "FR"
         payment_method:
           card:
             number: '4012001037141112'
             expiry_month: '12'
             expiry_year: '25'
         notifications:
-          challenge_return_url: https://ensi808o85za.x.pipedream.net/
-          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+          challenge_return_url: "https://ensi808o85za.x.pipedream.net/"
+          three_ds_method_return_url: "https://ensi808o85za.x.pipedream.net/"
 
 ## Authentications 3DS 2
     authentication_3ds2_check_availability_challenge:
