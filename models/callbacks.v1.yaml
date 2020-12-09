@@ -20,8 +20,6 @@ components:
       '{$request.body#/notifications.return_url}':
         get:
           parameters:
-          - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
-        
           - name: X-GP-Signature
             in: query
             required: true
