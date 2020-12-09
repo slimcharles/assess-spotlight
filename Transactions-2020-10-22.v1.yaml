@@ -34,11 +34,11 @@ tags:
   - name: Adjust a Sale
     description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
 
-  - name: ReAuth a Reverse Sale
+  - name: ReAuth a Reversed Sale
     description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
 
   - name: Confirm a Transaction
-    description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
+    description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be transferred.
 
   - name: List Settled Transactions
     description: Get a list of settled or funded transactions  Page through the result set to access all records.
@@ -646,7 +646,7 @@ paths:
     post:
       operationId: reauthSaleTransaction
       tags:
-      - ReAuth a Reverse Sale
+      - ReAuth a Reversed Sale
       summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       parameters:
