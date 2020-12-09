@@ -357,12 +357,12 @@ components:
           digital_wallet:
             provider: APPLEPAY
             payment_token:
-                version: EC_v1,
-                data: Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA==,
-                header: 
-                    ephemeralPublicKey: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA==,
-                    transactionId: fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3,
-                    publicKeyHash: h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk=
+              version: EC_v1,
+              data: Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA==,
+              header: 
+                  ephemeralPublicKey: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA==,
+                  transactionId: fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3,
+                  publicKeyHash: h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk=
                 
     digital_wallet_apple_detokenized:
       value:
