@@ -1014,7 +1014,9 @@ components:
         stored_credential:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
 
-
+        notifications:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
+          
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
