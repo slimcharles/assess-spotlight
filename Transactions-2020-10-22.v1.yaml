@@ -1016,7 +1016,7 @@ components:
 
         notifications:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
-          
+
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
@@ -1808,7 +1808,8 @@ components:
 
       description: Data relating to the card payment method returned in a list response.
 
-
+    notifications:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
