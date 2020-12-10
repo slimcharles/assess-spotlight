@@ -587,7 +587,6 @@ components:
        
         three_ds:
           $ref: '#/components/schemas/three_ds_result_response'                                                
-        
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
      
@@ -645,7 +644,8 @@ components:
         authentication_request_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.authentication_request_type
        
-
+    notifications:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
 
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -655,18 +655,4 @@ components:
 security:
 - bearerAuth: []  
       
-      
-      
-    
-
-
-
-
-
-
-
-                
-  
-  
-
-               
+ 
