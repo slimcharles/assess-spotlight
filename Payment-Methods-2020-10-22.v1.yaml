@@ -1,82 +1,66 @@
-openapi: '3.0.3'
+openapi: 3.0.3
 info:
   title: Stored Payment Methods
-  description: Payment Method storage is the Global Payments service where sensitive information is securely stored in exchange for a Global Payments unique identifier. This identifier, commonly referred to as a token, is then used to create Sale and Refund Transactions.
+  description: 'Payment Method storage is the Global Payments service where sensitive information is securely stored in exchange for a Global Payments unique identifier. This identifier, commonly referred to as a token, is then used to create Sale and Refund Transactions.'
   version: 2020 10 22
   contact:
-    name: 'API Integrations'
+    name: API Integrations
     url: 'https://developer.globalpay.com/?gp-api=true'
-    email: 'api.integrations@globalpay.com'
- 
+    email: api.integrations@globalpay.com
 servers:
   - url: 'https://apis.sandbox.globalpay.com/ucp'
     description: Sandbox Environment
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
-
 tags:
   - name: Create
     description: Create a stored payment method on the Global Payments system and return a unique Global Payments ID  that can be used to create future Sale or Refund Transactions.
-
   - name: List Payment Methods
     description: Return a list of stored payment methods.
-
   - name: Get a Payment Method
     description: Return a single stored payment method.
-
   - name: Edit a Payment Method
-    description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number. 
-
+    description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number.
   - name: Detokenize a Payment Method
     description: Detokenize the stored payment method to get a full payment method information.
-
   - name: Delete a Payment Method
     description: Delete a stored payment method.
-
   - name: Search for a Payment Method
     description: Return a list of stored payment methods where search criteria is in the message body.
-
 paths:
   /payment-methods:
     get:
       operationId: getPaymentMethodList
       tags:
-      - List Payment Methods
+        - List Payment Methods
       description: Return a list of stored payment methods.
-
       parameters:
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
-      
         - name: id
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-  
         - name: number_last4
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
-      
         - name: reference
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
-        
         - name: status
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.status
-        
         - name: from_time_created
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-        
         - name: to_time_created
           in: query
           schema:
@@ -85,27 +69,57 @@ paths:
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_last_updated
-        
         - name: to_time_last_updated
           in: query
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_last_updated
-
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/payment_method_list_response'
+              examples:
+                example-1:
+                  value:
+                    total_record_count: 3412
+                    current_page_size: 3412
+                    merchant_id: MER_c4c0df11039c48a9b63701adeaa296c3
+                    merchant_name: Sandbox_merchant_2
+                    account_id: TRA_6716058969854a48b33347043ff8225f
+                    account_name: Transaction_Processing
+                    filter: {}
+                    paging:
+                      page: 1
+                      page_size: 5
+                      order_by: TIME_CREATED
+                      order: ASC
+                    payment_methods:
+                      - account_name: Transaction_Processing
+                        time_created: '2020-05-03T21:23:39.718Z'
+                        status: ACTIVE
+                        reference: CustABC_Card_1
+                        name: James Mason
+                        card:
+                          number_last4: stri
+                          brand: VISA
+                          expiry_month: '05'
+                          expiry_year: '25'
+                    action:
+                      id: ABC_6716058969854a48b33347043ff8225f
+                      type: DEPOSIT_LIST
+                      time_created: '2020-05-03T21:23:39.718Z'
+                      result_code: SUCCESS
+                      app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+                      app_name: demo_app
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -124,19 +138,16 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
     post:
       operationId: storePaymentMethod
       tags:
-      - Create
+        - Create
       description: Create a stored payment method on the Global Payments system and return a unique Global Payments ID  that can be used to create future Sale or Refund Transactions.
-      
       parameters:
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-     
       requestBody:
         content:
           application/json:
@@ -147,18 +158,17 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/create_payment_method
               Create Single Use Token:
                 $ref: ./models/examples.v1.yaml#/components/examples/create_payment_method_single
-      
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -182,34 +192,31 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-  /payment-methods/{id}:
+  '/payment-methods/{id}':
     get:
       operationId: getPaymentMethod
       tags:
-      - Get a Payment Method
+        - Get a Payment Method
       summary: Return a single view of a stored payment method.
       description: Return a single view of a stored payment method.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -236,23 +243,18 @@ paths:
     patch:
       operationId: editPaymentMethod
       tags:
-      - Edit a Payment Method
-      description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number. 
-
- 
+        - Edit a Payment Method
+      description: Change information about a stored payment method such as update the card expiry date or the funding type of card or the bank identifier of the account number.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-
-     
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
       requestBody:
         content:
           application/json:
@@ -264,10 +266,10 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -291,37 +293,33 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-      
-  /payment-methods/{id}/detokenize:
+  '/payment-methods/{id}/detokenize':
     post:
       operationId: detokenizePaymentMethod
       tags:
-      - Detokenize a Payment Method
+        - Detokenize a Payment Method
       description: Detokenize the stored payment method to get a full payment method information.
-
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -345,36 +343,34 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-  /payment-methods/{id}/delete:
+  '/payment-methods/{id}/delete':
     post:
       operationId: deletePaymentMethod
       tags:
-      - Delete a Payment Method
+        - Delete a Payment Method
       summary: Delete a stored payment method.
       description: Delete a stored payment method.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -398,20 +394,17 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-  
-  
   /payment-methods/search:
     post:
       operationId: searchPaymentMethod
       tags:
-      - Search for a Payment Method
+        - Search for a Payment Method
       description: Return a list of stored payment methods where search criteria is in the message body.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
       requestBody:
         content:
           application/json:
@@ -423,12 +416,12 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
@@ -452,15 +445,19 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-
 components:
   schemas:
     create_request:
-      required:
-      - card
-      - reference
       type: object
+      x-examples:
+        example-1:
+          account_name: Transaction_Processing
+          reference: CustABC_Card_1
+          name: James Mason
+          card:
+            number: '4263970000005262'
+            expiry_month: '05'
+            expiry_year: '25'
       properties:
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
@@ -470,9 +467,54 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         card:
           $ref: '#/components/schemas/payment_method_card_request'
-    
+      required:
+        - reference
+        - card
     create_response:
       type: object
+      x-examples:
+        example-1:
+          id: PMT_31087d9c-e68c-4389-9f13-39378e166ea5
+          time_created: '2020-05-03T21:23:39.718Z'
+          status: ACTIVE
+          reference: CustABC_Card_1
+          merchant_id: MER_c4c0df11039c48a9b63701adeaa296c3
+          merchant_name: Sandbox_merchant_2
+          account_id: TRA_6716058969854a48b33347043ff8225f
+          account_name: Transaction_Processing
+          card:
+            number_last4: stri
+            brand: VISA
+            expiry_month: '05'
+            expiry_year: '25'
+          action:
+            id: ABC_6716058969854a48b33347043ff8225f
+            type: DEPOSIT_LIST
+            time_created: '2020-05-03T21:23:39.718Z'
+            result_code: SUCCESS
+            app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+            app_name: demo_app
+        example-2:
+          id: PMT_31087d9c-e68c-4389-9f13-39378e166ea5
+          time_created: '2020-05-03T21:23:39.718Z'
+          status: ACTIVE
+          reference: CustABC_Card_1
+          merchant_id: MER_c4c0df11039c48a9b63701adeaa296c3
+          merchant_name: Sandbox_merchant_2
+          account_id: TRA_6716058969854a48b33347043ff8225f
+          account_name: Transaction_Processing
+          card:
+            number_last4: stri
+            brand: VISA
+            expiry_month: '05'
+            expiry_year: '25'
+          action:
+            id: ABC_6716058969854a48b33347043ff8225f
+            type: DEPOSIT_LIST
+            time_created: '2020-05-03T21:23:39.718Z'
+            result_code: SUCCESS
+            app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+            app_name: demo_app
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
@@ -494,7 +536,8 @@ components:
           $ref: '#/components/schemas/payment_method_card_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-   
+        fingerprint:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/fingerprint
     payment_method_list_response:
       type: object
       properties:
@@ -520,17 +563,15 @@ components:
             $ref: '#/components/schemas/payment_method_single_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-   
     search_payment_method_request:
       required:
-      - account_name
+        - account_name
       type: object
       properties:
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         card:
           $ref: '#/components/schemas/payment_method_card_search_request'
-   
     payment_method_single_response:
       type: object
       properties:
@@ -544,15 +585,25 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-
         card:
           $ref: '#/components/schemas/payment_method_card_response'
-
+      x-examples:
+        example-1:
+          account_name: Transaction_Processing
+          time_created: '2020-05-03T21:23:39.718Z'
+          status: ACTIVE
+          reference: CustABC_Card_1
+          name: James Mason
+          card:
+            number_last4: stri
+            brand: VISA
+            expiry_month: '05'
+            expiry_year: '25'
     payment_method_patch_request:
       type: object
       properties:
         reference:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         card:
@@ -574,8 +625,6 @@ components:
           $ref: '#/components/schemas/payment_method_card_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    
-
     payment_method_detokenize_response:
       type: object
       properties:
@@ -593,26 +642,23 @@ components:
           $ref: '#/components/schemas/payment_method_card_detokenize_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    
     payment_method_delete:
       type: object
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
         time_created:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
         status:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.status
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.status
         reference:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         card:
           $ref: '#/components/schemas/payment_method_card_response'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-   
-
     payment_method_card_request:
       type: object
       properties:
@@ -623,8 +669,6 @@ components:
         expiry_year:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
       description: Data relating to the card payment method.
-
-
     payment_method_card_response:
       type: object
       properties:
@@ -637,9 +681,6 @@ components:
         expiry_year:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
       description: Data relating to the card payment method.
-
-
-
     payment_method_card_search_request:
       type: object
       properties:
@@ -650,8 +691,6 @@ components:
         expiry_year:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
       description: Data relating to the card payment method.
-    
-    
     payment_method_card_detokenize_response:
       type: object
       properties:
@@ -666,14 +705,9 @@ components:
         expiry_year:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
       description: Data relating to the card payment method.
-    
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth:
       type: http
-      scheme: bearer 
-      
+      scheme: bearer
 security:
-  - bearerAuth: []        
-    
-
-    
+  - bearerAuth: []

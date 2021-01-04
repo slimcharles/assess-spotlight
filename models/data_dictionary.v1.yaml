@@ -231,7 +231,6 @@ components:
       example: 'USD'
     
     #### D 
-    
 
     deposit.amount:
       type: string
@@ -332,9 +331,11 @@ components:
       type: string
       format: date
       example: '2020-11-11'
-      
-    
-   
+
+    fingerprint:
+      type: string
+      description: Uniquely identifies a particular card number (PAN) Primary Account Number to check whether two customers who’ve signed up use the same card number.
+      example: '93fh3fsd8f4s6d5f1se8f46es6'   
       
     #### G
     grant_type:

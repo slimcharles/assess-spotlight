@@ -1,12 +1,12 @@
-openapi: '3.0.3'
+openapi: 3.0.3
 info:
   title: Transactions
-  description: Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a Refund from Merchant to Payer.
+  description: 'Transactions represent the transfer, or the attempt to transfer funds between the Payer and the Merchant using a specific payment method. A Sale transaction represents movement of funds from Payer to Merchant and a Refund from Merchant to Payer.'
   contact:
-    name: 'API Integrations'
+    name: API Integrations
     url: 'https://developer.globalpay.com/?gp-api=true'
-    email: 'api.integrations@globalpay.com'
-  version: '2020 10 22'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
 servers:
   - url: 'https://apis.sandbox.globalpay.com/ucp'
     description: Sandbox Environment
@@ -15,49 +15,37 @@ servers:
 tags:
   - name: Create a Sale or Refund
     description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
-
   - name: List Transactions
-    description: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
-
+    description: 'Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.'
   - name: Get a Transaction
-    description: Get a single view of a transaction using the Global Payments transaction id.    
-  
+    description: Get a single view of a transaction using the Global Payments transaction id.
   - name: Refund a Sale
     description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
-
   - name: Reverse a Sale or Refund
-    description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-
-  - name: Capture a Sale 
+    description: 'Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer''s spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.'
+  - name: Capture a Sale
     description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-
   - name: Adjust a Sale
-    description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-
+    description: 'Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.'
   - name: ReAuth a Reverse Sale
     description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
-
   - name: Confirm a Transaction
-    description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
-
+    description: 'For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.'
   - name: List Settled Transactions
     description: Get a list of settled or funded transactions  Page through the result set to access all records.
-  
 paths:
   /transactions:
     post:
       operationId: createSaleOrRefundTransaction
       tags:
-      - Create a Sale or Refund
+        - Create a Sale or Refund
       summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
       description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
-
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
       requestBody:
         content:
           application/json:
@@ -82,210 +70,165 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/Stored_Credential
               Ecommerce - Alternative Payment Method:
                 $ref: ./models/examples.v1.yaml#/components/examples/apms
-        
               Apple Pay Sale - Tokenized Payment Token:
                 $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_tokenized
               Apple Pay Sale - DeTokenized Payment Token:
                 $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_detokenized
         required: true
-        
-      
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/create_response'
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-
         '401':
           $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-
         '403':
           $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-
         '404':
           description: Resource Not Found
           content: {}
-
         '500':
           $ref: ./models/errors.yaml#/components/responses/ServerError_500
-
         '501':
           $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-
         '502':
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-
         x-codegen-request-body-name: request
-    
-      
-      
       callbacks:
         APM Return Notification:
           $ref: ./models/callbacks.v1.yaml#/components/callbacks/transaction.payment_method.apm_return
         APM Status Notification:
           $ref: ./models/callbacks.v1.yaml#/components/callbacks/transaction.payment_method.apm_status
-
-        
     get:
       operationId: getSaleAndRefundTransactions
       tags:
-      - List Transactions
-      summary: Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.
-      description: Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.
-      
+        - List Transactions
+      summary: 'Get a list of transactions recently processed, using criteria passed in the query string. Page through the result set to access all records.'
+      description: 'Get a list of transactions recently processed, using criteria passedin the query string. Page through the result set to access all records.'
       parameters:
-        
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
-      
-      
-      - name: id
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      
-      
-      - name: type
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-      
-      - name: channel
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-      
-      - name: amount
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-      
-      - name: currency
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-      
-      - name: number_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
-      
-      - name: number_last4
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
-      
-      - name: token_first6
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_first6
-      
-      - name: token_last4
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_last4
-      
-      - name: account_name
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-      
-      - name: brand
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-      
-      - name: brand_reference
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-      
-      - name: authcode
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-      
-      - name: reference
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-      
-      - name: status
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-      
-      - name: from_time_created
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
-      
-      - name: to_time_created
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
-      
-      - name: country
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-      
-      - name: batch_id
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-      
-      - name: entry_mode
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-      
-      - name: name
-        in: query
-        schema:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-     
-     
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+        - name: id
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        - name: type
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+        - name: channel
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+        - name: amount
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        - name: currency
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        - name: number_first6
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_first6
+        - name: number_last4
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.number_last4
+        - name: token_first6
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_first6
+        - name: token_last4
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_last4
+        - name: account_name
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        - name: brand
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+        - name: brand_reference
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+        - name: authcode
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+        - name: reference
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+        - name: status
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
+        - name: from_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
+        - name: to_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
+        - name: country
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
+        - name: batch_id
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
+        - name: entry_mode
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+        - name: name
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
           content:
             application/json:
               schema:
@@ -308,43 +251,38 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-    
-  /transactions/{id}:
+  '/transactions/{id}':
     get:
       operationId: getSingleSaleOrRefundTransaction
       tags:
-      - Get a Transaction
+        - Get a Transaction
       summary: Get a single view of a transaction using the Global Payments transaction id.
       description: Get a single view of a transaction using the Global Payments transaction id.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
-        
           content:
             application/json:
               schema:
@@ -367,52 +305,46 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-  /transactions/{id}/refund:
+  '/transactions/{id}/refund':
     post:
       operationId: createRefundTransactionFromSale
       tags:
-      - Refund a Sale
+        - Refund a Sale
       summary: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
       description: Create a Refund transaction from a previous Sale. The payment method associated with the original Sale is used to refund the Payer.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-        
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/change_amount_request'
         required: false
-      
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-          
-        
           content:
             application/json:
               schema:
@@ -435,34 +367,33 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-  /transactions/{id}/reversal:
+  '/transactions/{id}/reversal':
     post:
       operationId: reverseExistingTransaction
       tags:
-      - Reverse a Sale or Refund
-  
-      summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-      description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-
+        - Reverse a Sale or Refund
+      summary: 'Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer''s spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.'
+      description: 'Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer''s spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.'
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/change_amount_request'
+            examples:
+              example-1:
+                value:
+                  amount: '11099'
         required: false
       responses:
         '200':
@@ -470,17 +401,16 @@ paths:
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
@@ -503,53 +433,46 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-  /transactions/{id}/capture:
+  '/transactions/{id}/capture':
     post:
       operationId: captureSaleTransaction
       tags:
-      - Capture a Sale
-  
+        - Capture a Sale
       summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
       description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/change_amt_tag_request'
         required: false
-      
       responses:
         '200':
           description: OK
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
@@ -572,27 +495,122 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-    
- 
-  /transactions/{id}/adjustment:
+  '/transactions/{id}/incremental':
     post:
       operationId: adjustSaleTransaction
       tags:
-       - Adjust a Sale
-      summary: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-      description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
+        - Adjust a Preauthorized Sale
+      summary: 'Adjust a preauthorinzed transaction. Use this action for additional authorizations that come in after an original authorization. This action does not change the status of a transaction, only the data it contains.'
+      description: 'Adjust a preauthorinzed transaction. Use this action for additional authorizations that come in after an original authorization. This action does not change the status of a transaction, only the data it contains. All incremental charges will be added to the total amount.'
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/change_amt_tag_request'
+            examples:
+              example-1:
+                value:
+                  amount: '11099'
+                  gratuity_amount: ''
+                  payment_method: string
+                  incremental_amount: '25'
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/existing_transaction_response'
+              examples:
+                example-1:
+                  value:
+                    id: TRN_uzFr7t4VOqxdLDI44hHmXIjHtOOE8d
+                    time_created: '2020-05-03T21:23:39.718Z'
+                    type: SALE
+                    status: FUNDED
+                    amount: '11099'
+                    currency: USD
+                    country: US
+                    reference: MY_TRANS_REF_12345
+                    batch_id: BAT_234234234
+                    payment_method:
+                      result: string
+                      message: string
+                      card:
+                        authcode: AA2421
+                        brand_reference: string
+                    action:
+                      id: ABC_6716058969854a48b33347043ff8225f
+                      type: DEPOSIT_LIST
+                      time_created: '2020-05-03T21:23:39.718Z'
+                      result_code: SUCCESS
+                      app_id: i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR
+                      app_name: demo_app
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
+  '/transactions/{id}/adjustment':
+    post:
+      operationId: adjustSaleTransaction
+      tags:
+        - Adjust a Sale
+      summary: 'Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.'
+      description: 'Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.'
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
@@ -605,17 +623,16 @@ paths:
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
@@ -638,27 +655,24 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
-  /transactions/{id}/reauthorization:
+  '/transactions/{id}/reauthorization':
     post:
       operationId: reauthSaleTransaction
       tags:
-      - ReAuth a Reverse Sale
+        - ReAuth a Reverse Sale
       summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
@@ -671,17 +685,16 @@ paths:
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
@@ -703,29 +716,25 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-          
       x-codegen-request-body-name: request
-
-  /transactions/{id}/confirmation:
+  '/transactions/{id}/confirmation':
     post:
       operationId: confirmTransaction
       tags:
-      - Confirm a Transaction
-   
-      summary: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
-      description: For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.
+        - Confirm a Transaction
+      summary: 'For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.'
+      description: 'For certain transactions created using non-card based payment methods (for example, PayPal), merchants are required to confirm that the transaction has completed  in order for funds to be funds to be transferred.'
       parameters:
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-      
-      - name: id
-        in: path
-        required: true
-        schema:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
       requestBody:
         content:
           application/json:
@@ -738,17 +747,16 @@ paths:
           headers:
             Content-Type:
               schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-            Content-Encoding:  
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
+            X-GP-Idempotency:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
-            X-GP-Version:  
+            X-GP-Version:
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
           content:
             application/json:
               schema:
@@ -771,26 +779,21 @@ paths:
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
         x-codegen-request-body-name: request
-
   /settlement/transactions:
     get:
       operationId: getSettledTransactions
       tags:
-      - List Settled Transactions
+        - List Settled Transactions
       summary: Get a list of funded transactions using filter criteria passed in the query string. Page through the result set to access all records.
       description: Get a list of transactions using criteria passed in the query string. Page through the result set to access all records.
       parameters:
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
         - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
-        
-            
-
-        
         - name: number_first6
           in: query
           schema:
@@ -838,18 +841,18 @@ paths:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
         - name: status
           in: query
-          description: Search for transactions that have a status of FUNDED, REJECTED.
+          description: 'Search for transactions that have a status of FUNDED, REJECTED.'
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
         - name: from_time_created
           in: query
-          description: The time to search from in a range, using the transaction time created value.
+          description: 'The time to search from in a range, using the transaction time created value.'
           required: true
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
         - name: to_time_created
           in: query
-          description: The time to search to in a range, using the transaction time created value.
+          description: 'The time to search to in a range, using the transaction time created value.'
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
         - name: deposit_id
@@ -864,17 +867,17 @@ paths:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
         - name: to_deposit_time_created
           in: query
-          description: The time to search to in a range, using the time the deposit was created that contains this transaction.
+          description: 'The time to search to in a range, using the time the deposit was created that contains this transaction.'
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
         - name: from_batch_time_created
           in: query
-          description: The time to search from in a range, using the time the batch was created that contains this transaction.
+          description: 'The time to search from in a range, using the time the batch was created that contains this transaction.'
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/from_time_created
         - name: to_batch_time_created
           in: query
-          description: The time to search to in a range, using the time the batch was created that contains this transaction.
+          description: 'The time to search to in a range, using the time the batch was created that contains this transaction.'
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/to_time_created
         - name: system.mid
@@ -887,173 +890,124 @@ paths:
           description: The system merchant hierarchy
           schema:
             $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
-        
       responses:
-          '200':
-            description: OK
-            headers:
-              Content-Type:
-                schema:
-                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
-              Content-Encoding:  
-                schema:
-                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-              X-GP-Version:  
-                schema:
-                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-            
-          
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/transactions_list'
-          '400':
-            $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-          '401':
-            $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-          '403':
-            $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-          '404':
-            description: Resource Not Found
-            content: {}
-          '500':
-            $ref: ./models/errors.yaml#/components/responses/ServerError_500
-          '501':
-            $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-          '502':
-            $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-          '504':
-            $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactions_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
       x-codegen-request-body-name: request
-
-
-
-
-
 components:
- 
- 
   schemas:
-
     create_request:
       required:
-      - account_name
-      - amount
-      - channel
-      - country
-      - currency
-      - payment_method
-      - reference
-
+        - account_name
+        - amount
+        - channel
+        - country
+        - currency
+        - payment_method
+        - reference
       type: object
       properties:
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-                                                                               
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-          
         channel:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-
         country:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-
         capture_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
-
         remaining_capture_count:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
-
         authorization_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
-
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
         gratuity_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
-
         cashback_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.cashback_amount
-
         surcharge_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.surcharge_amount
-
         convenience_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.convenience_amount
-
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-
         description:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
-        
         language:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/language
-
-
         ip_address:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/ip_address
-  
         site_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
-
-      
         order:
           type: object
           properties:
             reference:
               $ref: ./models/data_dictionary.v1.yaml#/components/schemas/order.reference
-            
-
         initiator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator          
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
         stored_credential:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
-
-
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
-        
-               
     create_response:
       type: object
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-
         time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
         status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
-          
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
         channel:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-
         capture_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
-
-        ##REVISIT##
         authorization_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
-
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
         country:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-    
         merchant_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
@@ -1062,50 +1016,89 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                                                    
         batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-       
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
         payment_method:
           $ref: '#/components/schemas/payment_method_response'
-     
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-    
     payment_method_request:
       type: object
       properties:
         id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
         first_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.first_name
         last_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.last_name
         name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name        
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         encryption:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
         authentication:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication
-
         card:
           $ref: '#/components/schemas/card_request'
         digital_wallet:
           $ref: '#/components/schemas/digital_wallet_request'
         apm:
           $ref: '#/components/schemas/apm_request'
-
-       
+      x-examples:
+        example-1:
+          id: PMT_31087d9c-e68c-4389-9f13-39378e166ea5
+          first_name: James
+          last_name: Mason
+          name: James Mason
+          entry_mode: ECOM
+          encryption:
+            method: KTB
+            version: string
+            info: string
+          authentication:
+            three_ds:
+              message_version: 1.0.0
+              eci: '5'
+              value: string
+              server_trans_ref: string
+              ds_trans_ref: string
+          card:
+            number: '4263970000005262'
+            expiry_month: '05'
+            expiry_year: '25'
+            track: string
+            tag: string
+            chip_condition: PREV_SUCCESS
+            pin_block: string
+            cvv: '852'
+            cvv_indicator: PRESENT
+            avs_address: Apt 123
+            avs_postal_code: TGX562
+            funding: CREDIT
+            authcode: AA2421
+            brand_reference: string
+          digital_wallet:
+            token: string
+            token_format: CARD_NUMBER
+            cryptogram: string
+            provider: ''
+            expiry_month: '05'
+            expiry_year: '25'
+            eci: '5'
+            cvv: '852'
+            cvv_indicator: PRESENT
+            avs_address: Apt 123
+            avs_postal_code: TGX562
+          apm:
+            provider: PAYPAL
     payment_method_response:
       type: object
       properties:
         id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id
         result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
         message:
@@ -1120,9 +1113,6 @@ components:
           $ref: '#/components/schemas/apm_response'
         card:
           $ref: '#/components/schemas/card_response'
-    
-
-    
     card_request:
       type: object
       properties:
@@ -1154,42 +1144,32 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-  
     card_response:
       type: object
       properties:
         masked_number_last4:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-       
         tag_response:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag_response
         authcode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
         brand:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-
         brand_time_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_time_reference
-        
         cvv_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
-
         avs_address_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
-
         avs_postal_code_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
-
         avs_action:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_action
-   
-    digital_wallet_request:  
+    digital_wallet_request:
       type: object
-      properties:      
+      properties:
         token:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
         token_format:
@@ -1212,7 +1192,6 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
         avs_postal_code:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
-
     digital_wallet:
       type: object
       properties:
@@ -1238,12 +1217,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
         avs_postal_code:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
-
-    ### just amount in the request
     change_amount_request:
       type: object
       properties:
-        amount: ##REVISIT - include reference##
+        amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
     change_amt_tag_request:
       type: object
@@ -1254,38 +1231,27 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
         payment_method:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
-
-
     existing_transaction_response:
       type: object
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-
         time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
         status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status          
-          
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
         country:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-    
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                                                    
         batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-   
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
         payment_method:
           $ref: '#/components/schemas/existing_transaction_payment_method_response'
         action:
@@ -1295,10 +1261,8 @@ components:
       properties:
         result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-                           
         message:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-                  
         card:
           $ref: '#/components/schemas/existing_transaction_card_response'
     existing_transaction_card_response:
@@ -1308,8 +1272,6 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-   
-   ## Here I am lord
     confirm_request:
       type: object
       properties:
@@ -1326,9 +1288,8 @@ components:
         provider:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
         provider_payer_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
       description: Data associated with an APM.
- 
     confirm_response:
       type: object
       properties:
@@ -1345,18 +1306,14 @@ components:
         provider:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
         provider_payer_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_reference
         provider_transaction_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
         provider_time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
         provider_payer_name:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
       description: Data associated with the response of an APM transaction.
-   
-
-
-   
     device:
       type: object
       properties:
@@ -1367,16 +1324,11 @@ components:
           type: string
           description: The sequence number from the device used to align with processing platform.
       description: Data relating to a device used to facilitate the transaction.
-   
-   
-   
     apm_request:
       type: object
       properties:
         provider:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
-        
-  
     apm_response:
       type: object
       properties:
@@ -1387,28 +1339,22 @@ components:
         session_token:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.session_token
         fund_status:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.fund_status
         wait_notification:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
         optional_redirect:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
         provider_transaction_reference:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
         provider_time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_time_created
         provider_payer_name:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
-                                              
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
         bank:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/bank_account
         mandate:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/mandate
       description: Data associated with the response of an APM transaction.
-   
-   
-          
-       
-   
     installment_request:
       type: object
       properties:
@@ -1417,8 +1363,6 @@ components:
         term:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
       description: Information that relates to an installment payment plan.
-    
-    
     term_request:
       type: object
       properties:
@@ -1427,7 +1371,7 @@ components:
         time_unit:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit
         time_unit_number:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit_number
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit_number
       description: information relating to the terms of the installment payment plan.
     installment_response:
       type: object
@@ -1437,7 +1381,6 @@ components:
         term:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.term
       description: Information that relates to an installment payment plan.
-    
     term_response:
       type: object
       properties:
@@ -1448,19 +1391,16 @@ components:
         time_unit_number:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.time_unit_number
         interest_rate:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.interest_rate
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.interest_rate
         first_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.first_amount
         subsequent_amount:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.subsequent_amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.subsequent_amount
         last_amount:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.last_amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.last_amount
         total_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/installment.total_amount
       description: Stored data information used to create a transaction.
-   
-    
-   
     transactions_list:
       type: object
       properties:
@@ -1495,52 +1435,40 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-         
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
         merchant_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_amount
-                      
         merchant_currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
         discount_amount:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.discount_amount
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.discount_amount
         discount_currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
         merchant_discount_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.merchant_discount_amount
         merchant_discount_currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-                                        
         time_created_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created_reference
-
         deposit_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-
         deposit_time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
         deposit_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
-
         batch_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
         batch_time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
         payment_method:
           $ref: '#/components/schemas/payment_method_list_response'
         system:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
-   
     payment_method_list_response:
       type: object
       properties:
@@ -1553,19 +1481,15 @@ components:
       properties:
         brand:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-
         authcode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
         arn:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
-                                        
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
         masked_number_first6last4:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
       description: Data relating to the card payment method returned in a list response.
-    
-    
     transactions_list_real_time:
       type: object
       properties:
@@ -1591,7 +1515,6 @@ components:
             $ref: '#/components/schemas/transactions_list_real_time_item'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-       
     transactions_list_real_time_item:
       type: object
       properties:
@@ -1601,106 +1524,76 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
         status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-          
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
         channel:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-        
         batch_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-
         country:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-        
         parent_resource_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
         create_action_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
         payment_method:
-            $ref: '#/components/schemas/payment_method_list_real_time_response'
-        
+          $ref: '#/components/schemas/payment_method_list_real_time_response'
     payment_method_list_real_time_response:
       type: object
       properties:
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-
         result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
-
         message:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
-
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
-
         card:
           $ref: '#/components/schemas/card_list_real_time_response'
-    
     card_list_real_time_response:
       type: object
       properties:
         brand:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-        
         authcode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-
         masked_number_first6last4:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-
         masked_number_last4:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-
         funding:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
-        
         cvv_indicator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-        
         cvv_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
-                
         avs_address_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
-
         avs_postal_code_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
-
-
       description: Data relating to the card payment method returned in a list response.
-    
-    
     transactions_single_real_time:
       type: object
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.id
-        
         time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
-
         time_last_updated:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_updated
-
         status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.status
-
         type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-        
         merchant_id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
@@ -1709,116 +1602,78 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
         account_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-        
         channel:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
-        
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
-
-        
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
-                      
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
-        
         description:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.description
-        
         order_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/order.reference
-            
-        
         batch_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
-        
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/batch_id
         initiator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
-
         country:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/country
-
         language:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/language
-
         ip_address:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/ip_address
-
         site_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
-
         parent_resource_id:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/parent_resource_id
         create_action_id:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/create_action_id
         payment_method:
           $ref: '#/components/schemas/payment_method_single_real_time_response'
         system:
-           $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
-             
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
     payment_method_single_real_time_response:
       type: object
       properties:
         name:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.result
         message:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.message
         entry_mode:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         card:
           $ref: '#/components/schemas/card_single_real_time_response'
-      
-    
     card_single_real_time_response:
       type: object
       properties:
         brand:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
-        
         authcode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
-        
         brand_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
-        
         masked_number_first6last4:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-        
         masked_number_last4:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.masked_number_last4
-        
         funding:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.funding
-        
         cvv_indicator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
-          
         cvv_result:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
-
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_result
         avs_address_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address_result
-
         avs_postal_code_result:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code_result
-
       description: Data relating to the card payment method returned in a list response.
-
-
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth:
       type: http
-      scheme: bearer 
-      
+      scheme: bearer
 security:
-  - bearerAuth: []        
-
-
-
-
-
-
-   
+  - bearerAuth: []
