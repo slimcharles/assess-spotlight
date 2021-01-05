@@ -1385,7 +1385,7 @@ components:
     X-GP-Version:
       description: Indicates the version of the GP-API for this message.
       type: string
-      default: '2020-10-22'
+      default: '2020-12-22'
       minLength: 1
       maxLength: 50    
 

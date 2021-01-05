@@ -2,7 +2,7 @@ openapi: '3.0.3'
 info:
   title: Stored Payment Methods
   description: Payment Method storage is the Global Payments service where sensitive information is securely stored in exchange for a Global Payments unique identifier. This identifier, commonly referred to as a token, is then used to create Sale and Refund Transactions.
-  version: 2020 10 22
+  version: 2020 12 22
   contact:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'

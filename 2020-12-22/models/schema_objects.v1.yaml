@@ -258,7 +258,7 @@ components:
            $ref: data_dictionary.v1.yaml#/components/schemas/batch_id
        
         payment_method:
-          $ref: '../Transactions-2020-10-22.v1.yaml#/components/schemas/payment_method_response'
+          $ref: '../Transactions-2020-12-22.v1.yaml#/components/schemas/payment_method_response'
        
         action:
           $ref: schema_objects.v1.yaml#/components/schemas/action
