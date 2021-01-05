@@ -893,7 +893,21 @@ components:
       default: MULTIPLE
       minLength: 1
       maxLength: 50
+    
+    payment_method.storage_model:
+      type: string
+      description:  Indicates whether to store the card as part of a transaction.
+      enum:
+      - ALWAYS
+      - ON_SUCCESS
+      minLength: 1
+      maxLength: 50
 
+    payment_method.narrative:
+      type: string
+      description: Contains the value a merchant wishes to appear on the payers payment method statement for this transaction
+      minLength: 1
+      maxLength: 50
 
     
 
@@ -1709,7 +1723,6 @@ components:
       description: Identifies who provides the digital wallet for the Payer.
       minLength: 1
       maxLength: 50
-      example: ""
       enum:
       - APPLEPAY
       - PAY_BY_GOOGLE
@@ -1744,7 +1757,6 @@ components:
     stored_credential.sequence:
       type: string
       description: Indiciates the order of this transaction in the sequence of a planned repeating transaction processing model.
-      example: ""
       minLength: 1
       maxLength: 50
       enum:
@@ -1810,6 +1822,46 @@ components:
       - IDEAL
       - GIROPAY
   
+    transaction.payer_reference:
+      type: string
+      description: The merchant's payer reference for the transaction
+      example: CUST_12345
+      minLength: 0
+      maxLength: 50
+    
+    transaction.user_reference:
+      type: string
+      description: The merchant's user reference for the transaction. This represents the person who processed the transaction on the merchant's behalf like a clerk or cashier reference.
+      example: EMP_234235
+      minLength: 0
+      maxLength: 50
+    
+    transaction.tax_exempt_status:
+      type: string
+      description: Indicates if the transaction is exempt from tax or not.
+      minLength: 0
+      enum:
+        - TAX_EXEMPT
+        - NOT_EXEMPT
+
+    market.restaurant.ticket_reference:
+      type: string
+      description: A merchant defined ticket reference for an order in a restaurant.
+      minLength: 0
+      maxLength: 50
+
+    market.restaurant.guest_reference:
+      type: string
+      description: A merchant defined reference for a guest or guests in a restaurant.
+      minLength: 0
+      maxLength: 50
+
+    market.restaurant.table_reference:
+      type: string
+      description: A merchant defined reference for the table in a restaurant relating to the transaction.
+      minLength: 0
+      maxLength: 50
+
 
     apm.provider_payer_reference:
       type: string
@@ -1881,6 +1933,7 @@ components:
       example: 0
       enum:
         - 0
+        - 1
 
     apm.payment_description:
       type: string
@@ -1971,6 +2024,40 @@ components:
     device.description:
       type: string
       description: Data relating to a device used to facilitate the transaction.
+
+    device.gratuity_prompt_mode:
+      type: string
+      description: Describes whether a device prompts a payer for a gratuity when the payer is entering their payment method details to the device.
+      example: PROMPT
+      enum:
+      - PROMPT
+      - NOT_REQUIRED
+      minLength: 1
+      maxLength: 50
+    
+    device.print_receipt_mode:
+      type: string
+      description: Describes the receipts a device prints when processing a transaction.
+      example: BOTH
+      enum:
+      - NONE
+      - PAYER
+      - MERCHANT
+      - BOTH
+      minLength: 1
+      maxLength: 50
+    
+    device.entry_modes:
+      type: string
+      description: Describes the allowed entry modes to obtain payment method information from the payer as part of a transaction request.
+      example: CHIP
+      enum:
+      - CHIP
+      - CONTACTLESS
+      - MANUAL
+      - SWIPE
+      minLength: 1
+      maxLength: 50
 
     bank_name:
       type: string
