@@ -1001,6 +1001,13 @@ components:
         site_reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/site_reference
 
+        user_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.user_reference
+        
+        payer_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.payer_reference
+
+        
       
         order:
           type: object
@@ -1089,6 +1096,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name        
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+        narrative:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.narrative
+        storage_model:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.storage_model
         encryption:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
         authentication:
@@ -1367,6 +1378,14 @@ components:
         sequence_number:
           type: string
           description: The sequence number from the device used to align with processing platform.
+        gratuity_prompt_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/device.gratuity_prompt_mode
+        print_receipt_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/device.print_receipt_mode
+        entry_modes:
+          type: array
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/device.entry_modes
       description: Data relating to a device used to facilitate the transaction.
    
    

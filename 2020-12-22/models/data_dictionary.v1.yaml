@@ -2048,16 +2048,18 @@ components:
       maxLength: 50
     
     device.entry_modes:
-      type: string
-      description: Describes the allowed entry modes to obtain payment method information from the payer as part of a transaction request.
-      example: CHIP
-      enum:
-      - CHIP
-      - CONTACTLESS
-      - MANUAL
-      - SWIPE
-      minLength: 1
-      maxLength: 50
+      type: array
+      items:
+        type: string
+        description: Describes the allowed entry modes to obtain payment method information from the payer as part of a transaction request.
+        example: CHIP
+        enum:
+        - CHIP
+        - CONTACTLESS
+        - MANUAL
+        - SWIPE
+        minLength: 1
+        maxLength: 50
 
     bank_name:
       type: string
