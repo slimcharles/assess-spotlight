@@ -1,0 +1,480 @@
+openapi: '3.0.3'
+info:
+  title: Common Examples
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+
+paths: {}
+
+components:  
+  examples:
+    
+    access_token_get:
+      value:
+        app_id: "i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR"
+        nonce: "random_string"
+        secret: "e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716"
+        grant_type: "client_credentials"
+     
+      
+    access_token_with_permissions_get:
+      value:
+        app_id: "i9R0byBBor6RqTQNj3g4MuVBwH5rd7yR"
+        nonce: "random_string"
+        secret: "e776ce1d9e94d5072ee132258e446cd92668d7c28b2e475a345319b475ba601956c16e3983926ce279db6301d78b7f47cfb729e41b4169814e373f0a0bf38716"
+        grant_type: "client_credentials"
+        seconds_to_expire: 604799
+        permissions:
+        - TRN_POST_Authorize
+  
+    verification_request:
+      value:
+        account_name: "Transaction_Processing"
+        channel: "CNP"
+        currency: "USD"
+        reference: "MY_TRANS_REF_12345"
+        country: "US"
+        payment_method:
+          name: "James Mason"
+          entry_mode: "ECOM"
+          card:
+            number: "4263970000005262"
+            expiry_month: "05"
+            expiry_year: "25"
+    
+    ECOMReq:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "ECOM"
+          authentication: 
+            three_ds:
+              server_trans_ref: "vJ9NXpFueXsAqeb4iAbJJbe+66s="
+              value: "AAACBUGDZYYYIgGFGYNlAAAAAAA="
+              eci: "5"
+              message_version: "1.0.0"
+          card: 
+            number: "4263970000005262"
+            expiry_month: "05"
+            expiry_year: "25"
+            cvv: "852"
+            cvv_indicator: "PRESENT"
+            avs_address: "Flat 123"
+            avs_postal_code: "50001"
+
+    EMVReq:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        ip_address: "123.123.123.123"
+        site_reference: "Site-1324"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "CHIP"
+          card:
+            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
+            tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
+            funding: "DEBIT"
+            chip_condition: ""
+            pin_block: ""
+            brand_reference: ""
+        
+    Moto_Capture_Later:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "LATER"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: US
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "MOTO"
+          card: 
+            number: "4263970000005262"
+            expiry_month: "05"
+            expiry_year: "25"
+            cvv: "852"
+            cvv_indicator: "PRESENT"
+            avs_address: "Flat 123"
+            avs_postal_code: "50001"
+
+    Swipe:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CP"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "SWIPE"
+          card: 
+            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
+            funding: CREDIT
+            chip_condition: ""
+            pin_block: ""
+            brand_reference: ""
+
+    Authorization_With_Payment_Token:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: 93459c78-f3f9-427c-84df-ca0584bb55bf
+        country: "US"
+        ip_address: "123.123.123.123"
+        payment_method: 
+          id: "PMT_f6878e2a-2744-4d63-9420-3cc25c349ad2"
+          name: "James Mason"
+          entry_mode: ECOM
+          authentication: 
+            three_ds:
+              server_trans_ref: "vJ9NXpFueXsAqeb4iAbJJbe+66s="
+              value: "AAACBUGDZYYYIgGFGYNlAAAAAAA="
+              eci: "5"
+              message_version: "1.0.0"
+             
+    
+    Stored_Credential:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          id: "PMT_f6878e2a-2744-4d63-9420-3cc25c349ad2"
+          name: "James Mason"
+          entry_mode: "ECOM"
+          
+        initiator: "MERCHANT"
+        stored_credential: 
+          model: "SUBSCRIPTION"
+          reason: "INCREMENTAL"
+          sequence: "SUBSEQUENT"
+
+    apms:
+      value: 
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        amount: "1999"
+        currency: "EUR"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "ECOM"
+          apm: 
+            provider: "testpay"
+        notifications: 
+          return_url: "https://www.example.com/return_url"
+          status_url: "https://www.example.com/status_url"
+    
+    apm_paypal:
+      value: 
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        amount: "2999"
+        currency: "EUR"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "GB"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "ECOM"
+          apm: 
+            provider: "paypal"
+        notifications: 
+          return_url: "https://www.example.com/return_url"
+          status_url: "https://www.example.com/status_url"
+          cancel_url: "https://www.example.com/cancel_url"
+
+    ecom_refund:
+      value:
+        account_name: "Transaction_Processing"
+        type: "REFUND"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        ip_address: "123.123.123.123"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "ECOM"
+          card: 
+            number: "4263970000005262"
+            expiry_month: "05"
+            expiry_year: "25"
+            cvv: "852"
+            cvv_indicator: PRESENT
+            avs_address: "Flat 123"
+            avs_postal_code: "50001"
+    
+    cardpresent_refund:
+      value:
+        account_name: "Transaction_Processing"
+        type: "REFUND"
+        channel: "CP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: "CHIP"
+          card: 
+            track: "%B4012002000060016^VI TEST CREDIT^251210118039000000000396?;4012002000060016=25121011803939600000?"
+            tag: "9F4005F000F0A0019F02060000000025009F03060000000000009F2608D90A06501B48564E82027C005F3401019F360200029F0702FF009F0802008C9F0902008C9F34030403029F2701809F0D05F0400088009F0E0508000000009F0F05F0400098005F280208409F390105FFC605DC4000A800FFC7050010000000FFC805DC4004F8009F3303E0B8C89F1A0208409F350122950500000080005F2A0208409A031409109B02E8009F21030811539C01009F37045EED3A8E4F07A00000000310109F0607A00000000310108407A00000000310109F100706010A03A400029F410400000001"
+            funding: "DEBIT"
+
+
+    digital_wallet_apple_tokenized:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: ECOM
+          digital_wallet:
+            provider: "APPLEPAY"
+            payment_token:
+              version: "EC_v1"
+              data: "Ft+dvMNzlcy6WNB+zerKtkh/RWW4RWW4yXIRgmM3WC/FYEC6Z+OJEzir2sDyzDkjIUJ0TFCQd/QAAAAAAAA=="
+              header: 
+                  ephemeralPublicKey: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWdNhNAHy9kO2Kol33kIh7k6wh6E/lxriM46MR1FUrn7SHugprkaeFmWKZPgGpWgZ+telY/G1+YSoaCbR5YSoaCbR57bdGA=="
+                  transactionId: "fd88874954acdb299c285f95a3202ad1f330d3fd4ebc22a864398684198644c3"
+                  publicKeyHash: "h7WnNVz2gmpTSkHqETOWsskFPLSj31e3sPTS2cBxgrk="
+                
+    digital_wallet_apple_detokenized:
+      value:
+        account_name: "Transaction_Processing"
+        type: "SALE"
+        channel: "CNP"
+        capture_mode: "AUTO"
+        amount: "1999"
+        currency: "USD"
+        reference: "93459c78-f3f9-427c-84df-ca0584bb55bf"
+        country: "US"
+        payment_method: 
+          name: "James Mason"
+          entry_mode: ECOM
+          digital_wallet:
+            token: "5167300431085507"
+            token_format: "CARD_NUMBER"
+            expiry_month: "12"
+            expiry_year: "20"
+            cryptogram: "234234234"
+            provider: "APPLEPAY"
+            eci: "5"        
+
+## Authentications
+## Authentications 3DS 1
+    authentication_3ds1_check_availability_challenge:
+      value:
+        account_name: "Transaction_Processing"
+        reference: "3ds1_ref1"
+        channel: "CNP"
+        amount: "6089"
+        currency: "EUR"
+        country: "FR"
+        payment_method:
+          card:
+            number: '4012001037141112'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: "https://ensi808o85za.x.pipedream.net/"
+          three_ds_method_return_url: "https://ensi808o85za.x.pipedream.net/"
+
+## Authentications 3DS 2
+    authentication_3ds2_check_availability_challenge:
+      value:
+        account_name: Transaction_Processing
+        reference: 3ds2_ref1
+        channel: CNP
+        amount: '5089'
+        currency: EUR
+        country: FR
+        payment_method:
+          card:
+            number: '4012001038488884'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: https://ensi808o85za.x.pipedream.net/
+          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+
+    authentication_3ds2_initiate_challenge:
+      value:
+        method_url_completion_status: 'YES'
+        source: BROWSER
+        merchant_contact_url: https://enp4qhvjseljg.x.pipedream.net/
+        order:
+          time_created_reference: '2019-04-26T10:19:32.552327Z'
+          amount: 5089
+          currency: EUR
+          reference: 3400dd37-101d-4940-be15-3c963b6109b3
+          address_match_indicator: 'false'
+          shipping_address:
+            line1: Apartment 852
+            line2: Complex 741
+            line3: House 963
+            city: Chicago
+            postal_code: '50001'
+            state: IL
+            country: '840'
+          gift_card_count: '01'
+          gift_card_currency: EUR
+          gift_card_amount: '25000'
+          delivery_email: james.mason@example.com
+          delivery_timeframe: ELECTRONIC_DELIVERY
+          shipping_method: ANOTHER_VERIFIED_ADDRESS
+          shipping_name_matches_cardholder_name: 'true'
+          preorder_indicator: MERCHANDISE_AVAILABLE
+          preorder_availability_date: '2019-04-18'
+          reorder_indicator: FIRST_TIME_ORDER
+          category: GOODS_SERVICE_PURCHASE
+        payment_method:
+          card:
+            number: '4012001038488884'
+            expiry_month: '12'
+            expiry_year: '25'
+        payer:
+          reference: 6dcb24f5-74a0-4da3-98da-4f0aa0e88db3
+          account_age: LESS_THAN_THIRTY_DAYS
+          account_creation_date: '2019-01-10'
+          account_change_date: '2019-01-28'
+          account_change_indicator: THIS_TRANSACTION
+          account_password_change_date: '2019-01-15'
+          account_password_change_indicator: LESS_THAN_THIRTY_DAYS
+          home_phone:
+            country_code: '44'
+            subscriber_number: '123456789'
+          work_phone:
+            country_code: '44'
+            subscriber_number: '1801555888'
+          payment_account_creation_date: '2019-01-01'
+          payment_account_age_indicator: LESS_THAN_THIRTY_DAYS
+          suspicious_account_activity: NO_SUSPICIOUS_ACTIVITY
+          purchases_last_6months_count: '03'
+          transactions_last_24hours_count: '01'
+          transaction_last_year_count: '05'
+          provision_attempt_last_24hours_count: '01'
+          shipping_address_time_created_reference: '2019-01-28'
+          shipping_address_creation_indicator: THIS_TRANSACTION
+        payer_prior_three_ds_authentication_data:
+          authentication_method: FRICTIONLESS_AUTHENTICATION
+          acs_transaction_reference: 26c3f619-39a4-4040-bf1f-6fd433e6d615
+          authentication_timestamp: '2020-07-28T10:26:49.712Z'
+          authentication_data: secret123
+        recurring_authorization_data:
+          max_number_of_instalments: '05'
+          frequency: '25'
+          expiry_date: '2019-08-25'
+        payer_login_data:
+          authentication_data: secret123
+          authentication_timestamp: '2020-07-28T10:26:49.712Z'
+          authentication_type: MERCHANT_SYSTEM_AUTHENTICATION
+        browser_data:
+          accept_header: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+          color_depth: TWENTY_FOUR_BITS
+          ip: 123.123.123.123
+          java_enabled: 'true'
+          javascript_enabled: 'true'
+          language: en-US
+          screen_height: '1080'
+          screen_width: '1920'
+          challenge_window_size: FULL_SCREEN
+          timezone: '0'
+          user_agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/70.0.3538.110 Safari/537.36
+    
+    authentication_3ds2_check_availability_frictionless:
+      value:
+        account_name: Transaction_Processing
+        reference: 3ds1_ref2
+        channel: CNP
+        amount: '5089'
+        currency: EUR
+        country: FR
+        payment_method:
+          card:
+            number: '4263970000005262'
+            expiry_month: '12'
+            expiry_year: '25'
+        notifications:
+          challenge_return_url: https://ensi808o85za.x.pipedream.net/
+          three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
+      
+
+
+## Payments Methods
+## Create a Stored Payment Method
+    create_payment_method:
+      value:
+        usage_mode: MULTIPLE
+        reference: "card-1"
+        card:
+          number: '4012001037141112'
+          expiry_month: '12'
+          expiry_year: '25'
+          cvv: '456'
+  
+## Create a Single Use Stored Payment Method
+    create_payment_method_single:
+      value:
+        usage_mode: SINGLE
+        reference: "card-431"
+        card:
+          number: '4012001037141112'
+          expiry_month: '12'
+          expiry_year: '25'
+          cvv: '456'
+
+
+
+
+
+        
+

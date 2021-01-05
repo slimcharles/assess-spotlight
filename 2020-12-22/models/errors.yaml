@@ -1,0 +1,228 @@
+openapi: '3.0.3'
+info:
+  title: Common Errors
+  description: Store all copmmon error related items.
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
+
+components:
+    schemas:
+      objRequestInvalid_400:
+        description: Bad Request
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This indicates an issue with the API request.
+            example: 'MANDATORY_DATA_MISSING'
+            enum:
+            - DUPLICATE_TRANSACTION
+            - INVALID_BATCH_ACTION
+            - INVALID_REQUEST_DATA
+            - INVALID_TRANSACTION_ACTION
+            - MANDATORY_DATA_MISSING
+            - TRANSACTION_NOT_FOUND
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '40016'
+            enum:
+            - '40016'
+          detailed_error_description:
+            type: string
+            description: Unique Text describing the specific error.
+            example: 'Bad track data'
+      AuthenticationInvalid_401:
+        description: Not Authenticated
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This action failed as token in the request is not valid.
+            example: 'NOT_AUTHENTICATED'
+            enum:
+            - NOT_AUTHENTICATED
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '40001'
+            enum:
+            - '40001'
+            - '40002'
+          detailed_error_description:
+            type: string
+            description: Unique Text describing the specific error.
+            example: 'Invalid Access Token'
+      NotAuthorized_403:
+        description: Forbidden
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This action is not authorized with the credentials being used.
+            example: 'ACTION_NOT_AUTHORIZED'
+            enum:
+            - 'ACTION_NOT_AUTHORIZED'
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '40003'
+            enum:
+            - '40003'
+            - '40004'
+          detailed_error_description:
+            type: string
+            description: Unique Text describing the specific error.
+            example: 'Permission not enabled to execute action'
+      ServerError_500:
+        description: Internal Server Error
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This indicates an unexpected issue occurred on the Global Payments
+              system.
+            example: 'SYSTEM_ERROR_DOWNSTREAM'
+            enum:
+            - 'SYSTEM_ERROR_DOWNSTREAM'
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '50011'
+            enum:
+            - '50011'
+          detailed_error_description:
+            type: string
+            description: Unique Text describing the specific error.
+            example: 'Processor Configuration error'
+      UnknownServerError_501:
+        description: Not implemented
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This is an error not yet handled or mapped properly.
+            example: 'UNKNOWN_RESPONSE'
+            enum:
+            - 'UNKNOWN_RESPONSE'
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '50012'
+            enum:
+            - '50012'
+          detailed_error_description:
+            type: string
+            description: 'Unique Text describing the specific error not yet handled.      '
+      UnknownPlatformError_502:
+        description: Bad Gateway
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This is an error indicating there was an issue connecting to a partner system..
+            example: 'UNAUTHORIZED_DOWNSTREAM'
+            enum:
+            - 'UNAUTHORIZED_DOWNSTREAM'
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '50002'
+            enum:
+            - '50002'
+          detailed_error_description:
+            type: string
+            description: Authentication error—Verify and correct credentials.
+      ServerTimeout_504:
+        description: Timeout
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: This is an error indicating there was a timeout issue to another  system.
+            example: 'TIMEOUT_DOWNSTREAM'
+            enum:
+            - 'TIMEOUT_DOWNSTREAM'
+          detailed_error_code:
+            type: string
+            description: Unique reference to identify the error.
+            example: '50008'
+            enum:
+            - '50008'
+          detailed_error_description:
+            type: string
+            description: No response from payment method provider.
+ 
+      Error:
+        type: object
+        properties:
+          error_code:
+            type: string
+            description: No response from payment method provider.
+          detailed_error_code:
+            type: string
+            description: No response from payment method provider.
+          detailed_error_description:
+            type: string
+            description: No response from payment method provider.
+        required:
+          - error_code
+          - detailed_error_code
+          - detailed_error_description
+      
+    responses:
+      
+      RequestInvalid_400:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/objRequestInvalid_400'
+      
+      AuthenticationInvalid_401:
+        description: Not Authenticated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationInvalid_401'
+      NotAuthorized_403:
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotAuthorized_403'
+      ServerError_500:
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerError_500'
+     
+      UnknownServerError_501:
+        description: Not implemented
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnknownServerError_501'
+      
+      UnknownPlatformError_502:
+        description: Bad Gateway
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnknownPlatformError_502'
+      ServerTimeout_504:
+        description: Timeout
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerTimeout_504'
