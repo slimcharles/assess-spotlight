@@ -1257,6 +1257,7 @@ components:
       properties:
         amount: ##REVISIT - include reference##
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+    
     change_amt_tag_request:
       type: object
       properties:
@@ -1264,6 +1265,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
         gratuity_amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
+        capture_sequence:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_sequence
+        remaining_capture_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
         payment_method:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
 

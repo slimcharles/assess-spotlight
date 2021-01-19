@@ -206,6 +206,22 @@ components:
       - AUTO
       - LATER
       - MULTIPLE
+    
+    transaction.capture_sequence:
+      type: string
+      description: Indicates whether the request is the first,a subsequent or the last capture request when capturing multiple amounts separatelt 
+      example: 'FIRST'
+      enum:
+      - FIRST
+      - SUBSEQUENT
+      - LAST
+
+
+    transaction.remaining_capture_count:
+      type: integer
+      description: Indicates the expected number of partial captures remaining.
+
+
 
     country: ##REVISIT ## enums to external docs ##
       type: string
@@ -934,11 +950,7 @@ components:
         - DECLINE
       minLength: 1
       maxLength: 50
-
-    transaction.remaining_capture_count:
-      type: integer
-      description: Indicates the expected number of partial captures remaining.
-    
+   
     
     #### S
     seconds_to_expire:
