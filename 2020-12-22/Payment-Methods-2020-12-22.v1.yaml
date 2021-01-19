@@ -96,12 +96,14 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-        
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
@@ -151,15 +153,19 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
+          headers:                       
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type    
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
           content:
             application/json:
               schema:
@@ -206,11 +212,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
@@ -264,11 +276,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
@@ -316,13 +334,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
@@ -369,13 +391,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
@@ -423,13 +449,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
