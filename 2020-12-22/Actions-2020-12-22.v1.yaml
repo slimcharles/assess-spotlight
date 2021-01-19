@@ -342,7 +342,7 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name 
         
         source_location:
-            ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.source_location
+            ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.source_location
         
         destination_location:
           ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.destination_location
