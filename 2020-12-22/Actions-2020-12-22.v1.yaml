@@ -115,17 +115,19 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
-            X-GP-Version:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
             Content-Encoding:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding    
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/actions_list'
-       
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
         '401':
@@ -164,19 +166,23 @@ paths:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
 
       responses:
-         '200':
-          description: OK
-          headers:
-            Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
-            X-GP-Version:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
-            Content-Encoding:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/action_single'
+          '200':
+            description: OK
+            headers:
+              Content-Type:
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+              Content-Encoding:
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding    
+              X-GP-Version:
+                schema:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/action_single'
        
           '400':
             $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
@@ -321,10 +327,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.response_detailed_message
         
         app_id:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
         
         app_name:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
         
         email:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/email
@@ -342,24 +348,25 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name 
         
         source_location:
-            ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.source_location
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.source_location
         
         destination_location:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.destination_location
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.destination_location 
         
         message_received:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.message_received
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.message_received
+          
         message_sent:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.message_sent
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.message_sent
 
         metrics:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.metrics
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.metrics
         
         total_time_milliseconds:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.total_time_milliseconds
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.total_time_milliseconds
         
         total_time_downstream_milliseconds:
-          ref: ./models/data_dictionary.v1.yaml#/components/schemas/ action.total_time_downstream_milliseconds
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/action.total_time_downstream_milliseconds
 
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action

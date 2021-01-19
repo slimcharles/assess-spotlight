@@ -2420,8 +2420,6 @@ components:
       minLength: 1
       maxLength: 50
 
-
-
     action.message_received:
       type: string
       description: The sanitized HTTP,Header and body of the action request.
@@ -2431,6 +2429,7 @@ components:
       type: string
       description: The sanitized HTTP,Header and body of the action response.
       minLength: 1
+
     action.metrics:
       type: string
       description: A name value pair array of data points to assist with measuring the products usage.
