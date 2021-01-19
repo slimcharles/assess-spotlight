@@ -217,9 +217,9 @@ components:
       - LAST
 
 
-    transaction.remaining_capture_count:
+    transaction.total_capture_count:
       type: integer
-      description: Indicates the expected number of partial captures remaining.
+      description: Indicates the total or expected total of captures that will executed against a transaction flagged as being captured multiple times.
 
 
 

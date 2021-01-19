@@ -961,8 +961,8 @@ components:
         capture_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
 
-        remaining_capture_count:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
+        total_capture_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.total_capture_count
 
         authorization_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.authorization_mode
@@ -1267,8 +1267,8 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.gratuity_amount
         capture_sequence:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.capture_sequence
-        remaining_capture_count:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.remaining_capture_count
+        total_capture_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.total_capture_count
         payment_method:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
 
