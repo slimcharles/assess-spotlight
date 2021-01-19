@@ -466,6 +466,8 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
+        usage_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.usage_mode
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         card:
@@ -553,6 +555,8 @@ components:
       properties:
         reference:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.reference
+        usage_mode:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.usage_mode
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
         card:

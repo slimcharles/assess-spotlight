@@ -1270,7 +1270,13 @@ components:
         total_capture_count:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.total_capture_count
         payment_method:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
+          type: object
+          properties:
+            card:
+              type: object 
+              properties:
+                tag:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.tag
 
 
     existing_transaction_response:
