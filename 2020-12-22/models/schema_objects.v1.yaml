@@ -43,10 +43,10 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.eci
         value:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.value
-        server_trans_ref:
-          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
-        ds_trans_ref:
-          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_ref
+        server_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
+        ds_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_reference
         exempt_status:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.exempt_status
 
@@ -335,7 +335,7 @@ components:
       description: Stored data information used to create a transaction.
       properties:
         three_ds_server_trans_id:
-          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
         
         three_ds_method_return_url:
           $ref: data_dictionary.v1.yaml#/components/schemas/notifications.three_ds_method_return_url
@@ -582,7 +582,7 @@ components:
       type: object
       properties:
         acs_trans_reference:
-          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_ref
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_reference
         
         message_type:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_type

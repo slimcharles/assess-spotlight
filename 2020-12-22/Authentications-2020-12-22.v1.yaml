@@ -390,8 +390,8 @@ components:
     three_ds_check_availability_response:
       type: object
       properties:
-        server_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        server_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
         message_version:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
         ds_protocol_version_start:
@@ -495,17 +495,17 @@ components:
     three_ds_initiate_response:
       type: object
       properties:
-        server_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        server_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
 
-        acs_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_ref
+        acs_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_reference
         
         acs_reference_number:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_reference_number
         
-        ds_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_ref
+        ds_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_reference
 
         eci:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.eci
@@ -593,14 +593,14 @@ components:
     three_ds_result_response:
       type: object
       properties:
-        acs_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_ref
+        acs_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_reference
 
-        ds_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_ref
+        ds_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_reference
 
-        server_trans_ref:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_ref
+        server_trans_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
         
         acs_reference_number:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_reference_number

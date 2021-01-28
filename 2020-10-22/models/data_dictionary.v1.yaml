@@ -1047,19 +1047,19 @@ components:
       minLength: 0
       maxLength: 50
 
-    three_ds.server_trans_ref:
+    three_ds.server_trans_reference:
       type: string
       description: The reference created by the 3DSecure provider to identify the specific authentication attempt.
       minLength: 0
       maxLength: 50
    
-    three_ds.ds_trans_ref:
+    three_ds.ds_trans_reference:
       type: string
       description: The reference created by the 3DSecure Directory Server to identify the specific authentication attempt.
       minLength: 0
       maxLength: 50
     
-    three_ds.acs_trans_ref:
+    three_ds.acs_trans_reference:
       type: string
       description: Unique transaction identifier assigned by the ACS.
       minLength: 0
