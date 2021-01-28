@@ -910,7 +910,7 @@ components:
       minLength: 1
       maxLength: 50
     
-    payment_method.storage_model:
+    payment_method.storage_mode:
       type: string
       description:  Indicates whether to store the card as part of a transaction.
       enum:
