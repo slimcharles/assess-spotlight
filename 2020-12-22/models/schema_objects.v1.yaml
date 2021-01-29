@@ -87,10 +87,12 @@ components:
     bank_transfer:
       type: object
       properties:
-        masked_account_number_last4:
+        number:
           type: string
-          description: The last 4 characters of the local reference for a bank account
-            number.
+          description: The number reference associated with the payer's bank account
+        masked_account4:
+          type: string
+          description: The last 4 characters of the local reference for a bank account number.
         bank:
           $ref: '#/components/schemas/bank'
       description: Data relating to a bank transfer directly to or from the Payer's bank account.
@@ -100,6 +102,8 @@ components:
       properties:
         code:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.code'
+        name:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.name'
 
     bank_account:
       type: object
@@ -120,6 +124,25 @@ components:
           type: string
           description: The local identifier of the bank account.
    
+    bank_account:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name assocaited with the bank account
+        identifier_code:
+          type: string
+          description: The international identifier code for the bank.
+        iban:
+          type: string
+          description: The international identifier of the bank account.
+        code:
+          type: string
+          description: The local identifier of the bank.
+        account_number:
+          type: string
+          description: The local identifier of the bank account.
+
     mandate:
       type: object
       properties:

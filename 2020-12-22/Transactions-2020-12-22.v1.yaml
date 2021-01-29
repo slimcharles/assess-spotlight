@@ -31,7 +31,7 @@ tags:
   - name: Capture a Sale 
     description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
 
-  - name: Adjust a Sale
+  - name: Adjust a CP Sale
     description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
 
   - name: ReAuth a Reversed Sale
@@ -49,8 +49,8 @@ paths:
       operationId: createSaleOrRefundTransaction
       tags:
       - Create a Sale or Refund
-      summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
-      description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.
+      summary: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The Sale transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.  (Availability of refunds that do not link directly to a previous Sale transaction depends on your live configuration.)
+      description: Create a Sale or Refund transaction that attempts to transfer funds between the Payer and the Merchant using a specific Payment Method. The Sale transaction can be flagged for automatic capture or flagged as requiring a separate capture action later.  (Availability of refunds that do not link directly to a previous Sale transaction depends on your live configuration.)
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
@@ -441,8 +441,8 @@ paths:
       tags:
       - Reverse a Sale or Refund
   
-      summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
-      description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed. In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also.
+      summary: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also. (Availability of partial reversals depends on your live configuration.)
+      description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also. (Availability of partial reversals depends on your live configuration.)
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
@@ -509,8 +509,8 @@ paths:
       tags:
       - Capture a Sale
   
-      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
-      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction.
+      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability in production depends on your live configuration.)
+      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability in production depends on your live configuration.)
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
@@ -577,9 +577,9 @@ paths:
     post:
       operationId: adjustSaleTransaction
       tags:
-       - Adjust a Sale
-      summary: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
-      description: Adjust an existing transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
+       - Adjust a CP Sale
+      summary: Adjust an existing Customer Present (CP) transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
+      description: Adjust an existing Customer Present (CP)transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
@@ -643,8 +643,9 @@ paths:
       operationId: reauthSaleTransaction
       tags:
       - ReAuth a Reversed Sale
-      summary: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
-      description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error.
+      summary:
+         This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error. (Availability in production depends on your live configuration.)
+      description: This action be to used to refresh the authorization associated with a transaction to get a more recent authcode or reauthorize a transaction reversed in error. (Availability in production depends on your live configuration.)
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
