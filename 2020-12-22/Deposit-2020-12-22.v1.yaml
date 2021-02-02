@@ -98,12 +98,18 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-            X-GP-Version:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-            Content-Encoding:
-               $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
-          
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+                
           content:
             application/json:
               schema:
@@ -149,38 +155,44 @@ paths:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
 
       responses:
-         '200':
+        '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
-            X-GP-Version:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
-            Content-Encoding:
-              $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+            Content-Encoding:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:  
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/deposits_single'
        
-          '400':
-            $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
-          '401':
-            $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
-          '403':
-            $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
-          '404':
-            description: Resource Not Found
-            content: {}
-          '500':
-            $ref: ./models/errors.yaml#/components/responses/ServerError_500
-          '501':
-            $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
-          '502':
-            $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
-          '504':
-            $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-          x-codegen-request-body-name: request
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+        x-codegen-request-body-name: request
 
                 
         
