@@ -100,11 +100,14 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
           content:
             application/json:
@@ -152,13 +155,14 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
         
           content:
@@ -212,13 +216,17 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
         
           content:
@@ -269,18 +277,22 @@ paths:
             schema:
               $ref: '#/components/schemas/challenge_request'
         required: false
-        responses:
+      responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
         
           content:
             application/json:
@@ -338,16 +350,21 @@ paths:
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Idempotency:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           content:
             application/json:
-              $ref: ./models/schema_objects.v1.yaml#/components/schemas/document
+              schema:
+                $ref: ./models/schema_objects.v1.yaml#/components/schemas/document
           
         '400':
           $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
@@ -433,16 +450,19 @@ paths:
 
      
      
-        responses:
+      responses:
         '200':
           description: OK
           headers:
             Content-Type:
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type      
             Content-Encoding:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
             X-GP-Version:  
-              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
           
         
           content:
@@ -554,6 +574,7 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
         disputes:
           type: array
+          description: A list of disputes
           items:
             $ref: '#/components/schemas/disputes_list_item'
         action:
@@ -606,14 +627,14 @@ components:
           type: object
           properties:
             card:
-            type: object
-            properties:
-              number:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
-              arn:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
-              brand:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+              type: object
+              properties:
+                number:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                arn:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                brand:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
                    
           description: Information about the original Sale Transaction the Dispute relates to.
         
@@ -778,6 +799,7 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
         disputes:
           type: array
+          description: A list of disputes
           items:
             $ref: '#/components/schemas/settled_disputes_list_item'
         action:
@@ -791,7 +813,7 @@ components:
         status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
         stage:
-         $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
         stage_time_created:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         funding_type:
@@ -805,11 +827,7 @@ components:
         currency:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
         system:
-          type: object
-          properties:
-            $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
-           
-              
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
         reason_code:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
         reason_description:

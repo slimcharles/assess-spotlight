@@ -103,9 +103,6 @@ paths:
             Content-Encoding:  
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
-              schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
@@ -164,9 +161,6 @@ paths:
             Content-Encoding:  
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
-            X-GP-Idempotency:  
-              schema:
-                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
             X-GP-Version:  
               schema:
                 $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version

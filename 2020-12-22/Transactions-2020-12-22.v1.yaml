@@ -90,6 +90,10 @@ paths:
                 $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_tokenized
               Apple Pay Sale - DeTokenized Payment Token:
                 $ref: ./models/examples.v1.yaml#/components/examples/digital_wallet_apple_detokenized
+              ACH Sale:
+                $ref: ./models/examples.v1.yaml#/components/examples/ach_sale
+              ACH Refund:
+                $ref: ./models/examples.v1.yaml#/components/examples/ach_refund
         required: true
         
       
@@ -1112,6 +1116,8 @@ components:
           $ref: '#/components/schemas/digital_wallet_request'
         apm:
           $ref: '#/components/schemas/apm_request'
+        bank_transfer:
+          $ref: '#/components/schemas/bank_transfer_request'
 
        
     payment_method_response:
@@ -1133,6 +1139,8 @@ components:
           $ref: '#/components/schemas/apm_response'
         card:
           $ref: '#/components/schemas/card_response'
+        bank_transfer:
+          $ref: '#/components/schemas/bank_transfer_response'
     
 
     
@@ -1227,6 +1235,49 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
 
     digital_wallet:
+      type: object
+      properties:
+        token:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token
+        token_format:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.token_format
+        cryptogram:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.cryptogram
+        provider:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/digital_wallet.provider
+        expiry_month:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_month
+        expiry_year:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.expiry_year
+        eci:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/eci
+        cvv:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv
+        cvv_indicator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.cvv_indicator
+        avs_address:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_address
+        avs_postal_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.avs_postal_code
+
+    bank_transfer_request:  
+      type: object
+      properties:      
+        number:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_transfer.number
+         number_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_transfer.number_type
+        check_reference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_transfer.check_reference
+        sec_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_transfer.sec_code
+        merchant_notes:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/bank_transfer.merchant_notes
+        bank:
+          $ref: '#/components/schemas/digital_wallet'
+       
+
+    bank_transfer_response:
       type: object
       properties:
         token:
