@@ -459,6 +459,12 @@ components:
       minLength: 1
       maxLength: 50
     
+    masked_number_last4:
+      type: string
+      description: The last 4 characters of the local reference for a bank account number.
+      minLength: 1
+      maxLength: 50
+    
     merchant_id:
       type: string
       description: A unique identifier for the merchant set by Global Payments.

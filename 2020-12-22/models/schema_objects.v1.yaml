@@ -485,6 +485,28 @@ components:
         user_agent:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.user_agent
      
+    bank_transfer.payer:
+      type: object
+      description: The information relating to a payer.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
+
+        
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+
+        billing_address:
+          $ref: '#/components/schemas/address'
+
     payer:
       type: object
       description: The information relating to a payer.
