@@ -446,7 +446,65 @@ components:
         notifications:
           challenge_return_url: https://ensi808o85za.x.pipedream.net/
           three_ds_method_return_url: https://ensi808o85za.x.pipedream.net/
-      
+
+    ach_sale:
+      value:
+        account_name: Transaction_Processing
+        channel: CNP
+        type: SALE
+        amount: '12345'
+        currency: USD
+        reference: '67396831'
+        country: US
+        payment_method:
+          name: Jane Doe
+          entry_mode: ECOM
+          bank_transfer:
+            number: '1234567890'
+            number_type: SAVING
+            check_reference: '123'
+            sec_code: WEB
+            merchant_notes: '123'
+            bank:
+              code: '083908420'
+              name: First Union
+              address:
+                line_1: 12000 Smoketown Rd
+                line_2: Apt 3B
+                line_3: X
+                city: Mesa
+                state: AZ
+                postal_code: '22192'
+                country: USA
+        payer:
+          name: ANGELA SMITH
+          reference: '123'
+          date_of_birth: '1967-08-13'
+          landline_phone: '235555'
+          mobile_phone: '222222'
+          billing_address:
+            line_1: Address Line 1
+            line_2: Address Line 2
+            city: PUNE
+            state: AZ
+            postal_code: '411015'
+            country: USA
+
+    ach_refund:
+      value:
+        channel: CNP
+        type: REFUND
+        amount: '12345'
+        currency: HKD
+        reference: Test_1234sd
+        country: HK
+        payment_method:
+          name: Jane
+          entry_mode: ECOM
+          card:
+            number: '4263970000005262'
+            expiry_month: '09'
+            expiry_year: '22'
 
 
 ## Payments Methods

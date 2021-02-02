@@ -90,9 +90,13 @@ components:
         number:
           type: string
           description: The number reference associated with the payer's bank account
+        number_type:
+          type: string
+          description: The number reference associated with the payer's bank account
         masked_account4:
           type: string
           description: The last 4 characters of the local reference for a bank account number.
+
         bank:
           $ref: '#/components/schemas/bank'
       description: Data relating to a bank transfer directly to or from the Payer's bank account.
@@ -104,6 +108,8 @@ components:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.code'
         name:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.name'
+        address:
+          $ref: '#components/schemas/address'
 
     bank_account:
       type: object
@@ -124,24 +130,7 @@ components:
           type: string
           description: The local identifier of the bank account.
    
-    bank_account:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name assocaited with the bank account
-        identifier_code:
-          type: string
-          description: The international identifier code for the bank.
-        iban:
-          type: string
-          description: The international identifier of the bank account.
-        code:
-          type: string
-          description: The local identifier of the bank.
-        account_number:
-          type: string
-          description: The local identifier of the bank account.
+
 
     mandate:
       type: object
@@ -470,8 +459,14 @@ components:
       type: object
       description: The information relating to a payer.
       properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+
         reference:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
 
         account_age:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_age
@@ -491,6 +486,15 @@ components:
 
         account_password_change_indicator:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_indicator
+
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+
+        billing_address:
+          $ref: '#/components/schemas/address'
+
 
         home_phone:
           $ref: '#/components/schemas/phone'

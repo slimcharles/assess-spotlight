@@ -187,6 +187,49 @@ components:
       minLength: 0
       maxLength: 50
 
+    bank_transfer.number:
+      type: string
+      description: The number or reference for the payer's bank account.
+      example: '23452423'
+      minLength: 0
+      maxLength: 50
+
+    bank_transfer.number_type:
+      type: string
+      description: The type of bank account associated with the payer's bank account.
+      example: 'SAVING'
+      enum:
+      - CHECKING
+      - SAVING
+      - CREDIT
+
+    bank_transfer.check_reference:
+      type: string
+      description: The number or reference for the check
+      example: '23452423'
+      minLength: 0
+      maxLength: 15
+
+    bank_transfer.sec_code:
+      type: string
+      description: >
+       Indicates how the transaction was authorized by the merchant.
+       * `CCD` - Cash Concentration or Disbursement - Can be either a credit or debit application where funds are wither distributed or consolidated between corporate entities. 
+       * `POP` - Point of Sale Entry - Point of sale debit applications non-shared (POS) environment. These transactions are most often initiated by the consumer via a plastic access card. This is only support for normal ACH transactions
+       * `PPD` - Prearranged Payment and Deposits - used to credit or debit a consumer account. Popularity used for payroll direct deposits and pre-authorized bill payments.
+       * `TEL` - Telephone-Initiated Entry - Used for the origination of a single entry debit transaction to a consumer's account pursuant to a verbal authorization obtained from the consumer via the telephone.
+       * `WEB` - Internet (Web)-Initiated Entry - Used for the origination of debit entries (either Single or Recurring Entry) to a consumer's account pursuant to a to an authorization that is obtained from the Receiver via the Internet.
+      example: 'CCD'
+      enum:
+      - CCD
+      - POP
+      - PPD
+      - TEL
+      - WEB
+
+ 
+
+    
     #### C
     transaction.channel:
       type: string
@@ -597,6 +640,21 @@ components:
     payer.reference:
       type: string
       description: An integrator's reference to the payer.
+    
+    payer.name:
+      type: string
+      description: The full name of the payer.
+      example: 'James Mason'
+      minLength: 0
+      maxLength: 100 
+
+    payer.date_of_birth:
+      type: string
+      description: The date of birth of the payer
+      format: date
+      example: '2021-01-31'
+      minLength: 0
+      maxLength: 100
 
     payer.account_age:
       type: string
@@ -646,6 +704,13 @@ components:
       - THIRTY_TO_SIXTY_DAYS
       - MORE_THEN_SIXTY_DAYS  
 
+    payer.landline_phone:
+      type: string
+      description: The landline phone number.
+
+    payer.mobile_phone:
+      type: string
+      description: The mobile phone number.
 
     payer.home_phone.country_code:
       type: string
@@ -921,7 +986,7 @@ components:
 
     payment_method.narrative:
       type: string
-      description: Contains the value a merchant wishes to appear on the payers payment method statement for this transaction
+      description: Contains the value a merchant wishes to appear on the payer's payment method statement for this transaction
       minLength: 1
       maxLength: 50
 

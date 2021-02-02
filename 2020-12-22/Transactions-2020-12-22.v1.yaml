@@ -29,7 +29,7 @@ tags:
     description: Cancel a transaction before it has been sent for funding. transactions can be reversed in full or partially reversed. An attempt to restore Payer's spending limit is always made. If no amount is included in the request body, the full value of the transaction will be reversed.  In timeout scenarios, the reference field can be used in place of the id in the URL to execute a reversal also. (Availability of partial reversals depends on your live configuration.)
 
   - name: Capture a Sale 
-    description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability in production depends on your live configuration.)
+    description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability of multiple captures in production depends on your live configuration.)
 
   - name: Adjust a CP Sale
     description: Adjust an existing Customer Present (CP) transaction. Use this action to change data about a transaction before it is batched. This action does not change the status of a transaction, only the data it contains.
@@ -509,8 +509,8 @@ paths:
       tags:
       - Capture a Sale
   
-      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability in production depends on your live configuration.)
-      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability in production depends on your live configuration.)
+      summary: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability of multiple captures in production depends on your live configuration.)
+      description: Capture a Sale transaction that has a status of PREAUTHORIZED to receive funds for that transaction. The transaction can be captured for a different amount than what was authroized. Also it can be captured in multiple segments to facilitate split shipment. (Availability of multiple captures in production depends on your live configuration.)
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
