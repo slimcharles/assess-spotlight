@@ -130,7 +130,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
     
   /disputes/{id}:
     get:
@@ -186,7 +186,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
   /disputes/{id}/acceptance:
     post:
@@ -250,7 +250,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
   /disputes/{id}/challenge:
     post:
@@ -315,7 +315,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+       
 
   /disputes/{id}/documents/{doc_id}:
     post:
@@ -383,9 +383,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
-
-      x-codegen-request-body-name: request
+       
  
   /settlement/disputes:
     get:
@@ -486,7 +484,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+       
 
 
 

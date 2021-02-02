@@ -145,7 +145,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+        
 
   /actions/{id}:
     get:
@@ -201,7 +201,7 @@ paths:
             $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
           '504':
             $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-          x-codegen-request-body-name: request
+          
 
                 
         

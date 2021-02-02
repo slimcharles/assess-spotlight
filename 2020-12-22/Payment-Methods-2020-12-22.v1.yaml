@@ -125,7 +125,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
     post:
       operationId: storePaymentMethod
@@ -187,7 +187,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+   
 
   /payment-methods/{id}:
     get:
@@ -244,7 +244,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
     patch:
       operationId: editPaymentMethod
       tags:
@@ -308,7 +308,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
     delete:
       operationId: deletePaymentMethod
       tags:
@@ -364,7 +364,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
 
 
@@ -424,7 +424,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
    
   
@@ -484,7 +484,7 @@ paths:
           $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
         '504':
           $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
-        x-codegen-request-body-name: request
+
 
 
 components:
