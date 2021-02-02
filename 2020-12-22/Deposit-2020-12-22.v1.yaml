@@ -242,9 +242,9 @@ components:
         aggregation_model:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/aggregation_model
         bank_transfer:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/bank_transfer
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/deposit.bank_transfer
         system:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/deposit.system
         sales:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/totals
         refunds:

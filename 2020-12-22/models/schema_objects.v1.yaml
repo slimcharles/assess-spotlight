@@ -84,7 +84,7 @@ components:
         amount:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/total_amount'
       
-    bank_transfer:
+    transaction.bank_transfer:
       type: object
       properties:
         number:
@@ -98,10 +98,10 @@ components:
           description: The last 4 characters of the local reference for a bank account number.
 
         bank:
-          $ref: '#/components/schemas/bank'
+          $ref: '#/components/schemas/transaction.bank'
       description: Data relating to a bank transfer directly to or from the Payer's bank account.
     
-    bank:
+    transaction.bank:
       type: object
       properties:
         code:
@@ -109,8 +109,25 @@ components:
         name:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.name'
         address:
-          $ref: '#components/schemas/address'
+          $ref: '#/components/schemas/address'
 
+    deposit.bank_transfer:
+      type: object
+      properties:
+        masked_account_number_last4:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/masked_account_number_last4'  
+
+        bank:
+          $ref: '#/components/schemas/deposit.bank'
+      description: Data relating to a bank transfer directly to or from the Payer's bank account.
+    
+    deposit.bank:
+      type: object
+      properties:
+        code:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/bank.code'
+        
+    
     bank_account:
       type: object
       properties:
@@ -186,6 +203,19 @@ components:
            $ref: 'data_dictionary.v1.yaml#/components/schemas/system.mid'
         tid:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/system.tid'
+        hierarchy:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.hierarchy'
+        name:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.name'
+        dba:
+          $ref: 'data_dictionary.v1.yaml#/components/schemas/system.dba'
+   
+    deposit.system:
+      type: object
+      description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
+      properties:
+        mid:
+           $ref: 'data_dictionary.v1.yaml#/components/schemas/system.mid'
         hierarchy:
           $ref: 'data_dictionary.v1.yaml#/components/schemas/system.hierarchy'
         name:
