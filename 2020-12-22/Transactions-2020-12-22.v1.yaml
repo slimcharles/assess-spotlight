@@ -814,7 +814,7 @@ paths:
           description: A unique identifier that identifies the account the search is being executed against.
           required: true
           schema:
-            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/settement_reporting.account_name
         - name: brand
           in: query
           description: Indicates the card brand that issued the card.
