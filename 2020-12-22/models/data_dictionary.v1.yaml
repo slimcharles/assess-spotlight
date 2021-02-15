@@ -1554,6 +1554,22 @@ components:
       - SALE
       - REFUND
 
+    account.type:
+      type: string
+      description: Describes what capablity the account relates to be it transaction processing, data services, dispute management, merchant management,tokenization.
+        * `TRANSACTION_PROCESSING` - indicates an account that can be used to create and manage transactions.
+        * `DATA_SERVICES` - indicates an account that can be used to retrieve data.
+        * `DISPUTE_MANAGEMENT` - indicates an account that can be used to manage transaction disputes.
+        * `TOKENIZATION` - indicates an account that can be used to store and manage payment methods securely.
+        * `MERCHANT_MANAGEMENT` - indicates an account that can be used to store and manage merchants and their accounts.
+
+      enum:
+      - TRANSACTION_PROCESSING
+      - DATA_SERVICES
+      - DISPUTE_MANAGEMENT
+      - MERCHANT_MANAGEMENT
+      - TOKENIZATION
+
     total_amount:
       type: string
       description: The total amount across one or more items.
