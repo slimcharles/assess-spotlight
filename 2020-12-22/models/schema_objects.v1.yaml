@@ -708,7 +708,20 @@ components:
           href:
             $ref: 'data_dictionary.v1.yaml#/components/schemas/link.href'
         
-
+    account.configurations:
+      type: array
+      items:
+        type: object
+        properties:
+          countries:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account.countries'
+          currencies:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account.currencies'
+          channels:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account.channels'
+          payment_methods:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/account.payment_methods'
+          
 
 ## Security Section
   securitySchemes:  ## Security Section

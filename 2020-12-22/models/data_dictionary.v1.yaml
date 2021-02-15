@@ -269,6 +269,14 @@ components:
       - CP
       - CNP
     
+    account.channels: ##REVISIT ## enums to external docs ##
+      type: array
+      description: A list of channels account is configured for.
+      items:
+         $ref: 'data_dictionary.v1.yaml#/components/schemas/transaction.channel'
+    
+
+
     transaction.capture_mode:
       type: string
       description: Indicates whether the transaction is to be captured automatically, later or later using more than 1 partial capture.
@@ -304,7 +312,14 @@ components:
       enum: 
         - ISO-3166-1(alpha-2 code)
         - US
-     
+
+    account.countries: ##REVISIT ## enums to external docs ##
+      type: array
+      description: A list of countries in ISO-3166-1(alpha-2 code) format an account is configured for.
+      items:
+         $ref: 'data_dictionary.v1.yaml#/components/schemas/country'
+    
+      
     phone.subscriber_number:
       type: string
       description: The phone number.
@@ -320,6 +335,12 @@ components:
       description: The currency of the amount in ISO-4217(alpha-3)
       example: 'USD'
     
+    account.currencies: ##REVISIT ## enums to external docs ##
+      type: array
+      description: A list of currencies in ISO-4217(alpha-3) format an account is configured for.
+      items:
+         $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
+
     #### D 
     
 
@@ -350,7 +371,32 @@ components:
       example: 'merchant@example.com'
       minLength: 1
       maxLength: 50
-    
+
+    payment_method: 
+      type: string
+      description: The payment methods available to create transactions with.
+        * `CARD` - Debit, credit, charge or prepaid; local or international, consumer or corporate payment method based on a 12 to 16 digital number, expiry date and security code. 
+        * `DIGITAL_WALLET` - ApplePay or Pay With Google digital wallet built using scheme tokenization and cards payment method rails.
+        * `BANK_TRANSFER` - Payment method based on the transfer of fund using a routing number, sort code or BIC and the payer's bank account number or IBAN.
+        * `APM` - Broad category of alternative and local payment methods usualy specific to a country or region.
+        * `PAYPAL` - Popular wallet used to easily pay with securely stored stored payment methods on the payer's Paypal account.
+      enum: 
+        - CARD
+        - DIGITAL_WALLET
+        - BANK_TRANSFER
+        - APM
+        - PAYPAL
+
+      minLength: 1
+      maxLength: 50
+
+    account.payment_methods:
+      type: array
+      description: A list of payment methods an account is configured for.
+      items:
+         $ref: 'data_dictionary.v1.yaml#/components/schemas/payment_method'
+
+
     payment_method.entry_mode:
       type: string
       description: Indicates how the payment method information was obtained by the Merchant for this transaction.
@@ -628,10 +674,7 @@ components:
       maxLength: 3
     
     order.gift_card_currency:
-      type: string
-      description: The currency of the gift card. 
-      minLength: 0
-      maxLength: 3
+      $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
 
     order.delivery_email:
       type: string
@@ -1058,8 +1101,15 @@ components:
       type: array
       items:
         type: string
-        description: The list of the permissions the integrator want the access token to have. This is used to limit the authority a specific access token can have.
-        example: TRN_POST_Authorize      
+        description: The list of the permissions the access token has or will have once created. This indicates the scope of authority a specific access token has.
+        example: TRN_POST_Authorize   
+
+    account.permissions:
+      type: array
+      items:
+        type: string
+        description: The list of the permissions an account is configured for.
+   
 
     #### R
     result:
@@ -2334,7 +2384,7 @@ components:
       example: '1999'
 
     dispute.payer_currency:
-      type: string
+      $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
 
     dispute.merchant_amount:
       type: string
@@ -2342,7 +2392,7 @@ components:
       example: "1999"
       
     dispute.merchant_currency:
-      type: string
+      $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
     
     transaction.merchant_amount:
       type: string
@@ -2411,7 +2461,7 @@ components:
       example: "1999"
 
     dispute.last_adjustment_currency:
-      type: string
+      $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
 
     dispute.last_adjustment_time_created:
       type: string
@@ -2426,7 +2476,7 @@ components:
 
 
     dispute.net_financial_currency:
-      type: string
+      $ref: 'data_dictionary.v1.yaml#/components/schemas/currency'
 
 
     dispute.net_financial_funding:
