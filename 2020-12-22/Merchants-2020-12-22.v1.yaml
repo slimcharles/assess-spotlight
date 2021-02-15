@@ -14,24 +14,21 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Get Merchant info
+  - name: Get merchant info
     description: Get information about the merchant executing the action.
 
-  - name: Get Merchants Account info
+  - name: Get merchant's account info
     description: Get information about the merchant's account configurations.
   
-  - name: Get Single Account info
+  - name: Get info about a single account
     description: Get information about a merchant's single account configuration.
   
-      
-          
-
 paths:
   /:
     get:
       operationId: getMerchantSingle
       tags:
-      - Get Merchant info
+      - Get merchant info
       summary: Get information about the merchant executing the action.
       description: Get information about the merchant executing the action.
       
@@ -81,7 +78,7 @@ paths:
     get:
       operationId: getMerchantAccounts
       tags:
-      - Get Merchants Account info
+      - Get merchant's account info
       summary: Get information about the merchant's accounts.
       description: Get information about the merchant's accounts.
       
@@ -158,7 +155,7 @@ paths:
     get:
       operationId: getAccountSingle
       tags:
-      - Get a Single Account
+      - Get info about a single account
       summary: Get the details of a single Account using its unique id.
       description: Get the details of a single Account using its unique id.
       parameters:
