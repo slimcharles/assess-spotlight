@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: '3.0.3'
 info:
   title: Authentications
   description: Authentications represent the attempt to validate the payer to reduce the risk of fraud when transaction processing.

@@ -14,6 +14,25 @@ servers:
 paths: {}
 components:
   schemas: ## Schema Section
+
+    link.rel:
+      type: string
+      description: Describes the relationship the associated link href value has to the current resource.
+        * `SELF` - indicates a link to the current resource.
+        * `ACCOUNTS` - indicates a link to the current resource's list of accounts.
+      enum:
+        - SELF
+        - ACCOUNTS
+      minLength: 0
+      maxLength: 50
+    
+    link.href:
+      type: string
+      description: A href link to the resources or resource actions as indicated in the corresponding rel value.
+      example: 'https://apis.globalpay.com/ucp/merchants/MER_c4c0df11039c48a9b63701adeaa296c3'
+      minLength: 0
+      maxLength: 2048
+
     ####A
     access_token:
       type: string
@@ -322,6 +341,13 @@ components:
       type: string
       description: 'Email registered with the application that was used to access this token. '
       example: 'james.mason@example.com'
+      minLength: 1
+      maxLength: 50
+    
+    merchant.email:
+      type: string
+      description: 'Primary email configured with the merchant.'
+      example: 'merchant@example.com'
       minLength: 1
       maxLength: 50
     
@@ -1097,6 +1123,18 @@ components:
       minLength: 0
       maxLength: 50
 
+
+    merchant.status: ##REVISIT ## enums to external docs ##
+      type: string
+      description: Indicates where a merchant is in it's lifecycle.
+        * `ACTIVE` - A Merchant is able to execute API actions against its active accounts
+        * `INACTIVE` - A Merchant is unable to execute any API actions.
+        
+      enum:
+      - ACTIVE
+      - INACTIVE
+      minLength: 0
+      maxLength: 50    
 
     payment_method.status: ##REVISIT ## enums to external docs ##
       type: string

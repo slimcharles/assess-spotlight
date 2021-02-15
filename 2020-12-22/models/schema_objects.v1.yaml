@@ -195,6 +195,7 @@ components:
             type: array
             items:
               $ref: 'data_dictionary.v1.yaml#/components/schemas/permissions'
+    
     system:
       type: object
       description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
@@ -386,6 +387,24 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/method_data.encoded_method_data
 
     address:
+      type: object
+      properties:
+        line_1:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_1
+        line_2:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_2
+        line_3:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_3
+        city:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.city
+        postal_code:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.postal_code
+        state:
+           $ref: data_dictionary.v1.yaml#/components/schemas/address.state
+        country: 
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.country
+    
+    merchant_address:
       type: object
       properties:
         line_1:
@@ -679,7 +698,16 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.session_data
 
 
-
+    links:
+      type: array
+      items:
+        type: object
+        properties:
+          rel:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/link.rel'
+          href:
+            $ref: 'data_dictionary.v1.yaml#/components/schemas/link.href'
+        
 
 
 ## Security Section
