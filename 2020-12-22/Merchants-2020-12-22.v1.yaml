@@ -260,19 +260,16 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
         merchant_name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+       
         filter:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
-        deposits:
+        acounts:
           type: array
-          description: A list of Deposit records.
+          description: A list of Account records.
           items:
-            $ref: '#/components/schemas/deposits_single'
+            $ref: '#/components/schemas/accounts_single'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
     
@@ -281,8 +278,10 @@ components:
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
-        time_created:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.type
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
         status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/status
         funding_type:
