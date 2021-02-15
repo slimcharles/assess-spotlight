@@ -1123,6 +1123,16 @@ components:
       minLength: 0
       maxLength: 50
 
+    entity.status: #
+      type: string
+      description: Indicates where a configured entity on the Global Payments system is in it's lifecycle.
+        * `ACTIVE` - The configured entity is able to execute related API actions.
+        * `INACTIVE` - The configured entity is not able to execute related API actions as its status has been set to inactive.
+      enum:
+      - ACTIVE
+      - INACTIVE
+      minLength: 0
+      maxLength: 50    
 
     merchant.status: ##REVISIT ## enums to external docs ##
       type: string
