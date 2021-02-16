@@ -2,7 +2,7 @@ openapi: '3.0.3'
 
 info:
   title: Accounts  
-  description: Accounts represent the payment processing capability a merchant has configured on the Global Payments API.
+  description: Accounts represent the payment processing capability a merchant is set up for on the Global Payments API.
   contact:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
@@ -14,13 +14,13 @@ servers:
   - url: 'https://apis.globalpay.com/ucp'
     description: Production Environment
 tags:
-  - name: Get merchant info
+  - name: Get Merchant info
     description: Get information about the merchant executing the action.
 
-  - name: Get merchant's account info
+  - name: Get Merchant's Account info
     description: Get information about the merchant's account configurations.
   
-  - name: Get info about a single account
+  - name: Get info about a Single Account
     description: Get information about a merchant's single account configuration.
   
 paths:
@@ -28,7 +28,7 @@ paths:
     get:
       operationId: getMerchantSingle
       tags:
-      - Get merchant info
+      - Get Merchant info
       summary: Get information about the merchant executing the action.
       description: Get information about the merchant executing the action.
       
@@ -78,7 +78,7 @@ paths:
     get:
       operationId: getMerchantAccounts
       tags:
-      - Get merchant's account info
+      - Get Merchant's Account info
       summary: Get information about the merchant's accounts.
       description: Get information about the merchant's accounts.
       
@@ -155,7 +155,7 @@ paths:
     get:
       operationId: getAccountSingle
       tags:
-      - Get info about a single account
+      - Get info about a Single Account
       summary: Get the details of a single Account using its unique id.
       description: Get the details of a single Account using its unique id.
       parameters:
@@ -270,7 +270,7 @@ components:
           description: A list of Account records.
           items:
             oneOf:
-              - $ref: '#/components/schemas/accounts_single_transaction_processing'
+              - $ref: '#/components/schemas/accounts_transaction_processing_list'
               - $ref: '#/components/schemas/accounts_single_backoffice_list'
               - $ref: '#/components/schemas/accounts_single_tokenization'
         action:
@@ -305,7 +305,7 @@ components:
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
-    accounts_single_transaction_processing_list:
+    accounts_transaction_processing_list:
       type: object
       properties:
         id:
@@ -318,6 +318,14 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/entity.status
         permissions:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.permissions
+        countries:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.countries
+        channels:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.channels
+        currencies:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.currencies
+        payment_methods:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.payment_methods
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
