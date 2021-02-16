@@ -189,8 +189,7 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/accounts_single_transaction_processing'
-                  - $ref: '#/components/schemas/accounts_single_data_services'
-                  - $ref: '#/components/schemas/accounts_single_dispute_management'
+                  - $ref: '#/components/schemas/accounts_single_backoffice'
                   - $ref: '#/components/schemas/accounts_single_tokenization'
        
         '400':
@@ -266,14 +265,13 @@ components:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
         paging:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
-        acounts:
+        accounts:
           type: array
           description: A list of Account records.
           items:
             oneOf:
               - $ref: '#/components/schemas/accounts_single_transaction_processing'
-              - $ref: '#/components/schemas/accounts_single_data_services'
-              - $ref: '#/components/schemas/accounts_single_dispute_management'
+              - $ref: '#/components/schemas/accounts_single_backoffice_list'
               - $ref: '#/components/schemas/accounts_single_tokenization'
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
@@ -291,11 +289,23 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/entity.status
         permissions:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.permissions
-          
+        countries:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.countries
+        channels:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.channels
+        currencies:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.currencies
+        payment_methods:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.payment_methods
+        configurations:
+          type: array
+          description: A list of configurations for an account. Each configuration's countries, channels, currencies and payment_methods represents a different transaction processing system route.
+          items:
+            $ref: ./models/schema_objects.v1.yaml#/components/schemas/transaction_processing_configuration
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
-    accounts_single_data_services:
+    accounts_single_transaction_processing_list:
       type: object
       properties:
         id:
@@ -308,11 +318,29 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/entity.status
         permissions:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.permissions
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+
+    accounts_single_backoffice:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.type
+        name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/entity.status
+        email_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/email
+        permissions:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.permissions
           
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
 
-    accounts_single_dispute_management:
+    accounts_single_backoffice_list:
       type: object
       properties:
         id:
@@ -342,10 +370,8 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/entity.status
         permissions:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account.permissions
-          
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
-
 
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
