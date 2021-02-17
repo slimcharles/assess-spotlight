@@ -1377,6 +1377,7 @@ components:
       properties:
         apm:
           $ref: '#/components/schemas/payment_method_secondary_apm_fields'
+
     payment_method_secondary_apm_fields:
       type: object
       properties:
@@ -1391,11 +1392,13 @@ components:
       properties:
         payment_method:
           $ref: '#/components/schemas/apm_response_secondary'
+    
     apm_response_secondary:
       type: object
       properties:
         apm:
           $ref: '#/components/schemas/apm_response_secondary_fields'
+          
     apm_response_secondary_fields:
       type: object
       properties:
