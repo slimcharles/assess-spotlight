@@ -1443,6 +1443,33 @@ components:
       properties:
         provider:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
+
+    apm_request_paypal_uplift:
+      type: object
+      properties:
+        provider:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/apm.provider
+        address_override_mode:
+          type: string
+          description: Allow a payer to change the address while on the payment method system.
+            * `ENABLE` - Enable a payer to change the shipping address
+            * `DISABLE` - Prevent a payer from changing the shipping address
+          default: ENABLE
+          enum:
+            - ENABLE
+            - DISABLE
+          minLength: 0
+          maxLength: 50
+        
+        seller_reference:
+          type: string
+          description: The payment methods reference to the merchant.
+          minLength: 0
+          maxLength: 50
+    
+
+  
+        
   
     apm_response:
       type: object
