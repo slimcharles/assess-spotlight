@@ -610,6 +610,20 @@ components:
       type: string
       description: The total amount of the order.
       example: '11099'
+      #### Comments
+      ##  API Logic
+      ##  
+      ##  Portico:
+      ## 
+      ##  GP ECOM :
+      ##
+      ##  Transit:
+      ##
+      ##  DM
+      ##
+      ##  EOS
+      ##
+      ###
 
       
     order.address_match_indicator:
@@ -1163,38 +1177,16 @@ components:
         * `REJECTED` - A Transaction where the funds are expected to transfer between payer and merchant but the transfer was rejected during the funding process. This rarely happens but when it does it is usually addressed by Global Payments operations .
        
       enum:
-      - FUNDED
-      - IRREG
-      - DELAYED
-      - RESERVED
-      - RELEASED
-      - SPLIT_FUNDED
+      - INITIATED
+      - PENDING
+      - PREAUTHORIZED
+      - CAPTURED
+      - REVERSED
+      - DECLINED
       - FUNDED
       - REJECTED
       minLength: 0
       maxLength: 50
-
-    deposit.status: ##REVISIT ## enums to external docs ##
-      type: string
-      description: Indicates where a deposit is in its lifecycle.
-        * `FUNDED` - A Deposit where the funds have transferred between payer and merchant as expected.
-        * `SPLIT_FUNDING` - A Deposit where the funds are split between the merchant and a third party. This is in accordance with an pre-arranged agreement between Global Payments, the merchant and the third party.
-        * `IRREG` - A Deposit where the transactions are facilitated by Global Payments but funding to merchant bank accounts are executed by a third party.
-        * `DELAYED` - A Deposit where the funds are being held by Global Payments. This funds will be paid to merchant in full in accordance with a schedule communicated with the merchant.
-        * `RESERVED` - A Deposit where the funds are being held wholly or partially by Global Payments. This funds will be paid to merchants upon review or in accordance with the merchant service agreement.
-        * `RELEASED` - A Deposit where the funds were reserved but are now released and funded to the merchants bank account.
-       
-      enum:
-      - FUNDED
-      - SPLIT_FUNDING
-      - IRREG
-      - DELAYED
-      - RESERVED
-      - RELEASED
-      
-      minLength: 0
-      maxLength: 50
-
 
     entity.status: #
       type: string
