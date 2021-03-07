@@ -401,7 +401,6 @@ components:
     payment_method.entry_mode:
       type: string
       description: Indicates how the payment method information was obtained by the Merchant for this transaction.
-        * `INITIATED` - A Transaction has been successfully initiated. An update on its status is expected via a separate asynchronous notification to a webhook.
         * `MOTO` - A CNP channel entry mode where the payment method information was obtained over the phone or via postal mail.
         * `ECOM` - A CNP channel entry mode where the payment method was obtained via a browser.
         * `IN_APP` - A CNP channel entry mode where the payment method was obtained via an application and applies to digital wallets only.
@@ -1163,14 +1162,14 @@ components:
         * `REJECTED` - A Transaction where the funds are expected to transfer between payer and merchant but the transfer was rejected during the funding process. This rarely happens but when it does it is usually addressed by Global Payments operations .
        
       enum:
-      - FUNDED
-      - IRREG
-      - DELAYED
-      - RESERVED
-      - RELEASED
-      - SPLIT_FUNDED
+      - INITIATED
+      - PREAUTHORIZED
+      - CAPTURED
+      - REVERSED
+      - DECLINED
       - FUNDED
       - REJECTED
+     
       minLength: 0
       maxLength: 50
 
