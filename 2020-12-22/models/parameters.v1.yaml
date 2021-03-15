@@ -84,7 +84,7 @@ components:
     query_pagination_page_size:
       in: query
       name: page_size
-      description: The total number of objects to return in a single page for that list
+      description: The total number of objects to return in a single page for that list.
       schema:
         $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.page_size'
     

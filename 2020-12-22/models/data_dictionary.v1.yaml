@@ -541,13 +541,13 @@ components:
     language:
       type: string
       description: Indicates the language the transaction was executed in. In
-        the format ISO-639(alpha-2) or ISO-639(alpha-2)-ISO-3166(alpha-2)
-      example: 'fr-CA'
+        the format ISO-639-1 (alpha-2) or ISO-639-1 (alpha-2)_ISO-3166(alpha-2)
+      example: 'fr_CA'
       enum:
         - ISO-639(alpha-2)
         - fr
-        - ISO-639(alpha-2)-ISO-3166(alpha-2)
-        - fr-CA
+        - ISO-639(alpha-2)_ISO-3166(alpha-2)
+        - fr_CA
       
     #### M
     masked_account_number_last4:
