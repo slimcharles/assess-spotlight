@@ -1103,7 +1103,7 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         narrative:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.narrative
-        storage_mode:
+        storage_model:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.storage_mode
         encryption:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/encryption
