@@ -134,13 +134,13 @@ components:
         name:
           type: string
           description: The name assocaited with the bank account
-        identifier_code:
+        identifier_code: ##REMOVE to BANK object or altogether
           type: string
           description: The international identifier code for the bank.
         iban:
           type: string
           description: The international identifier of the bank account.
-        code:
+        code: ##REMOVE to BANK object
           type: string
           description: The local identifier of the bank.
         account_number:
