@@ -172,7 +172,7 @@ components:
             content:
               application/json:
                 schema:
-                  $ref: schema_objects.v1.yaml#/components/schemas/three_ds.challange_return_notification
+                  $ref: schema_objects.v1.yaml#/components/schemas/three_ds.challenge_return_notification
           description: The endpoint which will receive 3DS challenge return notification messages. These notifications indicate that the payer has completed the 3DS authentication challenge and the result of the challenge can be obtained.
           responses:
             '200':
