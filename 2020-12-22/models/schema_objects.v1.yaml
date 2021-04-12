@@ -430,7 +430,48 @@ components:
         subscriber_number:
           $ref: data_dictionary.v1.yaml#/components/schemas/phone.subscriber_number
 
-      
+    authentication.order:
+      type: object
+      description: The information relating to an order. An order can be fulfilled by multiple transactions.
+      properties:
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.reference
+        
+        time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.time_created_reference
+
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency  
+          
+        address_match_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.address_match_indicator
+    
+        shipping_address:
+           $ref: '#/components/schemas/address'
+
+        gift_card_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_count
+        
+        gift_card_amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_amount
+        gift_card_currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        delivery_email:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_email
+        delivery_timeframe:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_timeframe
+        shipping_method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_method
+        shipping_name_matches_cardholder_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_name_matches_cardholder_name
+        preorder_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_indicator
+        preorder_availability_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_availability_date
+        category:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.category  
 
     order:
       type: object
