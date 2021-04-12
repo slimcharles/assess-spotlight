@@ -546,7 +546,7 @@ components:
     
 
     ## Rename to Browser ??     
-    browser_data:
+    authentication.browser_data:
       type: object
       required:
         - language
@@ -670,7 +670,7 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_creation_indicator
 
 
-    payer_prior_three_ds_authentication_data:
+    authorization.payer_prior_three_ds_authentication_data:
       type: object
       description: The information relating to a payer's 3DS past activity.
       properties:
@@ -683,7 +683,7 @@ components:
         authentication_data:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer_prior_three_ds_authentication_data.authentication_data
       
-    recurring_authorization_data:
+    authorization.recurring_authorization_data:
       type: object
       description: The information relating to a payer's past recurring authorization activity.
       properties:
@@ -694,7 +694,7 @@ components:
         expiry_date:
           $ref: data_dictionary.v1.yaml#/components/schemas/recurring_authorization_data.expiry_date
 
-    payer_login_data:
+    authorization.payer_login_data:
       type: object
       description: The information relating to a payer's access to their own account on the merchant's system.
       properties:
