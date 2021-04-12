@@ -157,6 +157,7 @@ components:
       - NO_CHALLENGE_REQUESTED_SCA_ALREADY_PERFORMED
       - NO_CHALLENGE_REQUESTED_WHITELIST
       - CHALLENGE_REQUESTED_PROMPT_FOR_WHITELIST
+      default: NO_PREFERENCE
 
     authentication.source:
       type: string
@@ -1475,6 +1476,7 @@ components:
       enum:
         - PAYMENT_AUTHENTICATION
         - NON_PAYMENT_AUTHENTICATION
+      default: PAYMENT_AUTHENTICATION
       minLength: 0
       maxLength: 50
 
@@ -2020,8 +2022,6 @@ components:
       - APPLEPAY
       - PAY_BY_GOOGLE
 
-
-
     stored_credential.model:
       type: string
       description: Indicates the transaction processing model being executed when using stored credentials.
@@ -2035,6 +2035,42 @@ components:
       - MAINTAIN_PAYMENT_METHOD
       - MAINTAIN_PAYMENT_VERIFICATION
 
+    authentication.stored_credential.model:
+      type: string
+      description: Indicates the transaction processing model being executed when using stored credentials.
+        * `UNSCHEDULED`
+        * `RECURRING`
+        * `SUBSCRIPTION`
+        * `ADD_PAYMENT_METHOD`
+        * `MAINTAIN_PAYMENT_METHOD`
+        * `MAINTAIN_PAYMENT_VERIFICATION`
+        * `SPLIT_OR_DELAYED_SHIPMENT`
+        * `TOP_UP`
+        * `MAIL_ORDER`
+        * `TELEPHONE_ORDER`
+        * `WHITELIST_STATUS_CHECK`
+        * `OTHER_PAYMENT`
+        * `BILLING_AGREEMENT`
+      minLength: 1
+      maxLength: 50
+      enum:
+      - UNSCHEDULED
+      - RECURRING
+      - SUBSCRIPTION
+      - INSTALLMENT
+      - ADD_PAYMENT_METHOD
+      - MAINTAIN_PAYMENT_METHOD
+      - MAINTAIN_PAYMENT_VERIFICATION
+      - SPLIT_OR_DELAYED_SHIPMENT
+      - TOP_UP
+      - MAIL_ORDER
+      - TELEPHONE_ORDER 
+      - WHITELIST_STATUS_CHECK
+      - OTHER_PAYMENT
+      - BILLING_AGREEMENT
+      default:
+      - UNSCHEDULED
+        
     stored_credential.reason:
       type: string
       description: The reason stored credentials are being used to to create a transaction.

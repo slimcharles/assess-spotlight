@@ -468,6 +468,15 @@ components:
         method_url_completion_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
         
+        preference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.preference
+        
+        message_category:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.message_category
+        
+        stored_credential:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.stored_credential
+
         payer:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer
        

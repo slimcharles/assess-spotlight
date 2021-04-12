@@ -74,7 +74,14 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.reason
         sequence:
           $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.sequence
-
+    
+    authentication.stored_credential:
+      type: object
+      description: Stored data information used to authenticate a payer.
+      properties:
+        model:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.stored_credential.model  
+    
     totals:
       type: object
       description: The total number of records and the total amount across those records.
