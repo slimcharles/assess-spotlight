@@ -267,7 +267,6 @@ components:
     create_request:
       required:
       - account_name
-      - channel
       - country
       - amount
       - currency
@@ -391,7 +390,7 @@ components:
     three_ds_check_availability_response:
       type: object
       properties:
-        server_trans_reference:
+        server_trans_ref:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
         message_version:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
@@ -403,6 +402,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_start
         acs_protocol_version_end:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_end
+        
+        acs_info_indicator:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_info_indicator
+        
         enrolled_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.enrolled_status
         eci:
@@ -413,13 +416,22 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_model
         challenge_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_status
+
+        session_data_field_name:
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.session_data_field_name
+
         message_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
+        
         challenge_value:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_value
 
         redirect_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
+
+        acs_challenge_redirect_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
+  
         method_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url
         
@@ -430,24 +442,27 @@ components:
     initiate_request:
       required:
       - source
+      - merchant_contact_url
       - payment_method
 
       type: object
       properties:
-        merchant_contact_url:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.merchant_contact_url
-
-        method_url_completion_status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
-
         source:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
 
-        order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
+        merchant_contact_url:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.merchant_contact_url
 
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
+
+        method_url_completion_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
+        
+        order:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
+
+       
         
         
     initiate_response:
