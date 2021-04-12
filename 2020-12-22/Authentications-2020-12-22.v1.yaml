@@ -445,6 +445,7 @@ components:
       - merchant_contact_url
       - payment_method
       - order
+      - browser_data
 
       type: object
       properties:
@@ -463,12 +464,22 @@ components:
         order:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
         
+        browser_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.browser_data
+       
         payer:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer
-
        
+        payer_login_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer_login_data
+       
+        recurring_authorization_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.recurring_authorization_data
         
-        
+        payer_prior_three_ds_authentication_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer_prior_three_ds_authentication_data
+
+
     initiate_response:
       type: object
       properties:
