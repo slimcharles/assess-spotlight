@@ -444,6 +444,7 @@ components:
       - source
       - merchant_contact_url
       - payment_method
+      - order
 
       type: object
       properties:
@@ -461,6 +462,9 @@ components:
         
         order:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
+        
+        payer:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer
 
        
         

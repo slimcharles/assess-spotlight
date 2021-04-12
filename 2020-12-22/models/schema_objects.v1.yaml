@@ -456,6 +456,10 @@ components:
 
     authentication.order:
       type: object
+      required:
+        - time_created_reference
+        - amount
+        - currency
       description: The information relating to an order. An order can be fulfilled by multiple transactions.
       properties:
         reference:
@@ -544,10 +548,20 @@ components:
     ## Rename to Browser ??     
     browser_data:
       type: object
+      required:
+        - language
+        - accept_header
+        - user_agent
       description: The information relating to a browser.
       properties:
+        language:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.language
         accept_header:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.accept_header
+     
+        user_agent:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.user_agent
+     
         color_depth:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.color_depth
         ip:
@@ -556,8 +570,7 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.java_enabled
         javascript_enabled:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.javascript_enabled
-        language:
-          $ref: data_dictionary.v1.yaml#/components/schemas/browser.language
+        
         screen_height:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.screen_height
         screen_width:
@@ -566,9 +579,7 @@ components:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.challenge_window_size
         timezone:
           $ref: data_dictionary.v1.yaml#/components/schemas/browser.timezone
-        user_agent:
-          $ref: data_dictionary.v1.yaml#/components/schemas/browser.user_agent
-     
+
     bank_transfer.payer:
       type: object
       description: The information relating to a payer.
