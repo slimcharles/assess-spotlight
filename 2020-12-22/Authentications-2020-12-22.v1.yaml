@@ -480,9 +480,6 @@ components:
         recurring_authorization_data:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.recurring_authorization_data
         
-       
-
-
     initiate_response:
       type: object
       properties:
