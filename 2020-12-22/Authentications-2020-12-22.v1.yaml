@@ -267,9 +267,9 @@ components:
     create_request:
       required:
       - account_name
-      - amount
       - channel
       - country
+      - amount
       - currency
       - payment_method
       - reference
@@ -296,21 +296,6 @@ components:
 
         transaction_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-
-
-
-        preference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.preference
-
-        source:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
-        
-        initiator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
-        
-        stored_credential:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
-
 
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
@@ -443,7 +428,7 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
 
         order:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/order
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
 
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
@@ -495,7 +480,7 @@ components:
     three_ds_initiate_response:
       type: object
       properties:
-        server_trans_reference:
+        server_trans_ref:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
 
         acs_trans_reference:
