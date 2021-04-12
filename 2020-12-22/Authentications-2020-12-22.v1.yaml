@@ -305,7 +305,7 @@ components:
         source:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
         
-        initator:
+        initiator:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
         
         stored_credential:
