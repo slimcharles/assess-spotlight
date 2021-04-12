@@ -273,6 +273,7 @@ components:
       - currency
       - payment_method
       - reference
+      - notifications
 
       type: object
       properties:
@@ -297,11 +298,24 @@ components:
         transaction_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
 
+        preference:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.preference
+
+        source:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
+        
+        initiator:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
+        
+        stored_credential:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
+
+
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
         notifications:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.notifications
 
     create_response:
       type: object
@@ -351,6 +365,8 @@ components:
 
     payment_method_request:
       type: object
+      required:
+        - card
       properties:
         id:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
