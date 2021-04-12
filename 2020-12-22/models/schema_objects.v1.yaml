@@ -669,6 +669,73 @@ components:
         shipping_address_creation_indicator:
           $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_creation_indicator
 
+    authentication.payer:
+      type: object
+      description: The information relating to a payer.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
+
+        account_age:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_age
+        
+        account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_creation_date
+
+        account_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_date
+
+        account_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_indicator
+
+        account_password_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_date
+
+
+        account_password_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_indicator
+
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+
+        billing_address:
+          $ref: '#/components/schemas/address'
+
+
+        home_phone:
+          $ref: '#/components/schemas/phone'
+        work_phone:
+          $ref: '#/components/schemas/phone'
+
+        payment_account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_creation_date
+
+        payment_account_age_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_age_indicator
+          
+        suspicious_account_activity:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.suspicious_account_activity
+        purchases_last_6months_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.purchases_last_6months_count
+        transactions_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transactions_last_24hours_count
+        transaction_last_year_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transaction_last_year_count
+        provision_attempt_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.provision_attempt_last_24hours_count
+        shipping_address_time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_time_created_reference
+        shipping_address_creation_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_creation_indicator
+
 
     authentication.payer_prior_three_ds_authentication_data:
       type: object
