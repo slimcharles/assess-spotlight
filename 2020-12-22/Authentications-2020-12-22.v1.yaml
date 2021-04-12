@@ -457,9 +457,6 @@ components:
 
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
-
-        method_url_completion_status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
         
         order:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.order
@@ -467,17 +464,23 @@ components:
         browser_data:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.browser_data
        
+       ##Optional fields and objects
+        method_url_completion_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url_completion_status
+        
         payer:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer
        
         payer_login_data:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer_login_data
+         
+        payer_prior_three_ds_authentication_data:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer_prior_three_ds_authentication_data
        
         recurring_authorization_data:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.recurring_authorization_data
         
-        payer_prior_three_ds_authentication_data:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.payer_prior_three_ds_authentication_data
+       
 
 
     initiate_response:
