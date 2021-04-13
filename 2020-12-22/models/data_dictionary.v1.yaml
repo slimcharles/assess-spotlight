@@ -217,8 +217,8 @@ components:
     three_ds.message_extension.criticality_indicator:
       type: boolean
       description: Indicates whether the data in the Message Extension affects the overall response.
-      * `TRUE` - The message is critical. The overall response can only be understood by taking into account the extension data.
-      * `FALSE` - The message is non-critical. The overall response message is not affected by the extension data and can be interpreted as normal.
+        * `TRUE` - The message is critical. The overall response can only be understood by taking into account the extension data.
+        * `FALSE` - The message is non-critical. The overall response message is not affected by the extension data and can be interpreted as normal.
       enum:
       - TRUE
       - FALSE 
@@ -1427,7 +1427,7 @@ components:
       minLength: 0
       maxLength: 50
 
-     three_ds.acs_info_indicator:
+    three_ds.acs_info_indicator:
       type: array
       description: A list of information about the ACS
       items:
@@ -2660,6 +2660,8 @@ components:
       description: ARN ot Acquirer Reference Number is a Global Payments created reference sent to the card brands to identify transactions.
       minLength: 1
       maxLength: 50
+
+    
 
 
     document.id:

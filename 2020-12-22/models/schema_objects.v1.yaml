@@ -426,16 +426,20 @@ components:
 
     three_ds.message_extension:
       type: object
-      description: In the 3D Secure 2 protocol, the Message Extension fields allow for more bespoke and Card Scheme specific information to be passed in both the request and response messages.
+      description: In the 3D Secure 2 protocol, the Message Extension fields allow for more bespoke and Card Scheme specific information to be passed in both the request and response messages. Scheme specific data elements used to to carry additional data. Message extension is sent based on rules set by each scheme and may not always be present in the response.
       properties:
         name:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.name
-        
+       
         id:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.id
-        
+      
         criticality_indicator:
           $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.criticality_indicator
+
+        data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.data
+
 
     address:
       type: object
