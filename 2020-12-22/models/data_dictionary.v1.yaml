@@ -1385,8 +1385,14 @@ components:
       - UNABLE_TO_VERIFY
       minLength: 0
       maxLength: 50
-      
+
     three_ds.acs_info_indicator:
+      type: array
+      description: A list of information about the ACS.
+      items:
+         $ref: 'data_dictionary.v1.yaml#/components/schemas/three_ds.acs_info_indicator_item'  
+
+    three_ds.acs_info_indicator_item:
       type: string
       description: Identifies the 3D Secure 2 features that the ACS supports, for example, Whitelisting or Decoupled Authentication.
       enum:
