@@ -1287,7 +1287,7 @@ components:
     system.mid:
       type: string
       description: Merchant Identifier from Global Payments system for some features.
-      erencegth: 1
+      minLength: 1
       maxLength: 50
         
     system.tid:
