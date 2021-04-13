@@ -1452,6 +1452,12 @@ components:
       description: The value to be submitted in the request to the redirect_url when challenging an authentication. It is Base64url encoded and must be sent to the ACS.
       minLength: 0
       maxLength: 50
+
+    three_ds.challenge_result_value:
+      type: string
+      description: The value retrieved from the ACS once 3DS authentication stpe completed and is needed to obtain the result of the authentication.
+      minLength: 0
+      maxLength: 10000
       
     three_ds.method_url:
       type: string
@@ -2068,8 +2074,7 @@ components:
       - WHITELIST_STATUS_CHECK
       - OTHER_PAYMENT
       - BILLING_AGREEMENT
-      default:
-      - UNSCHEDULED
+      
         
     stored_credential.reason:
       type: string

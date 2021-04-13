@@ -19,7 +19,7 @@ tags:
   - name: Initiate
     description: For 3DS 2, submit data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
 
-  - name: Get Result
+  - name: Obtain Result
     description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
   
 
@@ -193,10 +193,10 @@ paths:
           $ref: ./models/callbacks.v1.yaml#/components/callbacks/three_ds.challenge_return
 
   /authentications/{id}/result:
-    get:
+    post:
       operationId: get3DSResult
       tags:
-      - Get Result
+      - Obtain Result
       summary: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
 
       description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
@@ -211,6 +211,18 @@ paths:
         required: true
         schema:
          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.id
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/obtain_result_request'
+            examples:
+              Obtain Result - 3DS 2 :
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds2_obtain_result
+              Obtain Result - 3DS 1 :
+                $ref: ./models/examples.v1.yaml#/components/examples/authentication_3ds1_obtain_result
+        required: false
 
       responses:
         '200':
@@ -356,7 +368,10 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
 
         three_ds:
-          $ref: '#/components/schemas/three_ds_check_availability_response'                                                
+          $ref: '#/components/schemas/three_ds_check_availability_response'  
+
+        notifications:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.notifications_response                                                
         
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
@@ -501,14 +516,18 @@ components:
         time_last_updated:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_last_updated
 
-        status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status          
-
         transaction_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
         
+
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.status
+
         channel:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.channel          
+
+        
+       
 
         amount:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
@@ -522,20 +541,12 @@ components:
         source:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
 
-        merchant_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
-        merchant_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
-        account_id:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
-        account_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
-               
+                     
         three_ds:
           $ref: '#/components/schemas/three_ds_initiate_response'   
 
         notifications:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/notifications.challenge_return_url                                        
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.notifications_response                                        
         
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
@@ -557,6 +568,7 @@ components:
 
         eci:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.eci
+
         liability_shift:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.liability_shift
         
@@ -568,6 +580,9 @@ components:
 
         authentication_source:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
+        
+        message_version:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
 
         authentication_value:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.value
@@ -575,14 +590,11 @@ components:
         cardholder_response_info:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.cardholder_response_info
 
-        message_type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
-
+       
         message_category:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.message_category
         
-        message_version:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+       
 
         redirect_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
@@ -590,18 +602,29 @@ components:
         acs_challenge_request_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_challenge_request_url
 
-        session_data_field_name:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.session_data_field_name
+        challenge_status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_status
 
         challenge_model:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_model
-        
-        challenge_status:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_status
        
+        session_data_field_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.session_data_field_name
+
+        message_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
+
         challenge_value:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_value
 
+    obtain_result_request:
+      type: object
+      properties:
+        three_ds:
+          type: object
+          properties:
+            challenge_result_value:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.challenge_result_value
     
     result_response:
       type: object
@@ -641,7 +664,11 @@ components:
         
        
         three_ds:
-          $ref: '#/components/schemas/three_ds_result_response'                                                
+          $ref: '#/components/schemas/three_ds_result_response'
+        
+        notifications:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/authentication.notifications_response                                                
+        
         action:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
      
@@ -699,8 +726,7 @@ components:
         authentication_request_type:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.authentication_request_type
        
-    notifications:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/notifications
+   
 
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme

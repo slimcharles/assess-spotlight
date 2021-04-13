@@ -296,6 +296,13 @@ components:
         decoupled_challenge_return_url:
           $ref: data_dictionary.v1.yaml#/components/schemas/notifications.decoupled_challenge_return_url
       
+    authentication.notifications_response:
+      type: object
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+      properties:
+        challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.challenge_return_url
+    
 
     notification_post_response:
       type: object
