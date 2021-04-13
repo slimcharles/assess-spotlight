@@ -723,7 +723,7 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.whitelist_status
         
         message_extension:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds. message_extension
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension
 
        
    

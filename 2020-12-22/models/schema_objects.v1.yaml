@@ -424,6 +424,19 @@ components:
         encoded_method_data:
           $ref: data_dictionary.v1.yaml#/components/schemas/method_data.encoded_method_data
 
+    three_ds.message_extension:
+      type: object
+      description: In the 3D Secure 2 protocol, the Message Extension fields allow for more bespoke and Card Scheme specific information to be passed in both the request and response messages.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.name
+        
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.id
+        
+        criticality_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.criticality_indicator
+
     address:
       type: object
       properties:

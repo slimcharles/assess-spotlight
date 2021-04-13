@@ -186,7 +186,48 @@ components:
       - MAINTAIN_CARD
       - CARDHOLDER_VERIFICATION
 
+    three_ds.acs_decoupled_response_indicator:
+      type: string
+      description:  Indicates whether the ACS will utilise Decoupled Authentication to authenticate the Cardholder.
+      enum:
+      - DECOUPLED_AUTHENTICATION_UTILISED
+      - DECOUPLED_AUTHENTICATION_NOT_UTILISED
 
+    three_ds.whitelist_status:
+      type: string
+      description: Enables the communication of trusted beneficiary/whitelist status between the ACS, the DS and the 3DS Requestor (Merchant).
+      enum:
+      - WHITELISTED_BY_CARDHOLDER
+      - NOT_WHITELISTED_BY_CARDHOLDER
+      - NOT_ELIGIBLE
+      - PENDING_CARDHOLDER_CONFIRMATION
+      - REJECTED_BY_CARDHOLDER
+      - WHITELIST_STATUS_UNKNOWN
+        
+    three_ds.message_extension.name:
+      type: string
+      description: The name of the extension data set as defined by the extension owner. 
+      maxLength: 64
+
+    three_ds.message_extension.id:
+      type: string
+      description: A unique identifier for the extension. 
+      maxLength: 64
+
+    three_ds.message_extension.criticality_indicator:
+      type: boolean
+      description: Indicates whether the data in the Message Extension affects the overall response.
+      * `TRUE` - The message is critical. The overall response can only be understood by taking into account the extension data.
+      * `FALSE` - The message is non-critical. The overall response message is not affected by the extension data and can be interpreted as normal.
+      enum:
+      - TRUE
+      - FALSE 
+
+
+    three_ds.message_extension.data:
+      type: string
+      description: The data carried in the extension. 
+      maxLength: 8059
 
     
 
@@ -1246,7 +1287,7 @@ components:
     system.mid:
       type: string
       description: Merchant Identifier from Global Payments system for some features.
-      minLength: 1
+      erencegth: 1
       maxLength: 50
         
     system.tid:
@@ -1386,9 +1427,9 @@ components:
       minLength: 0
       maxLength: 50
 
-    three_ds.acs_info_indicator:
+     three_ds.acs_info_indicator:
       type: array
-      description: A list of information about the ACS.
+      description: A list of information about the ACS
       items:
          $ref: 'data_dictionary.v1.yaml#/components/schemas/three_ds.acs_info_indicator_item'  
 
@@ -1546,17 +1587,7 @@ components:
         - ACS_TECHNICAL_ISSUE
         - DECOUPLED_AUTHENTICATION_REQUIRED_BY_ACS
         - DECOUPLED_MAX_EXPIRY_TIME_EXCEEDED
-        - INSUFFICIENT_TIME_TO_AUTHENTICATE
-        - AUTHENTICATION_ATTEMPTED_BUT_NOT_PERFORMED
-        - SCHEME_STATUS_REASON##
-
-      minLength: 0
-      maxLength: 50
-
-   
-    three_ds.cardholder_response_info:
-      type: string
-      description: Optional text provided by the ACS/Issuer to customer during a Frictionless transaction that was not authenticated. For example, a customer care phone number to call.
+        - INSUFFICIENT_TIME_TO_ by the ACS/Issuer to customer during a Frictionless transaction that was not authenticated. For example, a customer care phone number to call.
       minLength: 0
     
     three_ds.acs_transaction_status:
