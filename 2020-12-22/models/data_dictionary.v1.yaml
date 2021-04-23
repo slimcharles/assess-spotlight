@@ -1095,13 +1095,74 @@ components:
       enum:
       - TIME_CREATED
     
+  
+    
+    transactions.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - TIME_CREATED
+      - TYPE
+      - ID
+    
+  
+    settled_transactions.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - STATUS
+      - TYPE
+      - DEPOSIT_ID
+      - TIME_CREATED
+    
+    settled_disputes.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - ID
+      - STATUS
+      - ARN
+      - BRAND
+      - STAGE
+  ## Case_time_id is what?
+
+    deposits.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - STATUS
+      - TYPE
+      - DEPOSIT_ID
+      - TIME_CREATED
+    
+  
+    actions.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - TIME_CREATED
+      - ID
+      - APP_ID
+    
+    payment_methods.pagination.order_by:
+      description: 'The value to order the entire list by. '
+      type: string
+      enum:
+      - TIME_CREATED
+      - REFERENCE
+      - STATUS
+      - NUMBER_LAST4
+      - BRAND
+      - EXPIRY_MONTH
+      - EXPIRY_DATE
+    
     pagination.order:
       description: The direction of the ordering of the entire list, ASC or DESC
       type: string
       enum:
       - ASC
       - DESC
-     
+  
     payment_method.id:
       type: string
       description: Unique Global Payments generated id used to reference a stored payment method on the Global Payments system.

@@ -165,7 +165,7 @@ paths:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
       - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
-      - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+      - $ref: ./models/parameters.v1.yaml#/components/parameters/transactions.query_pagination_order_by
       
       
       - name: id
@@ -790,7 +790,7 @@ paths:
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
         - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
-        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/settled_transactions.query_pagination_order_by
         
             
 

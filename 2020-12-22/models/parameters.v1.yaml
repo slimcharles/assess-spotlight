@@ -101,3 +101,18 @@ components:
       description: The direction of the ordering of the entire list, ASC or DESC
       schema:
         $ref: 'data_dictionary.v1.yaml#/components/schemas/pagination.order'
+
+    transactions.query_pagination_order_by:
+      in: query
+      name: order_by
+      description: 'The value to order the entire list by. '
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/transactions.pagination.order_by'
+    
+    settled_transactions.query_pagination_order_by:
+      in: query
+      name: order_by
+      description: 'The value to order the entire list by. '
+      schema:
+        $ref: 'data_dictionary.v1.yaml#/components/schemas/settled_transactions.pagination.order_by'
+     
