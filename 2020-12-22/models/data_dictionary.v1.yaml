@@ -245,7 +245,7 @@ components:
     
     #### B
 
-    bank.code:
+    bank.code: 
       type: string
       description: The local identifier code for the bank.
       example: 'james.mason@example.com'
