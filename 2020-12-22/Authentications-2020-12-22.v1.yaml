@@ -306,22 +306,6 @@ components:
         reference:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
 
-        transaction_type:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
-
-        preference:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.preference
-
-        source:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/authentication.source
-        
-        initiator:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.initiator
-        
-        stored_credential:
-          $ref: ./models/schema_objects.v1.yaml#/components/schemas/stored_credential
-
-
         payment_method:
           $ref: '#/components/schemas/payment_method_request'
         
@@ -386,7 +370,6 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.id       
         name:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.name
-        
         entry_mode:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
         card:
@@ -417,10 +400,8 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_start
         acs_protocol_version_end:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_protocol_version_end
-        
         acs_info_indicator:
-           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_info_indicator
-        
+           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_info_indicator       
         enrolled_status:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.enrolled_status
         eci:
@@ -445,13 +426,15 @@ components:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
 
         acs_challenge_redirect_url:
-          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.redirect_url
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.acs_challenge_request_url
   
         method_url:
           $ref: ./models/data_dictionary.v1.yaml#/components/schemas/three_ds.method_url
         
         method_data:
           $ref: ./models/schema_objects.v1.yaml#/components/schemas/three_ds.method_data
+
+
 
 
     initiate_request:
