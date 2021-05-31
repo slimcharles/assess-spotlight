@@ -29,8 +29,8 @@ paths:
       operationId: check3DSAvailability
       tags:
       - Check Availability
-      summary: Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
-      description: Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
+      summary: Start the authentication process by confirming the available mechanisms to authenticate the payer based on a payment method.
+      description: Start the authentication process by confirming the available mechanisms to authenticate the payer based on a payment method.
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency

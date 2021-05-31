@@ -1608,6 +1608,16 @@ components:
     authentication.status:
       type: string
       description: Indicates where the authentication is in its lifecycle
+        * `AVAILABLE` - An authentication mechanism is available. The next step is to initiate the authentication. No liabilty shift at this stage.
+        * `NOT_AVAILABLE` - The authentication mechanism is not available. The next step is to check for availability of another authentication mechanism. No liabilty shift at this stage.
+        * `NOT_ENROLLED` - The payer's payment method is not enrolled in 3DS version 1 or version 2. If the card is a Visa or Mastercard a liability shift is achieved and the recommendation is execute the care authorization. However there us no liabilty shift at this stage for Amex,so the recommendation is not for go for card authorization.
+        * `CHALLENGE_REQUIRED` - The authentication mechanism is available and the next step is to facilitate authentication of the payer. No liabilty shift at this stage.
+        * `SUCCESS_AUTHENTICATED` - The authentication of the payer has been a success and a liabilty shift has been achieved so the recommendation is to go for authorization  
+        * `SUCCESS_ATTEMPT_MADE` - A valid attempt to authenticate the payer has been executed and a liabilty shift has been achieved so the recommendation is to go for authorization.
+        * `NOT_AUTHENTICATED` - The payer did not authenticate therefore a liabilty shift has not been achieved. The recommendation is to not proceed with card authorization.
+        * `FAILED` - A step in the authentication process has errored and there do not go for card authorization.
+        * `CHALLENGE_PREFERENCE_ACKNOWLEDGED_INFORMATIONAL_ONLY` 
+        
       enum:
         - AVAILABLE
         - NOT_ENROLLED
@@ -1755,6 +1765,8 @@ components:
       type: string
       description: Describes whether the transaction is a SALE, that moves funds
             from Payer to Merchant, or a REFUND where funds move from Merchant to Payer.
+        * `SALE` - indicates the movement, or the attempt to move, funds from payer to a merchant.
+        * `REFUND` - indicates the movement, or the attempt to move, funds from merchant to the payer.
       example: 'SALE'
       default: 'SALE'
       enum:
@@ -1922,6 +1934,8 @@ components:
     card.chip_condition:
       type: string
       description: Indicates if a fallback mechanism was used to obtain the card information when EMV/chip did not work as expected.
+        * `PREV_SUCCESS` - indicates the previous transaction with this card was a success.
+        * `PREV_FAILED` - indicates the previous transaction with this card failed.
       enum:
       - PREV_SUCCESS
       - PREV_FAILED
@@ -1945,6 +1959,9 @@ components:
     card.cvv_indicator:
       type: string
       description: Card Verification Value Indicator sent by the Merchant indicating the CVV availability.
+        * `ILLEGIBLE` - indicates the cvv is present but cannot be read.
+        * `NOT_PRESENT` - indicates the cvv is not present on the card.
+        * `PRESENT` - indicates the cvv is present.
       example: PRESENT
       minLength: 0
       maxLength: 50
@@ -1970,6 +1987,8 @@ components:
     card.funding:
       type: string
       description: Indicates whether the card is a debit or credit card.
+        * `DEBTI` - indicates the card is a debit card where the funds may be present in an account to fulfill the transaction amount.
+        * `CREDIT` - indicates the card is a credit card where the funds may be available on credit to the payer to fulfill the transaction amount.
       enum:
       - DEBIT
       - CREDIT
@@ -2105,6 +2124,9 @@ components:
     digital_wallet.token_format:
       type: string
       description: Indicates if the actual card number or a token is being used to process the transaction.
+        * `CARD_NUMBER` - The value in the digital wallet token field is a real card number (PAN)
+        * `CARD_TOKEN` - The value in the digital wallet token field is a temporary token in the format of a card number (PAN) but is not a real card number.
+
       minLength: 1
       maxLength: 50
       enum:
@@ -2130,6 +2152,11 @@ components:
     stored_credential.model:
       type: string
       description: Indicates the transaction processing model being executed when using stored credentials.
+        * `UNSCHEDULED` - the transaction is adhoc or unscheduled. For example a payer visiting a merchant to make purchase using the payment method stored with the merchant.
+        * `RECURRING` - The transaction is a repeat transaction initiated my the merchant and taken using the payment method stored with the merchant, as part of an agreed schedule of transactions.
+        * `SUBSCRIPTION` - The transaction is a repeat transaction initiated my the merchant and taken using the payment method stored with the merchant, as part of an agreed schedule of transactions. The amount taken is based on the usage by the payer of the good or service. for example a monthly mobile phone bill.
+        * `INSTALLMENT` - The transaction is a repeat transaction initiated my the merchant and taken using the payment method stored with the merchant, as part of an agreed schedule of transactions and where the amount is known and agreed in advanced. For example the payment in full of a good in fixed installments over a defined period of time.
+       
       minLength: 1
       maxLength: 50
       enum:
@@ -2137,9 +2164,7 @@ components:
       - RECURRING
       - SUBSCRIPTION
       - INSTALLMENT
-      - MAINTAIN_PAYMENT_METHOD
-      - MAINTAIN_PAYMENT_VERIFICATION
-
+      
     authentication.stored_credential.model:
       type: string
       description: Indicates the transaction processing model being executed when using stored credentials.
@@ -2247,7 +2272,7 @@ components:
 
     apm.provider:
       type: string
-      description: A string used to identify the payment method being used with the transaction.
+      description: A string used to identify the payment method provider being used to execute this transaction.
       enum:
       - TESTPAY
       - PAYPAL
