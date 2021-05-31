@@ -197,9 +197,9 @@ paths:
       operationId: get3DSResult
       tags:
       - Obtain Result
-      summary: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+      summary: Obtain the authentication information that must be submitted when creating a transaction to achieve the fraud liability shift from the merchant.
 
-      description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+      description: Obtain the authentication information that must be submitted when creating a transaction to achieve the fraud liability shift from the merchant.
 
       parameters:
       - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization      
