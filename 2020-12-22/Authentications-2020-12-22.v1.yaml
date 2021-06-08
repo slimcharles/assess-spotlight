@@ -6,7 +6,7 @@ info:
     name: 'API Integrations'
     url: 'https://developer.globalpay.com/?gp-api=true'
     email: 'api.integrations@globalpay.com'
-  version: '2020 12 22'
+  version: '2021 03 22'
 servers:
   - url: 'https://apis.sandbox.globalpay.com/ucp'
     description: Sandbox Environment
@@ -14,13 +14,13 @@ servers:
     description: Production Environment
 tags:
   - name: Check Availability
-    description:  Start the authentication process by confirming the available mechanisms to authenticate the payer based on the payment method.
+    description:  Start the authentication process by querying the available mechanisms to authenticate the payer based on the payment method.
 
   - name: Initiate
-    description: For 3DS 2, submit data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
+    description: For 3DS 2 only, submit additional data including the billing and shipping details of the payer, at least one phone number, the device data, transaction details, outcome from the ACS Method URL if it took place and a link to the merchant's About or Contact page.
 
   - name: Obtain Result
-    description: Obtain that authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
+    description: Obtain the authentication information that must be submitted when creating a transaction to achieve fraud liability shift from the merchant.
   
 
 paths:
