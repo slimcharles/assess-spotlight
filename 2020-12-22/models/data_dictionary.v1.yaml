@@ -1261,17 +1261,43 @@ components:
       description: Indicates where a resource object is in it's lifecylce.
       example: 'FUNDED'
 
-    transaction.status: ##REVISIT ## enums to external docs ##
+    ##REVISIT ## enums to external docs ##
+    transaction.status:
       type: string
       description: Indicates where a transaction is in its lifecycle.
         * `INITIATED` - A Transaction has been successfully initiated. An update on its status is expected via a separate asynchronous notification to a webhook.
-        * `PENDING` - A Transaction has been sent to the payment method provider and are waiting for an authorization result.
-        * `PREAUTHORIZED` - A Transaction has been successfully authorized but a follow up capture request is required to initiate the funding cycle.
-        * `CAPTURED` - A Transaction has been successfully authorized and captured. The merchant will get paid for this transaction if it remains in this status. 
-        * `REVERSED` - A Transaction that had a status of PREAUTHORIZED or CAPTURED has subsequently been reversed which voids/cancels a transaction before it is funded and attempts to restore the payer's spending limit for that payment method.
-        * `DECLINED` - A Transaction where the payment method provider declined to authorize the transfer of fund between the payer and the merchant.
+        * `PENDING` - A Transaction has been sent to the payment method provider and are waiting for a result.
+        * `PREAUTHORIZED` - A Transaction has been approved but a capture request is required to commence the movement of funds.
+        * `CAPTURED` - A Transaction has been successfully authorized and captured. The funding process will commence once the transaction remains in this status. 
+        * `REVERSED` - A Transaction that had a status of PENDING, PREAUTHORIZED or CAPTURED has subsequently been reversed which voids/cancels a transaction before it is funded.
+        * `DECLINED` - A Transaction where the payment method provider declined the transfer of funds between the payer and the merchant.
         * `FUNDED` - A Transaction where the funds have transferred between payer and merchant as expected.
-        * `REJECTED` - A Transaction where the funds are expected to transfer between payer and merchant but the transfer was rejected during the funding process. This rarely happens but when it does it is usually addressed by Global Payments operations .
+        * `REJECTED` - A Transaction where the funds were expected to transfer between payer and merchant but the transfer was rejected during the funding process. This rarely happens but when it does it is usually addressed by Global Payments operations.
+       
+      enum:
+      - INITIATED
+      - PREAUTHORIZED
+      - CAPTURED
+      - REVERSED
+      - DECLINED
+      - FUNDED
+      - REJECTED
+     
+      minLength: 0
+      maxLength: 50
+
+    ##REVISIT ## enums to external docs ##
+    transaction.payment_method.bank_transfer.status:
+      type: string
+      description: Indicates where a bank Transfer transaction is in its lifecycle.
+        * `INITIATED` - A Transaction has been successfully initiated. An update on its status is expected via a separate asynchronous notification to a webhook.
+        * `PENDING` - A Transaction has been sent to the payment method provider and are waiting for a result.
+        * `PREAUTHORIZED` - A Transaction has been approved but a capture request is required to commence the movement of funds.
+        * `CAPTURED` - A Transaction has been successfully authorized and captured. The funding process will commence once the transaction remains in this status. 
+        * `REVERSED` - A Transaction that had a status of PENDING, PREAUTHORIZED or CAPTURED has subsequently been reversed which voids/cancels a transaction before it is funded.
+        * `DECLINED` - A Transaction where the payment method provider declined the transfer of funds between the payer and the merchant.
+        * `FUNDED` - A Transaction where the funds have transferred between payer and merchant as expected.
+        * `REJECTED` - A Transaction where the funds were expected to transfer between payer and merchant but the transfer was rejected during the funding process. This rarely happens but when it does it is usually addressed by Global Payments operations.
        
       enum:
       - INITIATED
