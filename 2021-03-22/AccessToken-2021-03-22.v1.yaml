@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Access Token
+  description: 'Access Tokens are required to execute all API actions, you can use this resource to obtain one. The authority of the bearer token; the actions it can execute, is determined by the associated Merchant ID, Accounts and Permissions of the app used to create it.'
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 12 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+tags:
+  - name: Create Access Token
+    description: Authenticate using app credentials to use GP API.
+    externalDocs:
+      url: 'https://developer.globalpay.com/authentication'
+paths:
+  /accesstoken:
+    post:
+      operationId: getAccessToken
+      tags:
+        - Create Access Token
+      summary: Create a bearer access token.
+      description: 'Using your app credentials, send a request to create a bearer access token that can be used to execute subsequent API actions. The actions  that the token can execute are determined by the permissions the app has.'
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request'
+            examples:
+              Get Access Token:
+                $ref: ./models/examples.v1.yaml#/components/examples/access_token_get
+              Get Access Token - Set Permissions:
+                $ref: ./models/examples.v1.yaml#/components/examples/access_token_with_permissions_get
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+components:
+  schemas:
+    request:
+      required:
+        - app_id
+        - grant_type
+        - nonce
+        - secret
+      type: object
+      properties:
+        app_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
+        nonce:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/nonce
+        secret:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/secret
+        grant_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/grant_type
+        seconds_to_expire:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/seconds_to_expire
+        interval_to_expire:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/interval_to_expire
+        permissions:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/permissions
+    response:
+      type: object
+      properties:
+        token:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/access_token
+        type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/access_token.type
+        scope:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/scope
+        app_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_id
+        app_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/app_name
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+        seconds_to_expire:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/seconds_to_expire
+        interval_to_expire:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/interval_to_expire
+        email:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/email
+    scope:
+      $ref: ./models/schema_objects.v1.yaml#/components/schemas/scope
+    accounts:
+      $ref: ./models/schema_objects.v1.yaml#/components/schemas/accounts

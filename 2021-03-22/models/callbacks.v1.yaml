@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Common CallBacks
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
+components:
+  callbacks:
+    transaction.payment_method.apm_return:
+      '{$request.body#/notifications.return_url}':
+        get:
+          parameters:
+            - name: X-GP-Signature
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/X-GP-Signature
+            - name: id
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/id
+            - name: status
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/transaction.status
+            - name: reference
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/transaction.reference
+            - name: payment_method_result
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.result
+            - name: payment_method_message
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.message
+            - name: provider
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider
+            - name: apm_wait_notification
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+            - name: apm_optional_redirect
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
+            - name: apm_fund_status
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+            - name: apm_payment_description
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.payment_description
+            - name: apm_confirmed_accountholder
+              in: query
+              required: true
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/apm.confirmed_accountholder
+            - name: apm_account_number
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/bank.account_number
+            - name: apm_bank_iban
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/bank.iban
+            - name: apm_bank_identifier_code
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/bank.identifier_code
+            - name: apm_bank_name
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/bank.name
+            - name: apm_bank_code
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/bank.code
+            - name: action_id
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/action.id
+            - name: action_type
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/action.type
+            - name: action_time_created
+              in: query
+              schema:
+                $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+          description: The endpoint to which the customer should be redirected after a payment has been attempted or successfully completed on the payment method's site. The data sent contains the current status of the transaction.
+          responses:
+            '200':
+              description: OK
+    transaction.payment_method.apm_status:
+      '{$request.body#/notifications.status_url}':
+        post:
+          parameters:
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Signature
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: schema_objects.v1.yaml#/components/schemas/notification_post_response
+          description: The endpoint which will receive payment-status messages. This will include the result of the transaction or any updates to the transaction status. The Status URL will receive the final status of the transaction.
+          responses:
+            '200':
+              description: OK
+    three_ds.challenge_return:
+      '{$request.body#/notifications.challenge_return_url}':
+        post:
+          parameters:
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Signature
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+            - $ref: parameters.v1.yaml#/components/parameters/header_X-GP-Version
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Type
+            - $ref: parameters.v1.yaml#/components/parameters/header_Content-Encoding
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: schema_objects.v1.yaml#/components/schemas/three_ds.challenge_return_notification
+          description: The endpoint which will receive 3DS challenge return notification messages. These notifications indicate that the payer has completed the 3DS authentication challenge and the result of the challenge can be obtained.
+          responses:
+            '200':
+              description: OK

@@ -1,0 +1,746 @@
+openapi: 3.0.3
+info:
+  title: Common Object Schema
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 10 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+paths: {}
+components:
+  schemas:
+    encryption:
+      type: object
+      properties:
+        method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.method
+        version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.version
+        info:
+          $ref: data_dictionary.v1.yaml#/components/schemas/encryption.info
+    authentication:
+      type: object
+      description: Information outlining the degree of authentication executed related to a transaction.
+      properties:
+        three_ds:
+          $ref: '#/components/schemas/three_ds'
+    three_ds:
+      type: object
+      description: Information outlining the degree of 3D Secure authentication executed.
+      properties:
+        message_version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+        eci:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.eci
+        value:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.value
+        server_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
+        ds_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.ds_trans_reference
+        exempt_status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.exempt_status
+    authentication_response:
+      type: object
+      description: Information outlining the degree of authentication executed related to a transaction.
+      properties:
+        three_ds:
+          $ref: '#/components/schemas/three_ds_response'
+    three_ds_response:
+      type: object
+      description: Information outlining the degree of 3D Secure authentication executed.
+      properties:
+        value_result:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.value_result
+    stored_credential:
+      type: object
+      description: Stored data information used to create a transaction.
+      properties:
+        model:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.model
+        reason:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.reason
+        sequence:
+          $ref: data_dictionary.v1.yaml#/components/schemas/stored_credential.sequence
+    authentication.stored_credential:
+      type: object
+      description: Stored data information used to authenticate a payer.
+      properties:
+        model:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.stored_credential.model
+    totals:
+      type: object
+      description: The total number of records and the total amount across those records.
+      properties:
+        count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/count
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/total_amount
+    transaction.bank_transfer:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The number reference associated with the payer's bank account
+        number_type:
+          type: string
+          description: The number reference associated with the payer's bank account
+        masked_account4:
+          type: string
+          description: The last 4 characters of the local reference for a bank account number.
+        bank:
+          $ref: '#/components/schemas/transaction.bank'
+      description: Data relating to a bank transfer directly to or from the Payer's bank account.
+    transaction.bank:
+      type: object
+      properties:
+        code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.code
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.name
+        address:
+          $ref: '#/components/schemas/address'
+    deposit.bank_transfer:
+      type: object
+      properties:
+        masked_account_number_last4:
+          $ref: data_dictionary.v1.yaml#/components/schemas/masked_account_number_last4
+        bank:
+          $ref: '#/components/schemas/deposit.bank'
+      description: Data relating to a bank transfer directly to or from the Payer's bank account.
+    deposit.bank:
+      type: object
+      properties:
+        code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.code
+    bank_account:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name assocaited with the bank account
+        identifier_code:
+          type: string
+          description: The international identifier code for the bank.
+        iban:
+          type: string
+          description: The international identifier of the bank account.
+        code:
+          type: string
+          description: The local identifier of the bank.
+        account_number:
+          type: string
+          description: The local identifier of the bank account.
+    mandate:
+      type: object
+      properties:
+        code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.mandate.reference
+    filter:
+      type: object
+      description: Indicates what fields and values used to filter the current list of resource objects in the current response.
+    paging:
+      type: object
+      description: The paging values used to generate this response.
+      properties:
+        page:
+          $ref: data_dictionary.v1.yaml#/components/schemas/pagination.page
+        page_size:
+          $ref: data_dictionary.v1.yaml#/components/schemas/pagination.page_size
+        order_by:
+          $ref: data_dictionary.v1.yaml#/components/schemas/pagination.order_by
+        order:
+          $ref: data_dictionary.v1.yaml#/components/schemas/pagination.order
+    scope:
+      type: object
+      properties:
+        merchant_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_name
+        accounts:
+          $ref: '#/components/schemas/accounts'
+    accounts:
+      type: array
+      items:
+        type: object
+        properties:
+          account_id:
+            $ref: data_dictionary.v1.yaml#/components/schemas/account_id
+          account_name:
+            $ref: data_dictionary.v1.yaml#/components/schemas/account_name
+          permissions:
+            type: array
+            items:
+              $ref: data_dictionary.v1.yaml#/components/schemas/permissions
+    system:
+      type: object
+      description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
+      properties:
+        mid:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.mid
+        tid:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.tid
+        hierarchy:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.name
+        dba:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.dba
+    deposit.system:
+      type: object
+      description: Configuration relating to a transactions from the Global Payments system. This info is relevant for troubleshooting and integrators using other Global Payments systems to payment process.
+      properties:
+        mid:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.mid
+        hierarchy:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.name
+        dba:
+          $ref: data_dictionary.v1.yaml#/components/schemas/system.dba
+    action:
+      type: object
+      description: Information about the Action executed.
+      properties:
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/id
+        type:
+          type: string
+          description: Indicates the action taken.
+          example: DEPOSIT_LIST
+          enum:
+            - DEPOSIT_LIST
+            - DEPOSIT_SINGLE
+        time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+        result_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/result_code
+        app_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/app_id
+        app_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/app_name
+    notifications:
+      type: object
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+      properties:
+        return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.return_url
+        status_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.status_url
+        challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.challenge_return_url
+        three_ds_method_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.three_ds_method_return_url
+        decoupled_challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.decoupled_challenge_return_url
+    authentication.notifications:
+      type: object
+      required:
+        - challenge_return_url
+        - three_ds_method_return_url
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+      properties:
+        return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.return_url
+        status_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.status_url
+        challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.challenge_return_url
+        three_ds_method_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.three_ds_method_return_url
+        decoupled_challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.decoupled_challenge_return_url
+    authentication.notifications_response:
+      type: object
+      description: Indicates to Global Payments where the merchant wants to receive notifications of certain events that occur on the Global Payments system.
+      properties:
+        challenge_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.challenge_return_url
+    notification_post_response:
+      type: object
+      properties:
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/id
+        time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+        type:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.type
+        status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.status
+        channel:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.channel
+        capture_mode:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.capture_mode
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        country:
+          $ref: data_dictionary.v1.yaml#/components/schemas/country
+        merchant_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_name
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.reference
+        batch_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/batch_id
+        payment_method:
+          $ref: ../Transactions-2020-12-22.v1.yaml#/components/schemas/payment_method_response
+        action:
+          $ref: schema_objects.v1.yaml#/components/schemas/action
+    payment_method_not_response:
+      type: object
+      properties:
+        result:
+          $ref: data_dictionary.v1.yaml#/components/schemas/result
+        message:
+          $ref: data_dictionary.v1.yaml#/components/schemas/message
+        entry_mode:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payment_method.entry_mode
+        apm:
+          $ref: '#/components/schemas/apm_not_response'
+    apm_not_response:
+      type: object
+      properties:
+        provider:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider
+        redirect_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.redirect_url
+        session_token:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.session_token
+        fund_status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.fund_status
+        wait_notification:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.wait_notification
+        optional_redirect:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.optional_redirect
+        provider_transaction_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_transaction_reference
+        provider_time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_time_created
+        provider_payer_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.provider_payer_name
+        payment_description:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.payment_description
+        confirmed_accountholder:
+          $ref: data_dictionary.v1.yaml#/components/schemas/apm.confirmed_accountholder
+        account_number:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.account_number
+        iban:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.iban
+        bank_identifier_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.identifier_code
+        bank_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank.name
+        bank_address:
+          $ref: data_dictionary.v1.yaml#/components/schemas/bank_address
+      description: Data associated with an APM.
+    document:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the document on the Global Payments system
+          example: DOC_lskdnfosdfjsdfsdf23dasd
+        b64_content:
+          type: string
+          description: The document represented as a base64 encoded string.
+    three_ds.method_data:
+      type: object
+      description: Stored data information used to create a transaction.
+      properties:
+        three_ds_server_trans_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.server_trans_reference
+        three_ds_method_return_url:
+          $ref: data_dictionary.v1.yaml#/components/schemas/notifications.three_ds_method_return_url
+        encoded_method_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/method_data.encoded_method_data
+    three_ds.message_extension:
+      type: object
+      description: 'In the 3D Secure 2 protocol, the Message Extension fields allow for more bespoke and Card Scheme specific information to be passed in both the request and response messages. Scheme specific data elements used to to carry additional data. Message extension is sent based on rules set by each scheme and may not always be present in the response.'
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.name
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.id
+        criticality_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.criticality_indicator
+        data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension.data
+    address:
+      type: object
+      properties:
+        line_1:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_1
+        line_2:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_2
+        line_3:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_3
+        city:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.city
+        postal_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.postal_code
+        state:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.state
+        country:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.country
+    merchant_address:
+      type: object
+      properties:
+        line_1:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_1
+        line_2:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_2
+        line_3:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.line_3
+        city:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.city
+        postal_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.postal_code
+        state:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.state
+        country:
+          $ref: data_dictionary.v1.yaml#/components/schemas/address.country
+    phone:
+      type: object
+      properties:
+        country_code:
+          $ref: data_dictionary.v1.yaml#/components/schemas/country
+        subscriber_number:
+          $ref: data_dictionary.v1.yaml#/components/schemas/phone.subscriber_number
+    authentication.order:
+      type: object
+      required:
+        - time_created_reference
+        - amount
+        - currency
+      description: The information relating to an order. An order can be fulfilled by multiple transactions.
+      properties:
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.reference
+        time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.time_created_reference
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        address_match_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.address_match_indicator
+        shipping_address:
+          $ref: '#/components/schemas/address'
+        gift_card_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_count
+        gift_card_amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_amount
+        gift_card_currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        delivery_email:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_email
+        delivery_timeframe:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_timeframe
+        shipping_method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_method
+        shipping_name_matches_cardholder_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_name_matches_cardholder_name
+        preorder_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_indicator
+        preorder_availability_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_availability_date
+        category:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.category
+    order:
+      type: object
+      description: The information relating to an order. An order can be fulfilled by multiple transactions.
+      properties:
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.reference
+        time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.time_created_reference
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        address_match_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.address_match_indicator
+        shipping_address:
+          $ref: '#/components/schemas/address'
+        gift_card_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_count
+        gift_card_amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.gift_card_amount
+        gift_card_currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        delivery_email:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_email
+        delivery_timeframe:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.delivery_timeframe
+        shipping_method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_method
+        shipping_name_matches_cardholder_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.shipping_name_matches_cardholder_name
+        preorder_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_indicator
+        preorder_availability_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.preorder_availability_date
+        category:
+          $ref: data_dictionary.v1.yaml#/components/schemas/order.category
+    authentication.browser_data:
+      type: object
+      required:
+        - language
+        - accept_header
+        - user_agent
+      description: The information relating to a browser.
+      properties:
+        language:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.language
+        accept_header:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.accept_header
+        user_agent:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.user_agent
+        color_depth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.color_depth
+        ip:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.ip
+        java_enabled:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.java_enabled
+        javascript_enabled:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.javascript_enabled
+        screen_height:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.screen_height
+        screen_width:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.screen_width
+        challenge_window_size:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.challenge_window_size
+        timezone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/browser.timezone
+    bank_transfer.payer:
+      type: object
+      description: The information relating to a payer.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+        billing_address:
+          $ref: '#/components/schemas/address'
+    payer:
+      type: object
+      description: The information relating to a payer.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
+        account_age:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_age
+        account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_creation_date
+        account_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_date
+        account_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_indicator
+        account_password_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_date
+        account_password_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_indicator
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+        billing_address:
+          $ref: '#/components/schemas/address'
+        home_phone:
+          $ref: '#/components/schemas/phone'
+        work_phone:
+          $ref: '#/components/schemas/phone'
+        payment_account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_creation_date
+        payment_account_age_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_age_indicator
+        suspicious_account_activity:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.suspicious_account_activity
+        purchases_last_6months_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.purchases_last_6months_count
+        transactions_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transactions_last_24hours_count
+        transaction_last_year_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transaction_last_year_count
+        provision_attempt_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.provision_attempt_last_24hours_count
+        shipping_address_time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_time_created_reference
+        shipping_address_creation_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_creation_indicator
+    authentication.payer:
+      type: object
+      description: The information relating to a payer.
+      properties:
+        name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.name
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.reference
+        date_of_birth:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.date_of_birth
+        account_age:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_age
+        account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_creation_date
+        account_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_date
+        account_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_change_indicator
+        account_password_change_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_date
+        account_password_change_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.account_password_change_indicator
+        landline_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.landline_phone
+        mobile_phone:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.mobile_phone
+        billing_address:
+          $ref: '#/components/schemas/address'
+        home_phone:
+          $ref: '#/components/schemas/phone'
+        work_phone:
+          $ref: '#/components/schemas/phone'
+        payment_account_creation_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_creation_date
+        payment_account_age_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.payment_account_age_indicator
+        suspicious_account_activity:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.suspicious_account_activity
+        purchases_last_6months_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.purchases_last_6months_count
+        transactions_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transactions_last_24hours_count
+        transaction_last_year_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.transaction_last_year_count
+        provision_attempt_last_24hours_count:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.provision_attempt_last_24hours_count
+        shipping_address_time_created_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_time_created_reference
+        shipping_address_creation_indicator:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer.shipping_address_creation_indicator
+    authentication.payer_prior_three_ds_authentication_data:
+      type: object
+      description: The information relating to a payer's 3DS past activity.
+      properties:
+        authentication_method:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_prior_three_ds_authentication_data.authentication_method
+        acs_transaction_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_prior_three_ds_authentication_data.acs_transaction_reference
+        authentication_timestamp:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_prior_three_ds_authentication_data.authentication_timestamp
+        authentication_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_prior_three_ds_authentication_data.authentication_data
+    authentication.recurring_authorization_data:
+      type: object
+      description: The information relating to a payer's past recurring authorization activity.
+      properties:
+        max_number_of_instalments:
+          $ref: data_dictionary.v1.yaml#/components/schemas/recurring_authorization_data.max_number_of_instalments
+        frequency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/recurring_authorization_data.frequency
+        expiry_date:
+          $ref: data_dictionary.v1.yaml#/components/schemas/recurring_authorization_data.expiry_date
+    authentication.payer_login_data:
+      type: object
+      description: The information relating to a payer's access to their own account on the merchant's system.
+      properties:
+        authentication_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_login_data.authentication_data
+        authentication_timestamp:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_login_data.authentication_timestamp
+        authentication_type:
+          $ref: data_dictionary.v1.yaml#/components/schemas/payer_login_data.authentication_type
+    three_ds.challenge_return_notification:
+      type: object
+      properties:
+        id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.id
+        time_created:
+          $ref: data_dictionary.v1.yaml#/components/schemas/time_created
+        status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.status
+        channel:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.channel
+        amount:
+          $ref: data_dictionary.v1.yaml#/components/schemas/transaction.amount
+        currency:
+          $ref: data_dictionary.v1.yaml#/components/schemas/currency
+        country:
+          $ref: data_dictionary.v1.yaml#/components/schemas/country
+        reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/authentication.reference
+        merchant_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account_name
+        three_ds:
+          $ref: '#/components/schemas/three_ds_notification'
+        action:
+          $ref: schema_objects.v1.yaml#/components/schemas/action
+    three_ds_notification:
+      type: object
+      properties:
+        acs_trans_reference:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_trans_reference
+        message_type:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_type
+        message_extension:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_extension
+        message_version:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.message_version
+        acs_transaction_status:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.acs_transaction_status
+        three_ds.session_data:
+          $ref: data_dictionary.v1.yaml#/components/schemas/three_ds.session_data
+    links:
+      type: array
+      items:
+        type: object
+        properties:
+          rel:
+            $ref: data_dictionary.v1.yaml#/components/schemas/link.rel
+          href:
+            $ref: data_dictionary.v1.yaml#/components/schemas/link.href
+    transaction_processing_configuration:
+      type: object
+      description: 'A configuration''s countries, channels, currencies and payment_methods, represents a different transaction processing system route.'
+      properties:
+        countries:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account.countries
+        currencies:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account.currencies
+        channels:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account.channels
+        payment_methods:
+          $ref: data_dictionary.v1.yaml#/components/schemas/account.payment_methods
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

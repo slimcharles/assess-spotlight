@@ -1,0 +1,766 @@
+openapi: 3.0.3
+info:
+  title: Disputes
+  description: 'Disputes are an act, initiated by a Payer or Payer’s bank to query or challenge the previous transfer of funds between that Payer and the Merchant.'
+  contact:
+    name: API Integrations
+    url: 'https://developer.globalpay.com/?gp-api=true'
+    email: api.integrations@globalpay.com
+  version: 2020 12 22
+servers:
+  - url: 'https://apis.sandbox.globalpay.com/ucp'
+    description: Sandbox Environment
+  - url: 'https://apis.globalpay.com/ucp'
+    description: Production Environment
+tags:
+  - name: Accept
+    description: Accept liability for a Dispute.
+  - name: Challenge
+    description: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
+  - name: Get a Dispute
+    description: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute.
+  - name: List Disputes
+    description: 'Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.'
+  - name: List Settled Disputes
+    description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records
+  - name: Download Document
+    description: Get a Document associated with a Dispute.
+paths:
+  /disputes:
+    get:
+      operationId: getDisputes
+      tags:
+        - List Disputes
+      summary: 'Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.'
+      description: 'Get a list of disputes recently processed, using criteria passed in the query string. Page through the result set to access all records.'
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+        - name: arn
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+        - name: brand
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+        - name: status
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        - name: stage
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        - name: from_stage_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.from_stage_time_created
+        - name: to_stage_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.to_stage_time_created
+        - name: system.mid
+          in: query
+          description: The system merchant identifier.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
+        - name: system.hierarchy
+          in: query
+          description: The system merchant hierarchy
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/disputes_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+  '/disputes/{id}':
+    get:
+      operationId: getSingleDispute
+      tags:
+        - Get a Dispute
+      summary: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute.
+      description: Get info about a Dispute on the Global Payments system using the unique id created by Global Payments for that Dispute.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dispute_single_real_time'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+  '/disputes/{id}/acceptance':
+    post:
+      operationId: acceptDispute
+      tags:
+        - Accept
+      summary: Accept liability for a Dispute that will likely result in financial impact to the Merchant.
+      description: Accept liability for a Dispute that will likely result in financial impact to the Merchant.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accept_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+  '/disputes/{id}/challenge':
+    post:
+      operationId: challengeDispute
+      tags:
+        - Challenge
+      description: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
+      summary: Challenge a Dispute by providing evidence indicating Merchant does not have liability for a particular Dispute.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/challenge_request'
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/challenge_response'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+  '/disputes/{id}/documents/{doc_id}':
+    post:
+      operationId: getDisputeDocument
+      tags:
+        - Download Document
+      summary: Get a Document associated with a Dispute.
+      description: Get a Document associated with a Dispute.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Idempotency
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Content-Type
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+        - name: doc_id
+          in: path
+          required: true
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Idempotency:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Idempotency
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: ./models/schema_objects.v1.yaml#/components/schemas/document
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+  /settlement/disputes:
+    get:
+      operationId: getSettledDisputes
+      tags:
+        - List Settled Disputes
+      summary: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
+      description: Get a list of disputes that affected a merchant's bank account using criteria passed in the query string. Page through the result set to access all records.
+      parameters:
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Authorization
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_X-GP-Version
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/header_Accept
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_page_size
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order
+        - $ref: ./models/parameters.v1.yaml#/components/parameters/query_pagination_order_by
+        - name: arn
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+        - name: brand
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+        - name: status
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        - name: stage
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        - name: from_stage_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.from_stage_time_created
+        - name: to_stage_time_created
+          in: query
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.to_stage_time_created
+        - name: system.mid
+          in: query
+          description: The system merchant identifier.
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.mid
+        - name: system.hierarchy
+          in: query
+          description: The system merchant hierarchy
+          schema:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/system.hierarchy
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Type
+            Content-Encoding:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/Content-Encoding
+            X-GP-Version:
+              schema:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/X-GP-Version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settled_disputes_list'
+        '400':
+          $ref: ./models/errors.yaml#/components/responses/RequestInvalid_400
+        '401':
+          $ref: ./models/errors.yaml#/components/responses/AuthenticationInvalid_401
+        '403':
+          $ref: ./models/errors.yaml#/components/responses/NotAuthorized_403
+        '404':
+          description: Resource Not Found
+          content: {}
+        '500':
+          $ref: ./models/errors.yaml#/components/responses/ServerError_500
+        '501':
+          $ref: ./models/errors.yaml#/components/responses/UnknownServerError_501
+        '502':
+          $ref: ./models/errors.yaml#/components/responses/UnknownPlatformError_502
+        '504':
+          $ref: ./models/errors.yaml#/components/responses/ServerTimeout_504
+components:
+  schemas:
+    accept_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    challenge_request:
+      type: object
+      properties:
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.b64_content
+    challenge_response:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    disputes_list:
+      type: object
+      properties:
+        total_record_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
+        current_page_size:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        filter:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
+        paging:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        disputes:
+          type: array
+          description: A list of disputes
+          items:
+            $ref: '#/components/schemas/disputes_list_item'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    disputes_list_item:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        system:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+        last_adjustment_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
+        last_adjustment_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_currency
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
+        payment_method:
+          type: object
+          properties:
+            card:
+              type: object
+              properties:
+                number:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                arn:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                brand:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+          description: Information about the original Sale Transaction the Dispute relates to.
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    dispute_single_real_time:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        status_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status_time_created
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.amount
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        payer_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payer_amount
+        payer_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        merchant_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.merchant_amount
+        merchant_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        investigator_comment:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.investigator_comment
+        system:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+        last_adjustment_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
+        last_adjustment_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_currency
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
+        last_adjustment_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_time_created
+        net_financial_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_amount
+        net_financial_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_currency
+        net_financial_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.net_financial_funding
+        payment_method_provider:
+          type: array
+          items:
+            type: object
+            properties:
+              comment:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payment_method_provider.comment
+              reference:
+                $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.payment_method_provider.reference
+              documents:
+                type: array
+                description: A list of evidence provided by the Merchant that relate to the Dispute.
+                items:
+                  $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
+            description: 'A set of data associated with the payment method provider for this Dispute including their comment, documents and id for this dispute.'
+        transaction:
+          type: object
+          properties:
+            time_created:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+            type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+            amount:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+            currency:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+            reference:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+            remarks:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.remarks
+            payment_method:
+              type: object
+              properties:
+                card:
+                  type: object
+                  properties:
+                    number:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                    arn:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                    brand:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+                    authcode:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+                    brand_reference:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+          description: Information about the original Sale Transaction the Dispute relates to.
+        documents:
+          type: array
+          description: A list of evidence provided by the Merchant that relate to the Dispute.
+          items:
+            $ref: ./models/data_dictionary.v1.yaml#/components/schemas/document.id
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    settled_disputes_list:
+      type: object
+      properties:
+        total_record_count:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.total_record_count
+        current_page_size:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/pagination.current_page_size
+        merchant_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_id
+        merchant_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/merchant_name
+        account_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_id
+        account_name:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/account_name
+        filter:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/filter
+        paging:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/paging
+        disputes:
+          type: array
+          description: A list of disputes
+          items:
+            $ref: '#/components/schemas/settled_disputes_list_item'
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+    settled_disputes_list_item:
+      type: object
+      properties:
+        id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.id
+        status:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.status
+        stage:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage
+        stage_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        funding_type:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        deposit_id:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        deposit_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.stage_time_created
+        system:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/system
+        reason_code:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_code
+        reason_description:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.reason_description
+        time_to_respond_by:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.time_to_respond_by
+        result:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.result
+        last_adjustment_amount:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_amount
+        last_adjustment_currency:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+        last_adjustment_funding:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_funding
+        last_adjustment_time_created:
+          $ref: ./models/data_dictionary.v1.yaml#/components/schemas/dispute.last_adjustment_time_created
+        transaction:
+          type: object
+          properties:
+            time_created:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/time_created
+            merchant_time_created:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.time_created_reference
+            type:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.type
+            amount:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.amount
+            currency:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/currency
+            reference:
+              $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.reference
+            payment_method:
+              type: object
+              properties:
+                card:
+                  type: object
+                  properties:
+                    masked_number_first6last4:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/masked_number_first6last4
+                    arn:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/transaction.arn
+                    brand:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand
+                    authcode:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.authcode
+                    brand_reference:
+                      $ref: ./models/data_dictionary.v1.yaml#/components/schemas/card.brand_reference
+                  description: Data relating to the card payment method.
+          description: Information about the original Sale Transaction the Dispute relates to.
+        action:
+          $ref: ./models/schema_objects.v1.yaml#/components/schemas/action
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
